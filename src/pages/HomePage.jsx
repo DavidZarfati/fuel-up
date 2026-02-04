@@ -30,8 +30,8 @@ export default function HomePage() {
 
     return (
         <>
-            <section className="home-container">
-                <div className="hero-section">
+            <section className="ot-home-container">
+                <div className="ot-hero-section">
                     
                 </div>
             </section>

@@ -63,17 +63,17 @@ export default function Header({ nameApp }) {
 
 
     return (
-        <header className="header">
-            <div className="header-content">
+        <header className="ot-header">
+            <div className="ot-header-content">
 
-                <div className="flex-inline">
+                <div className="ot-flex-inline">
 
 
-                    <ul className="nav-item">
+                    <ul className="ot-nav-item">
                         {headerLinks.map((link, index) => (
                             <li key={index}>
                                 <NavLink
-                                    className="nav-link"
+                                    className="ot-nav-link"
                                     aria-current="page"
                                     to={link.path}
                                 >
@@ -85,13 +85,13 @@ export default function Header({ nameApp }) {
                 </div>
 
                 <div>
-                    <img className="logo" src={logo} alt="" />
+                    <img className="ot-logo" src={logo} alt="" />
                 </div>
 
 
 
                 <div>
-                    <form className="search-bar" onSubmit={handleSubmit}>
+                    <form className="ot-search-bar" onSubmit={handleSubmit}>
                         <input
                             type="search"
                             placeholder="Cosa cerchi?"
