@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Cabin', sans-serif;
+}
+
+img {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+}
+
+
+
+
+
+
+
+/* responsive mobile first */
+/* tablet */
+@media (min-width: 768px) {
+
+  
+
+
+  /* .col {
+    width: calc(100% / 4 - (10px * 3) / 4);
+  } */
+}
+
+/* Desktop */
+@media (min-width: 1200px) {
+
+  /* .col {
+    width: calc(100% / 6 - (10px * 5) / 6)
+  } */
+}

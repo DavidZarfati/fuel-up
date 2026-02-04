@@ -1,0 +1,23 @@
+.home-container {
+    padding: 40px 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    background-color: rgb(39, 37, 37)
+}
+
+.hero-section {
+    color: white;
+    position: relative;
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+
+    background-image: url(../assets/images/Hero_section.jpg);
+    background-size: cover;
+    background-position: center;
+
+    margin-bottom: 40px;
+
+}
