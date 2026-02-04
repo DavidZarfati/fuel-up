@@ -1,10 +1,13 @@
 .dz-bg-footer {
     background-color: rgb(73, 185, 216);
+    color: white;
+
 }
 
 .dz-bordi-footer {
     padding-left: 100px;
     padding-right: 100px;
+    padding-top: 30px;
 }
 
 .dz-logo-footer {

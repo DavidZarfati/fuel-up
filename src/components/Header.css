@@ -1,4 +1,4 @@
-.header {
+.ot-header {
     background-color: rgb(73, 185, 216);
     padding-left: 10px;
     padding-right: 10px;
@@ -7,7 +7,7 @@
     z-index: 1000;
 }
 
-.header-content {
+.ot-header-content {
     max-width: 1400px;
     gap: 20px;
 
@@ -16,44 +16,40 @@
     align-items: center;
 }
 
-.logo {
+.ot-logo {
     height: 100px;
     max-width: 200px;
     margin-right: 25px;
     border-radius: 5px;
 }
 
-.flex-inline {
+.ot-flex-inline {
     display: inline-flex;
 }
 
 
-
-li {
-    list-style: none;
-}
-
-.nav-item {
+.ot-nav-item {
     display: flex;
     gap: 10px;
     align-items: center;
 }
 
-.nav-link {
+.ot-nav-link {
     color: rgb(225, 226, 235);
     padding: 15px 10px;
     background-color: rgb(15, 78, 160);
     border-radius: 5px;
     font-size: 16px;
+    text-decoration: none;
 }
 
-.nav-link:hover {
+.ot-nav-link:hover {
     color: rgb(27, 98, 184);
     background-color: rgb(228, 229, 238);
     border-radius: 5px;
 }
 
-.search-bar {
+.ot-search-bar {
     display: inline-flex;
     gap: 10px;
     max-width: 500px;
@@ -63,7 +59,7 @@ li {
 
 }
 
-.search-bar input {
+.ot-search-bar input {
     background-color: rgb(238, 239, 243);
     color: rgb(15, 78, 160);
     border: 1px solid;
@@ -75,11 +71,11 @@ li {
     outline: none;
 }
 
-.search-bar input:hover {
+.ot-search-bar input:hover {
     border-color: rgb(15, 78, 160);
 }
 
-.search-bar button {
+.ot-search-bar button {
     color: rgb(243, 244, 249);
     background-color: rgb(15, 78, 160);
     border: none;
@@ -90,7 +86,7 @@ li {
     cursor: pointer;
 }
 
-.search-bar button:hover {
+.ot-search-bar button:hover {
     background-color: rgb(245, 246, 250);
     color: rgb(15, 78, 160);
 }
