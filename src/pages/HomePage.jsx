@@ -1,7 +1,6 @@
-
 import axios from "axios";
 import { useState } from "react";
-
+import "./HomePage.css";
 
 
 export default function HomePage() {
@@ -33,7 +32,7 @@ export default function HomePage() {
         <>
             <section className="home-container">
                 <div className="hero-section">
-                    <h1>This is home title</h1>
+                    
                 </div>
             </section>
         </>
