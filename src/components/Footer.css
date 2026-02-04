@@ -1,0 +1,14 @@
+.dz-bg-footer {
+    background-color: rgb(73, 185, 216);
+}
+
+.dz-bordi-footer {
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.dz-logo-footer {
+    height: 50px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
