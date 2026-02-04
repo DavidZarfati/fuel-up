@@ -17,9 +17,10 @@
 }
 
 .logo {
-    height: 50px;
-    max-width: 80px;
+    height: 100px;
+    max-width: 200px;
     margin: 20px;
+    margin-right: 25px;
   
     border-radius: 5px;
 }
@@ -45,6 +46,7 @@ li {
     padding: 10px;
     background-color: rgb(15, 78, 160);
     border-radius: 5px;
+    font-size: 18px;
 }
 
 .nav-link:hover {

@@ -12,8 +12,8 @@ export default function Header({ nameApp }) {
 
     const headerLinks = [
 
-        { title: "Home", path: "/" },
-        { title: "Our products", path: "/products" },
+        { title: "Chi siamo", path: "/" },
+        { title: "Nostri prodotti", path: "/products" },
 
     ];
 
@@ -66,7 +66,6 @@ export default function Header({ nameApp }) {
             <div className="header-content">
 
                 <div className="flex-inline">
-                    <img className="logo" src={logo} alt="" />
 
 
                     <ul className="nav-item">
@@ -82,6 +81,10 @@ export default function Header({ nameApp }) {
                             </li>
                         ))}
                     </ul>
+                </div>
+
+                <div>
+                    <img className="logo" src={logo} alt="" />
                 </div>
 
 
