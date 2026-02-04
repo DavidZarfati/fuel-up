@@ -1,11 +1,11 @@
-.home-container {
+.ot-home-container {
    
     max-width: 1400px;
     margin: 0 auto;
 
 }
 
-.hero-section {
+.ot-hero-section {
     color: white;
     position: relative;
     height: 80vh;
