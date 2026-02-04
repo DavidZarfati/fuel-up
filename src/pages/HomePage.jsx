@@ -38,11 +38,11 @@ export default function HomePage() {
 
     return (
         <>
-            <section className="ot-home-container">
-                <div className="ot-hero-section">
+            <section className="ot-home-container ot-bg-teal">
+                <div className="ot-hero-section"></div>
 
-                </div>
-                <div className="d-flex container">
+
+                <div className="d-flex container ot-bg-teal">
                     <div class="row">
                         {arrayTestCard.map((card, idx) => (
                             <div className="col-sm-12 col-md-6 col-lg-4" key={idx}>

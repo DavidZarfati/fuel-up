@@ -1,5 +1,6 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import "./Header.css";
+import "../index.css"
 import logo from "../assets/images/logo.jpg";
 import { useState } from "react";
 import axios from "axios";
