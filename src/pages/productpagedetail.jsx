@@ -4,7 +4,7 @@
 // // import { useNavigate } from "react-router-dom";
 
 // // export default function Productpagedetail () {
-    
+
 
 
 // //     // const [product, setProduct] = useState()
@@ -53,38 +53,41 @@
 
 // // }
 
-// import { useParams } from "react-router-dom";
 
-// export default function Productpagedetail() {
-//   const { slug } = useParams();
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-//   const arrayTestCard = [
-//     {
-//       title: "casein vanilla serving",
-//       slug: "casein-vanilla-serving",
-//       image: "../assets/testimages/image/casein-vanilla-serving.jpg",
-//       description: "una porzione di proteine casearie alla vanilla",
-//       categories: "protein,integration,natural"
-//     },
-//     {
-//       title: "beta alanine scoop",
-//       slug: "beta-alanine-scoop",
-//       image: "../assets/testimages/image/beta-alanine-scoop.jpg",
-//       description: "uno scoop di beta alanina",
-//       categories: "protein,integration,science"
-//     }
-//   ];
+export default function Productpagedetail() {
+    const { slug } = useParams();
+    const [product, setProduct] = useState(null);
+    const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-//   const product = arrayTestCard.find(p => p.slug === slug);
+    useEffect(() => {
+        setLoading(true);
+        axios
+            .get(`${backendBaseUrl}/api/products/${slug}`)
+            .then((resp) => {
+                setProduct(resp.data);
+                setLoading(false);
+            })
+            .catch((err) => {
+                setError("Prodotto non trovato");
+                setLoading(false);
+            });
+    }, [slug]);
 
-//   if (!product) {
-//     return <h2>Prodotto non trovato</h2>;
-//   }
+    if (loading) return <h2>Caricamento...</h2>;
+    if (error) return <h2>{error}</h2>;
+    if (!product) return <h2>Prodotto non trovato</h2>;
 
-//   return (
-//     <section>
-//       <h1>{product.title}</h1>
-//       <p>{product.description}</p>
-//     </section>
-//   );
-// }
+    return (
+        <section>
+            <h1>{product.title}</h1>
+            <p>{product.description}</p>
+            {/* Add more product details as needed */}
+        </section>
+    );
+}
