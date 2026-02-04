@@ -19,9 +19,7 @@
 .logo {
     height: 100px;
     max-width: 200px;
-    margin: 20px;
     margin-right: 25px;
-  
     border-radius: 5px;
 }
 
@@ -37,16 +35,16 @@ li {
 
 .nav-item {
     display: flex;
-    gap: 30px;
+    gap: 10px;
     align-items: center;
 }
 
 .nav-link {
     color: rgb(225, 226, 235);
-    padding: 10px;
+    padding: 15px 10px;
     background-color: rgb(15, 78, 160);
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .nav-link:hover {
