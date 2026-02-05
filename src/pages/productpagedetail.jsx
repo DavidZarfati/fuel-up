@@ -80,9 +80,6 @@ export default function Productpagedetail() {
             });
     }, [slug]);
 
-    if (loading) return <h2>Caricamento...</h2>;
-    if (error) return <h2>{error}</h2>;
-    if (!product) return <h2>Prodotto non trovato</h2>;
 
     return (
         <>

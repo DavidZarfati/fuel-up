@@ -21,9 +21,8 @@ function App() {
 
               <Route path="/" element={<HomePage />} />
 
-              <Route path="/products" element={<ProductsPage />}>
-                <Route path=":slug" element={<Productpagedetail />} />
-              </Route>
+              <Route path="/products" element={<ProductsPage />} />
+              <Route path="/products/:slug" element={<Productpagedetail />} />
 
               {/* <Route path="*" element={<NotFoundPage />} /> */}
 
