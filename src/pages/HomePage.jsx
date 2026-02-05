@@ -36,7 +36,7 @@ export default function HomePage() {
         <>
 
             <div style={{ color: 'red', fontWeight: 'bold', fontSize: 22, margin: 10 }}>
-                DEBUG: prodotti caricati: {Array.isArray(products) ? products.length : 'non array'}
+                {/* DEBUG: prodotti caricati: {Array.isArray(products) ? products.length : 'non array'} */}
             </div>
             <section className="ot-home-container ot-bg-teal">
                 <div className="ot-hero-section"></div>
@@ -47,10 +47,15 @@ export default function HomePage() {
                         {error && <p>{error}</p>}
                         {!loading && !error && Array.isArray(products) && products.map((card, idx) => (
                             <div className="col-sm-12 col-md-6 col-lg-4" key={idx}>
-                                <div className="card mb-3" style={{ border: '1px solid #ccc', background: '#f9f9f9', minHeight: 180 }}>
+                                <div className="card mb-3" style={{ border: '1px solid #ccc', background: '#f9f9f9', minHeight: 250 }}>
                                     <div className="row no-gutters align-items-center">
                                         <div className="col-12">
                                             <div className="card-body">
+                                                <img
+                                                    src={`/${card.image.replace(/^\/+/, "")}`}
+                                                    alt={card.name}
+                                                    style={{ maxWidth: '100%', maxHeight: '120px', objectFit: 'cover', marginBottom: '10px' }}
+                                                />
                                                 <h5 className="card-title">{card.name}</h5>
                                                 <p className="card-text">{card.description}</p>
                                                 <Link to={`/products/${card.slug}`} className="btn btn-outline-primary">
