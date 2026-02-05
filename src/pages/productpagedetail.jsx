@@ -40,6 +40,18 @@ export default function Productpagedetail() {
                         style={{ maxWidth: '20%', height: '30%', display: 'block', margin: '40px auto' }}
                     />
                     <h2 className="dz-titolo-prodotto">{slug.replaceAll ? slug.replaceAll('-', ' ') : slug.split('-').join(' ')}</h2>
+                    <p className="dz-description-prodotto">
+                        {product.result[0].description ? product.result[0].description : "Nessuna descrizione disponibile."}
+                    </p>
+                    <p className="dz-description-prodotto">
+                        {product.result[0].size ? `Dimensione : ${product.result[0].size}` : "Nessuna descrizione disponibile."}
+                    </p>
+                    <p className="dz-description-prodotto">
+                        {product.result[0].manufacturer_note ? `Informazioni Aggiuntive : ${product.result[0].manufacturer_note}` : "Nessuna descrizione disponibile."}
+                    </p>
+                    <p className="dz-description-prodotto">
+                        {product.result[0].color ? `colore : ${product.result[0].color}` : ""}
+                    </p>
                 </div>
             ) : (
                 <div>Product data not available.</div>
