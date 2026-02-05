@@ -78,7 +78,7 @@ export default function ProductsPage() {
                     return (
                         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', padding: '20px' }}>
                             <img
-                                src={`${backendBaseUrl}/imgs/${product.image}`}
+                                src={`${backendBaseUrl}${product.image}`}
                                 alt={product.title}
                                 style={{ maxWidth: '500px', width: '100%', height: 'auto', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', marginBottom: '30px' }}
                             />

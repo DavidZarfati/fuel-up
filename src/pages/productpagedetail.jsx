@@ -31,7 +31,7 @@ export default function Productpagedetail() {
             {/* <h1>{slug}</h1> */}
             <div className="d-flex flex-column">
                 <img
-                    src={`/assets/testimages/image/${slug}.jpg`}
+                    src={`${backendBaseUrl}${product.result[0].image}`}
                     alt={slug}
                     style={{ maxWidth: '20%', height: '30%', display: 'block', margin: '40px auto' }}
                 />

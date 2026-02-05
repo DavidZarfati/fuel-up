@@ -52,7 +52,10 @@ export default function HomePage() {
                                         <div className="col-12">
                                             <div className="card-body">
                                                 <img
-                                                    src={`/${card.image.replace(/^\/+/, "")}`}
+                                                    // src={`/${card.image.replace(/^\/+/, "")}`} ot-rettifica
+
+                                                    src={`${backendBaseUrl}${card.image}`}
+
                                                     alt={card.name}
                                                     style={{ maxWidth: '100%', maxHeight: '120px', objectFit: 'cover', marginBottom: '10px' }}
                                                 />

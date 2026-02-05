@@ -14,7 +14,7 @@ export default function SingleProductCard({ product }) {
 
             <div className="card-img">
                 <img
-                    src={`${backendBaseUrl}/imgs/${product.image}`}
+                    src={`${backendBaseUrl}${product.image}`}
                     alt={product.title}
                 />
             </div>
