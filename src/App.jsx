@@ -8,6 +8,8 @@ import Productpagedetail from './pages/productpagedetail'
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { GlobalProvider } from './context/GlobalContext';
+import { CartProvider } from './context/CartContext';
+import CartPage from './pages/CartPage';
 
 
 function App() {
@@ -15,21 +17,25 @@ function App() {
   return (
     <>
       <GlobalProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<DefaultLayout nameApp={nameApp} />}>
+  <CartProvider>
 
-              <Route path="/" element={<HomePage />} />
+    <BrowserRouter>
+      <Routes>
+        <Route element={<DefaultLayout nameApp={nameApp} />}>
 
-              <Route path="/products" element={<ProductsPage />} />
-              <Route path="/products/:slug" element={<Productpagedetail />} />
+          <Route path="/" element={<HomePage />} />
 
-              {/* <Route path="*" element={<NotFoundPage />} /> */}
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:slug" element={<Productpagedetail />} />
+          <Route path="/shopping-cart" element={<CartPage />} />
 
-            </Route>
-          </Routes>
-        </BrowserRouter>
-      </GlobalProvider>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+
+  </CartProvider>
+</GlobalProvider>
+
 
     </>
   );
