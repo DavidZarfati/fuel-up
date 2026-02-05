@@ -86,7 +86,7 @@ export default function Productpagedetail() {
 
     return (
         <>
-            <h1 className="h-100">CIao</h1>
+            <h1>ti prego</h1>
         </>
     );
 }

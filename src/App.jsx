@@ -14,23 +14,23 @@ function App() {
   const nameApp = "FuelUp";
   return (
     <>
-<GlobalProvider>
-  <BrowserRouter>
-    <Routes>
-      <Route element={<DefaultLayout nameApp={nameApp} />}>
-        
-        <Route path="/" element={<HomePage />} />
+      <GlobalProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<DefaultLayout nameApp={nameApp} />}>
 
-        <Route path="/products" element={<ProductsPage />}>
-          <Route path=":slug" element={<Productpagedetail />} />
-        </Route>
+              <Route path="/" element={<HomePage />} />
 
-        {/* <Route path="*" element={<NotFoundPage />} /> */}
+              <Route path="/products" element={<ProductsPage />}>
+                <Route path=":slug" element={<Productpagedetail />} />
+              </Route>
 
-      </Route>
-    </Routes>
-  </BrowserRouter>
-</GlobalProvider>
+              {/* <Route path="*" element={<NotFoundPage />} /> */}
+
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </GlobalProvider>
 
     </>
   );
