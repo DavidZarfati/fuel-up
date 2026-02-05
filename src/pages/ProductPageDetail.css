@@ -1,7 +1,45 @@
- .dz-titolo-prodotto {
-     text-align: center;
- }
+.dz-prezzo-scontato {
+    color: red;
+}
 
- .dz-description-prodotto {
-     text-align: center;
- }
+.dz-titolo-prodotto {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.dz-description-prodotto {
+    text-align: center;
+}
+
+.dz-brand-badge {
+    background-color: red;
+    padding: 15px;
+    border-radius: 50px;
+    color: white;
+}
+
+.dz-brand-badge {
+    animation: cambiaColore 10s infinite;
+}
+
+@keyframes cambiaColore {
+    0% {
+        background-color: red;
+    }
+
+    33% {
+        background-color: blue;
+    }
+
+    66% {
+        background-color: green;
+    }
+
+    100% {
+        background-color: red;
+    }
+}
+
+.dz-prodotto-senza-sconto {
+    text-decoration: line-through;
+}
