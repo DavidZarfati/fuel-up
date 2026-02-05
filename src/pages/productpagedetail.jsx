@@ -1,59 +1,3 @@
-// // import { useEffect, useState } from "react"
-// // import axios from "axios"
-// // import { useGlobal } from "../context/GlobalContext";
-// // import { useNavigate } from "react-router-dom";
-
-// // export default function Productpagedetail () {
-
-
-
-// //     // const [product, setProduct] = useState()
-// //     // const {slug} = useParams();
-// //     // const {backendUrl} = useGlobal();
-// //     // const navigate = useNavigate();
-
-// //     // useEffect(()=>{
-// //     //     getProduct();
-// //     // },[slug]);
-
-// //     // function getProduct(){
-// //     //     axios.get(`${backendUrl}/api/products/${slug}`)
-// //     //     .then((resp)=> {
-// //     //         setProduct(resp.data)
-// //     //         console.log(resp.data)
-// //     //     })
-// //     //     .catch((err)=>{
-// //     //         console.log(err);
-// //     //     })
-
-// //     // }
-// //     // function goBack(event) {
-// //     //     event.preventDefault();
-// //     //     navigate(-1);
-// //     // }
-// //    
-
-// //     return(
-// //         <>
-// //         {Product.map((card, index)=>{
-// //             return(
-// //                 <>
-// //                 <section >
-// //                 <h1>{card.title}</h1>
-// //                 <p>{card.description}</p>
-// //                 </section>
-// //                 </>
-// //             )
-// //         })}
-
-
-
-// //         </>
-// //     )
-
-// // }
-
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -81,9 +25,18 @@ export default function Productpagedetail() {
     }, [slug]);
 
 
+
     return (
         <>
-            <h1>ti prego</h1>
+            {/* <h1>{slug}</h1> */}
+            <div className="d-flex flex-column">
+                <img
+                    src={`/assets/testimages/image/${slug}.jpg`}
+                    alt={slug}
+                    style={{ maxWidth: '20%', height: '30%', display: 'block', margin: '40px auto' }}
+                />
+                <h2 className="dz-titolo-prodotto">{slug.replaceAll ? slug.replaceAll('-', ' ') : slug.split('-').join(' ')}</h2>
+            </div>
         </>
     );
 }
