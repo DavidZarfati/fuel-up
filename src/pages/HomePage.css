@@ -8,20 +8,18 @@
 .ot-hero-section {
     color: white;
     position: relative;
-    height: 80vh;
+    height: 400px; /* Fixed height for mobile */
     display: flex;
     align-items: center;
     justify-content: center;
-
-
     background-image: url(../assets/images/hero-section.png);
     background-size: cover;
     background-position: center;
-
+    background-repeat: no-repeat;
     margin-bottom: 40px;
-
 }
 
 .ot-bg-teal {
     background-color: rgb(58, 150, 242);
 }
+

@@ -1,7 +1,6 @@
 .ot-header {
     background-color: rgb(73, 185, 216);
-    padding-left: 10px;
-    padding-right: 10px;
+    padding: 15px;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -10,28 +9,75 @@
 .ot-header-content {
     max-width: 1400px;
     gap: 20px;
-
     display: flex;
+   
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
 .ot-logo {
-    height: 100px;
+    height: 60px;
     max-width: 200px;
-    margin-right: 25px;
     border-radius: 5px;
 }
 
+/* Hamburger Menu Button - Mobile Only */
+.ot-hamburger {
+    display: block;
+    background: none;
+    border: none;
+    color: rgb(15, 78, 160);
+    font-size: 28px;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1001;
+}
+
+.ot-hamburger:hover {
+    color: rgb(27, 98, 184);
+}
+
+/* Navigation Container */
 .ot-flex-inline {
-    display: inline-flex;
+    display: none; /* Hidden on mobile by default */
 }
 
 
-.ot-nav-item {
-    display: inline-flex;
+
+/* Header icons */
+.ot-mobile-icons {
+    display: flex;
     gap: 10px;
     align-items: center;
+}
+
+
+.ot-icon-button {
+    display: block;
+    background: none;
+    border: none;
+    color: rgb(15, 78, 160);
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    transition: color 0.3s;
+}
+
+.ot-icon-button:hover {
+    color: rgb(27, 98, 184);
+}
+
+
+
+.ot-nav-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 .ot-nav-link {
@@ -41,6 +87,8 @@
     border-radius: 5px;
     font-size: 16px;
     text-decoration: none;
+    width: 100%;
+    white-space: nowrap; /* Prevent text wrapping inside links */
 }
 
 .ot-nav-link:hover {
@@ -49,14 +97,24 @@
     border-radius: 5px;
 }
 
+/* Mobile Menu Open State */
+.ot-flex-inline.ot-menu-open {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: rgb(73, 185, 216);
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+}
+
+/* Search Bar */
 .ot-search-bar {
-    display: inline-flex;
-    gap: 10px;
+    display: flex;
+    gap: 5px;
     max-width: 500px;
-
-    margin-top: 40px;
-    margin-bottom: 40px;
-
 }
 
 .ot-search-bar input {
@@ -64,11 +122,12 @@
     color: rgb(15, 78, 160);
     border: 1px solid;
     border-radius: 5px;
-    font-size: 15px;
-
-    padding: 15px 20px;
+    font-size: 14px;
+    padding: 10px;
     flex: 1;
     outline: none;
+    min-width: 0;
+     width: 150px;
 }
 
 .ot-search-bar input:hover {
@@ -80,13 +139,61 @@
     background-color: rgb(15, 78, 160);
     border: none;
     border-radius: 5px;
-    font-size: 15px;
-
-    padding: 10px;
+    font-size: 14px;
+    padding: 8px 12px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .ot-search-bar button:hover {
     background-color: rgb(245, 246, 250);
     color: rgb(15, 78, 160);
+}
+
+
+
+
+/* Tablet - 768px and up */
+@media (min-width: 768px) {
+    .ot-header-content {
+        flex-wrap: nowrap; /* Prevent wrapping on tablet and desktop */
+    }
+
+    .ot-mobile-icons {
+        display: none; /* Hide all mobile icons on tablet and desktop */
+    }
+
+    .ot-hamburger {
+        display: none; /* Hide hamburger on tablet and desktop */
+    }
+
+    .ot-flex-inline {
+        display: inline-flex; /* Show navigation links */
+        position: static;
+        width: auto;
+        padding: 0;
+        box-shadow: none;
+    }
+
+    .ot-nav-item {
+        flex-direction: row;
+        align-items: center;
+        gap: 10px;
+        white-space: nowrap; /* Prevent navigation from wrapping */
+    }
+
+    .ot-nav-link {
+        width: auto;
+    }
+
+   
+}
+
+/* Desktop - 1024px and up */
+@media (min-width: 1024px) {
+    .ot-logo {
+        margin-right: 25px;
+    }
+
+   
 }

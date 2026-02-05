@@ -1,6 +1,7 @@
 import { NavLink, Link, useNavigate } from "react-router-dom";
 import "./Header.css";
 import "../index.css"
+import "bootstrap-icons/font/bootstrap-icons.css";
 import logo from "../assets/images/logo.jpg";
 import { useState } from "react";
 import axios from "axios";
@@ -16,6 +17,7 @@ export default function Header({ nameApp }) {
         { title: "Chi siamo", path: "/" },
         { title: "Nostri prodotti", path: "/products" },
         { title: "Prodotti preferiti", path: "/products/favourites" },
+        { title: "Carello", path: "/shopping-cart" },
 
     ];
 
@@ -23,6 +25,8 @@ export default function Header({ nameApp }) {
 
     const [search, setSearch] = useState("");
     const navigate = useNavigate();
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -62,14 +66,44 @@ export default function Header({ nameApp }) {
         searchProduct();
     }
 
+    function toggleMenu() {
+        setIsMenuOpen(!isMenuOpen);
+    }
+
 
     return (
+
         <header className="ot-header">
             <div className="ot-header-content">
+                <div className="ot-mobile-icons">
+                    <button
+                        className="ot-hamburger"
+                        onClick={toggleMenu}
+                        aria-label="Toggle menu"
+                    >
+                        <i className={isMenuOpen ? "bi bi-x-lg" : "bi bi-list"}></i>
+                    </button>
 
-                <div className="ot-flex-inline">
+                    <button
+                        className="ot-icon-button ot-favourites-icon"
+                        onClick={() => navigate("/products/favourites")}
+                        aria-label="Favourites"
+                    >
+                        <i className="bi bi-heart"></i>
+                    </button>
 
+                    <button
+                        className="ot-icon-button ot-cart-icon"
+                        onClick={() => navigate("/shopping-cart")}
+                        aria-label="Shopping cart"
+                    >
+                        <i className="bi bi-cart"></i>
+                    </button>
 
+                </div>
+
+                {/* Navigation Links */}
+                <div className={`ot-flex-inline ${isMenuOpen ? 'ot-menu-open' : ''}`}>
                     <ul className="ot-nav-item">
                         {headerLinks.map((link, index) => (
                             <li key={index}>
@@ -77,6 +111,7 @@ export default function Header({ nameApp }) {
                                     className="ot-nav-link"
                                     aria-current="page"
                                     to={link.path}
+                                    onClick={() => setIsMenuOpen(false)}
                                 >
                                     {link.title}
                                 </NavLink>
@@ -85,12 +120,12 @@ export default function Header({ nameApp }) {
                     </ul>
                 </div>
 
+                {/* Logo */}
                 <div>
-                    <img className="ot-logo" src={logo} alt="" />
+                    <img className="ot-logo" src={logo} alt={nameApp} />
                 </div>
 
-
-
+                {/* Search Bar */}
                 <div>
                     <form className="ot-search-bar" onSubmit={handleSubmit}>
                         <input
@@ -99,12 +134,9 @@ export default function Header({ nameApp }) {
                             value={search}
                             onChange={(event) => setSearch(event.target.value)}
                         />
-
-
                         <button type="submit">Cerca</button>
                     </form>
                 </div>
-
             </div>
         </header>
     );
