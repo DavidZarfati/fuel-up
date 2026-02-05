@@ -57,7 +57,7 @@ export default function HomePage() {
                                                     src={`${backendBaseUrl}${card.image}`}
 
                                                     alt={card.name}
-                                                    style={{ maxWidth: '100%', maxHeight: '120px', objectFit: 'cover', marginBottom: '10px' }}
+                                                    style={{ maxWidth: '100%', maxHeight: '150px', objectFit: 'contain', marginBottom: '10px' }}
                                                 />
                                                 <h5 className="card-title">{card.name}</h5>
                                                 <p className="card-text">{card.description}</p>

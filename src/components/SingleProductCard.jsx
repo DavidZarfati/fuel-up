@@ -12,7 +12,7 @@ export default function SingleProductCard({ product }) {
         alt={product.title}
         style={{
           height: "220px",
-          objectFit: "cover",
+          objectFit: "contain",
         }}
       />
 
