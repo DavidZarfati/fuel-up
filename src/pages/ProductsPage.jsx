@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useGlobal } from "../context/GlobalContext";
 import SingleProductCard from "../components/SingleProductCard";
+import SingleProductList from "../components/SigleProductList";
 
 
 export default function ProductsPage() {
@@ -13,6 +14,7 @@ export default function ProductsPage() {
   const [error, setError] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isGridMode, setisGridMode] = useState("");
   const limit = 12;
 
   useEffect(() => {
@@ -63,11 +65,16 @@ export default function ProductsPage() {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       {!loading && !error && (
+
         <>
+          <div>
+            <button onClick={() => setisGridMode(1)}>Lista</button>
+            <button onClick={() => setisGridMode("")}>Griglia</button>
+          </div>
           <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
             {products.map((p, index) => (
               <div className="col" key={p.id ?? p._id ?? index}>
-                <SingleProductCard product={p} />
+                {!isGridMode? <SingleProductCard product={p} />: <SingleProductList product={p}/>}
               </div>
             ))}
           </div>
