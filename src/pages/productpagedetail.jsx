@@ -41,25 +41,43 @@ export default function Productpagedetail() {
                     />
                     <h2 className="dz-titolo-prodotto">{slug.replaceAll ? slug.replaceAll('-', ' ') : slug.split('-').join(' ')} <span className="dz-brand-badge">{product.result[0].brand}</span></h2>
                     <p className="dz-description-prodotto">
-                        {product.result[0].description ? product.result[0].description : "Nessuna descrizione disponibile."}
+                        {product.result[0].description ? product.result[0].description : "No description available."}
                     </p>
                     <p className="dz-description-prodotto">
-                        {product.result[0].size ? `Dimensione : ${product.result[0].size}` : "Nessuna descrizione disponibile."}
+                        {product.result[0].size ? `Size : ${product.result[0].size}` : "No description available."}
                     </p>
                     <p className="dz-description-prodotto">
-                        {product.result[0].manufacturer_note ? `Informazioni Aggiuntive : ${product.result[0].manufacturer_note}` : "Nessuna descrizione disponibile."}
+                        {product.result[0].manufacturer_note ? `Additional information : ${product.result[0].manufacturer_note}` : "No description available."}
                     </p>
                     <p className="dz-description-prodotto">
-                        {product.result[0].color ? `colore : ${product.result[0].color}` : `gusto : ${product.result[0].flavor}`}
+                        {product.result[0].color ? `Color : ${product.result[0].color}` : `Taste : ${product.result[0].flavor}`}
                     </p>
-                    <div className="d-flex justify-content-around">
 
-                        <p className="dz-description-prodotto">
-                            Prezzo Base : <span className="dz-prodotto-senza-sconto">{product.result[0].price}</span>
-                        </p>
-                        <p className="dz-description-prodotto">
-                            Prezzo Scontato : <span className="dz-prezzo-scontato">{product.result[0].discount_price}</span>
-                        </p>
+                    <div className="d-flex justify-content-around">
+                        {product.result[0].discount_price &&
+                            product.result[0].discount_price < product.result[0].price ? (
+                            <>
+                                <p className="dz-description-prodotto">
+                                    Base price :{" "}
+                                    <span className="dz-prodotto-senza-sconto">
+                                        &euro; {product.result[0].price}
+                                    </span>
+                                </p>
+                                <p className="dz-description-prodotto">
+                                    Discounted price :{" "}
+                                    <span className="dz-prezzo-scontato">
+                                        &euro; {product.result[0].discount_price}
+                                    </span>
+                                </p>
+                            </>
+                        ) : (
+                            <p className="dz-description-prodotto">
+                                Price :{" "}
+                                <span className="dz-prezzo-regular">
+                                    &euro; {product.result[0].price}
+                                </span>
+                            </p>
+                        )}
                     </div>
 
                 </div>
