@@ -101,6 +101,16 @@ export function CartProvider({ children }) {
     [cart]
   );
 
+  const totalWeight = useMemo(() => {
+  return cart
+    .reduce((sum, item) => sum + (item.weight_kg ?? 0) * (item.quantity ?? 1), 0);
+}, [cart]);
+
+const expeditionCost = useMemo(() => {
+  if (totalPrice >= 100) return 0;
+  return (3 + 0.15 * totalWeight);
+}, [totalPrice, totalWeight]);
+
   const value = {
     cart,
     addToCart,
@@ -110,6 +120,8 @@ export function CartProvider({ children }) {
     clearCart,
     totalItems,
     totalPrice,
+    totalWeight,
+    expeditionCost
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
