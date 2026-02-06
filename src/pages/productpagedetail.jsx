@@ -39,18 +39,18 @@ export default function Productpagedetail() {
                         alt={slug}
                         style={{ maxWidth: '20%', height: '30%', display: 'block', margin: '40px auto' }}
                     />
-                    <h2 className="dz-titolo-prodotto">{slug.replaceAll ? slug.replaceAll('-', ' ') : slug.split('-').join(' ')} <span className="dz-brand-badge">{product.result[0].brand}</span></h2>
+                    <h2 className="dz-titolo-prodotto">{product.result[0].name ? product.result[0].name : "No name available."} <span className="dz-brand-badge">{product.result[0].brand}</span></h2>
                     <p className="dz-description-prodotto">
                         {product.result[0].description ? product.result[0].description : "No description available."}
                     </p>
                     <p className="dz-description-prodotto">
-                        {product.result[0].size ? `Size : ${product.result[0].size}` : "No description available."}
+                        {product.result[0].size ? `Size: ${product.result[0].size}` : "No description available."}
                     </p>
                     <p className="dz-description-prodotto">
                         {product.result[0].manufacturer_note ? `Additional information : ${product.result[0].manufacturer_note}` : "No description available."}
                     </p>
                     <p className="dz-description-prodotto">
-                        {product.result[0].color ? `Color : ${product.result[0].color}` : `Taste : ${product.result[0].flavor}`}
+                        {product.result[0].color ? `Color: ${product.result[0].color}` : `Taste: ${product.result[0].flavor}`}
                     </p>
 
                     <div className="d-flex justify-content-around">
@@ -58,13 +58,13 @@ export default function Productpagedetail() {
                             product.result[0].discount_price < product.result[0].price ? (
                             <>
                                 <p className="dz-description-prodotto">
-                                    Base price :{" "}
+                                    Base price: {" "}
                                     <span className="dz-prodotto-senza-sconto">
                                         &euro; {product.result[0].price}
                                     </span>
                                 </p>
                                 <p className="dz-description-prodotto">
-                                    Discounted price :{" "}
+                                    Discounted price: {" "}
                                     <span className="dz-prezzo-scontato">
                                         &euro; {product.result[0].discount_price}
                                     </span>
@@ -72,7 +72,7 @@ export default function Productpagedetail() {
                             </>
                         ) : (
                             <p className="dz-description-prodotto">
-                                Price :{" "}
+                                Price: {" "}
                                 <span className="dz-prezzo-regular">
                                     &euro; {product.result[0].price}
                                 </span>
