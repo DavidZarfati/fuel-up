@@ -4,62 +4,29 @@ import "../index.css"
 import "bootstrap-icons/font/bootstrap-icons.css";
 import logo from "../assets/images/logo.jpg";
 import { useState } from "react";
-import axios from "axios";
-
-
-
 
 export default function Header({ nameApp }) {
 
-
     const headerLinks = [
-
         { title: "Chi siamo", path: "/" },
         { title: "Nostri prodotti", path: "/products" },
         { title: "Prodotti preferiti", path: "/products/favourites" },
-        { title: "Carello", path: "/shopping-cart" },
-
+        { title: "Carrello", path: "/shopping-cart" },
     ];
-
-
 
     const [search, setSearch] = useState("");
     const navigate = useNavigate();
-
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-    const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
-
-
     function searchProduct() {
-
         if (!search.trim()) {
             return;
         }
 
-        axios
-            .get(`${backendBaseUrl}/api/products/search?key=${search}`)
-            .then((resp) => {
-
-                const products = resp.data.results || [];
-
-                if (products.length > 0) {
-                    const firstProduct = products[0];
-
-                    navigate(`/productss/${firstProduct.slug}`);
-
-                    setSearch("");
-                } else {
-
-                    alert("Non abbiamo trovato nessun prodotto con questo nome");
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-
-            });
+        // Naviga alla pagina di ricerca con il termine come parametro query
+        navigate(`/search?q=${encodeURIComponent(search)}`);
+        setSearch("");
     }
-
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -70,9 +37,7 @@ export default function Header({ nameApp }) {
         setIsMenuOpen(!isMenuOpen);
     }
 
-
     return (
-
         <header className="ot-header">
             <div className="ot-header-content">
                 <div className="ot-mobile-icons">
@@ -99,7 +64,6 @@ export default function Header({ nameApp }) {
                     >
                         <i className="bi bi-cart"></i>
                     </button>
-
                 </div>
 
                 {/* Navigation Links */}
@@ -122,7 +86,9 @@ export default function Header({ nameApp }) {
 
                 {/* Logo */}
                 <div>
-                    <img className="ot-logo" src={logo} alt={nameApp} />
+                    <Link to="/">
+                        <img className="ot-logo" src={logo} alt={nameApp} />
+                    </Link>
                 </div>
 
                 {/* Search Bar */}
@@ -133,8 +99,11 @@ export default function Header({ nameApp }) {
                             placeholder="Cosa cerchi?"
                             value={search}
                             onChange={(event) => setSearch(event.target.value)}
+                            aria-label="Search products"
                         />
-                        <button type="submit">Cerca</button>
+                        <button type="submit" aria-label="Search button">
+                            Cerca
+                        </button>
                     </form>
                 </div>
             </div>

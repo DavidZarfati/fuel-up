@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "./ProductPageDetail.css"
+import "./ProductDetailPage.css"
 
-export default function Productpagedetail() {
+export default function ProductDetailPage() {
     const { slug } = useParams();
     const [product, setProduct] = useState(null);
     const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
