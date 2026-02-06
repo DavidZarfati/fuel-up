@@ -1,0 +1,315 @@
+/* color variables */
+:root {
+  --primary-color: #166ddf;
+  --primary-dark: #2a5fb9;
+  --danger-color: #d32f2f;
+  --danger-dark: #b71c1c;
+  --text-dark: #333;
+  --text-muted: #666;
+  --border-color: #e0e0e0;
+  --background-light: #f8f9fa;
+  --background-white: #ffffff;
+  --warning-bg: #fff3cd;
+  --warning-border: #ffc107;
+  --warning-text: #856404;
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-medium: rgba(0, 0, 0, 0.1);
+  --shadow-primary: rgba(102, 126, 234, 0.1);
+  --shadow-danger: rgba(211, 47, 47, 0.3);
+}
+
+
+.ot-search-page-container {
+  min-height: 100vh;
+  padding: 32px 16px;
+  background-color: var(--background-light);
+}
+
+
+.ot-search-page-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 32px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 4px 6px var(--shadow-medium);
+}
+
+.ot-search-page-header h1 {
+  margin: 0 0 16px 0;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.ot-search-term-display {
+  font-size: 17.6px;
+  margin: 8px 0;
+  opacity: 0.95;
+}
+
+.ot-search-term-display strong {
+  font-weight: 600;
+  font-style: italic;
+}
+
+.ot-search-results-count {
+  font-size: 16px;
+  margin: 8px 0 0 0;
+  opacity: 0.9;
+}
+
+
+.ot-search-filters {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: var(--background-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-light);
+  flex-wrap: wrap;
+}
+
+.ot-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ot-filter-group label {
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.ot-filter-select {
+  padding: 8px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 15.2px;
+  background-color: var(--background-white);
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-select:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 6px var(--shadow-primary);
+}
+
+.ot-filter-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--shadow-primary);
+}
+
+
+.ot-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.ot-product-card-wrapper {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-card-wrapper:hover {
+  transform: translateY(-5px);
+}
+
+/* loading */
+.ot-loading-container {
+  text-align: center;
+  padding: 64px 32px;
+  font-size: 19.2px;
+  color: var(--text-muted);
+}
+
+.ot-loading-container p {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* errors */
+.ot-error-message {
+  background-color: var(--warning-bg);
+  border: 2px solid var(--warning-border);
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.ot-error-message p {
+  color: var(--warning-text);
+  font-size: 17.6px;
+  margin: 0 0 16px 0;
+}
+
+.ot-error-message .btn {
+  margin-top: 16px;
+}
+
+
+.ot-no-search-message {
+  text-align: center;
+  padding: 64px 32px;
+  background: var(--background-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+.ot-no-search-message p {
+  font-size: 17.6px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+
+.ot-pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  padding: 32px;
+  background: var(--background-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-light);
+  flex-wrap: wrap;
+}
+
+.ot-pagination-btn {
+  padding: 12px 24px;
+  background-color: var(--primary-dark);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 15.2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ot-pagination-btn:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.ot-pagination-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ot-pagination-info {
+  font-size: 16px;
+  color: var(--text-dark);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+
+
+.ot-btn {
+  padding: 12px 32px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ot-btn:hover {
+  background-color: var(--primary-dark);
+  box-shadow: 0 4px 8px var(--shadow-primary);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+}
+
+.ot-btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+
+/* responsive */
+@media (max-width: 768px) {
+  .ot-search-page-container {
+    padding: 16px;
+  }
+
+  .ot-search-page-header {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .ot-search-page-header h1 {
+    font-size: 28.8px;
+  }
+
+  .ot-search-filters {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .ot-filter-group {
+    width: 100%;
+  }
+
+  .ot-filter-select {
+    width: 100%;
+  }
+
+  .ot-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .ot-pagination-container {
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .ot-pagination-btn {
+    padding: 8px 16px;
+    font-size: 13.6px;
+  }
+
+  .ot-pagination-info {
+    font-size: 14.4px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .ot-search-page-header h1 {
+    font-size: 24px;
+  }
+
+  .search-term-display {
+    font-size: 15.2px;
+  }
+
+  .ot-products-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pagination-container {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ot-pagination-btn {
+    width: 100%;
+  }
+}
