@@ -71,7 +71,7 @@ export default function ProductsPage() {
             <button onClick={() => setisGridMode(1)}>Lista</button>
             <button onClick={() => setisGridMode("")}>Griglia</button>
           </div>
-          <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+          <div className={!isGridMode? "row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3": ""}>
             {products.map((p, index) => (
               <div className="col" key={p.id ?? p._id ?? index}>
                 {!isGridMode? <SingleProductCard product={p} />: <SingleProductList product={p}/>}
