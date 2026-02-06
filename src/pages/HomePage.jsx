@@ -47,14 +47,14 @@ export default function HomePage() {
 
 
                     <div>
-                        <button onClick={() => setcategoria("")}>Prodotti Piu Venduti</button>
-                        <button onClick={() => setcategoria(1)}>Supplements</button>
-                        <button onClick={() => setcategoria(2)}>Apparel</button>
-                        <button onClick={() => setcategoria(3)}>Accessories</button>
-                        <button onClick={() => setcategoria(4)}>Food & Snacks</button>
+                        <button className="dz-link" onClick={() => setcategoria("")}>Prodotti Piu Venduti</button>
+                        <button className="dz-link" onClick={() => setcategoria(1)}>Supplements</button>
+                        <button className="dz-link" onClick={() => setcategoria(2)}>Apparel</button>
+                        <button className="dz-link" onClick={() => setcategoria(3)}>Accessories</button>
+                        <button className="dz-link" onClick={() => setcategoria(4)}>Food & Snacks</button>
                     </div>
                     <div>
-                        <button onClick={async () => {
+                        <button className="dz-link" onClick={async () => {
                             setisGridMode(1);
                             if (categoria !== "") {
                                 setLoading(true);
@@ -76,7 +76,7 @@ export default function HomePage() {
                                 }
                             }
                         }}>Lista</button>
-                        <button onClick={() => setisGridMode("")}>Griglia</button>
+                        <button className="dz-link" onClick={() => setisGridMode("")}>Griglia</button>
                     </div>
                 </div>
                 {!isGridMode ? (
