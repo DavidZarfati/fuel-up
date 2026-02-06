@@ -3,7 +3,7 @@ import { useCart } from "../context/CartContext";
 
 export default function CheckoutPage() {
 
-  const { cart, totalPrice } = useCart();
+  const { cart, totalPrice, expeditionCost } = useCart();
 
   const [formData, setFormData] = useState({
     name: "",
@@ -83,7 +83,11 @@ export default function CheckoutPage() {
 
               <hr />
 
-              <h5>Totale: €{Number(totalPrice).toFixed(2)}</h5>
+              <p>Costi di spedizione: {expeditionCost}</p>
+
+              <hr />
+
+              <h5>Totale: €{Number(totalPrice + expeditionCost).toFixed(2)}</h5>
 
             </div>
           </div>
