@@ -33,7 +33,8 @@ export default function HomePage() {
                 setError("Errore nel caricamento dei prodotti");
                 setLoading(false);
             });
-    }, [categoria]);
+        console.log(categoria)
+    }, [categoria, isGridMode]);
 
     return (
         <>
