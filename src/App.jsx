@@ -10,6 +10,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { GlobalProvider } from './context/GlobalContext';
 import { CartProvider } from './context/CartContext';
 import CartPage from './pages/CartPage';
+import CheckoutPage from "./pages/CheckoutPage";
+
 
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
                 <Route path="/products/:slug" element={<ProductDetailPage />} />
                 <Route path="/search" element={<SearchPage />} />
                 <Route path="/shopping-cart" element={<CartPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Route>
             </Routes>
