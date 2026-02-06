@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductDetailPage.css"
+import { useCart } from "../context/CartContext";
 
 export default function ProductDetailPage() {
     const { slug } = useParams();
