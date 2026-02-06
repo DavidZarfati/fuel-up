@@ -17,24 +17,24 @@ function App() {
   return (
     <>
       <GlobalProvider>
-  <CartProvider>
+        <CartProvider>
 
-    <BrowserRouter>
-      <Routes>
-        <Route element={<DefaultLayout nameApp={nameApp} />}>
+          <BrowserRouter>
+            <Routes>
+              <Route element={<DefaultLayout nameApp={nameApp} />}>
 
-          <Route path="/" element={<HomePage />} />
+                <Route path="/" element={<HomePage />} />
 
-          <Route path="/products" element={<ProductsPage />} />
-          <Route path="/products/:slug" element={<Productpagedetail />} />
-          <Route path="/shopping-cart" element={<CartPage />} />
+                <Route path="/products" element={<ProductsPage />} />
+                <Route path="/products/:slug" element={<Productpagedetail />} />
+                <Route path="/shopping-cart" element={<CartPage />} />
 
-        </Route>
-      </Routes>
-    </BrowserRouter>
+              </Route>
+            </Routes>
+          </BrowserRouter>
 
-  </CartProvider>
-</GlobalProvider>
+        </CartProvider>
+      </GlobalProvider>
 
 
     </>

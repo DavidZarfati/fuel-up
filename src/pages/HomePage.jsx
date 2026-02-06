@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import "./HomePage.css";
 
@@ -9,6 +9,7 @@ export default function HomePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isGridMode, setisGridMode] = useState("");
+    const [categoria, setcategoria] = useState("");
     const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
 
 
@@ -41,9 +42,20 @@ export default function HomePage() {
             </div>
             <section className="ot-home-container ot-bg-teal">
                 <div className="ot-hero-section"></div>
-                <div>
-                    <button onClick={() => setisGridMode(1)}>Lista</button>
-                    <button onClick={() => setisGridMode("")}>Griglia</button>
+                <div className="d-flex justify-content-around">
+
+
+                    <div>
+                        <button onClick={() => setcategoria("")}>Prodotti Piu Venduti</button>
+                        <button onClick={() => setcategoria(1)}>Supplements</button>
+                        <button onClick={() => setcategoria(2)}>Apparel</button>
+                        <button onClick={() => setcategoria(3)}>Accessories</button>
+                        <button onClick={() => setcategoria(4)}>Food & Snacks</button>
+                    </div>
+                    <div>
+                        <button onClick={() => setisGridMode(1)}>Lista</button>
+                        <button onClick={() => setisGridMode("")}>Griglia</button>
+                    </div>
                 </div>
                 {!isGridMode ? (
                     <div className="d-flex container ot-bg-teal">
