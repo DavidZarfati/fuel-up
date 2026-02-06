@@ -24,3 +24,8 @@
 .ot-bg-teal {
     background-color: rgb(58, 150, 242);
 }
+
+.dz-bottone-dettagli {
+    padding: 0;
+    max-height: 30px;
+}
