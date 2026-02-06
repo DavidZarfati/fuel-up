@@ -1,4 +1,6 @@
 import { useCart } from "../context/CartContext";
+import { Link } from "react-router-dom";
+
 
 export default function CartPage() {
   const {
@@ -102,11 +104,11 @@ export default function CartPage() {
                     Svuota carrello
                   </button>
 
-                  {/* opzionale */}
-                  {/* {/* <button className="btn btn-primary">
+                  <Link to="/checkout" className="btn btn-primary">
                     Checkout
-                  </button> */}
-                </div> 
+                  </Link>
+
+                </div>
               </div>
             </>
           )}

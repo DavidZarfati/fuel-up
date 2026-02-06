@@ -10,6 +10,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { GlobalProvider } from './context/GlobalContext';
 import { CartProvider } from './context/CartContext';
 import CartPage from './pages/CartPage';
+import CheckoutPage from "./pages/CheckoutPage";
+
 
 
 function App() {
@@ -28,6 +30,7 @@ function App() {
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/products/:slug" element={<Productpagedetail />} />
           <Route path="/shopping-cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
 
         </Route>
       </Routes>
