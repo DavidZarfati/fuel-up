@@ -82,14 +82,6 @@ export default function Productpagedetail() {
                         {p.color ? `Color: ${p.color}` : `Taste: ${p.flavor}`}
                     </p>
 
-                    {/* <div className="d-flex justify-content-around">
-            <p className="dz-description-prodotto">
-              Prezzo Base : <span className="dz-prodotto-senza-sconto">{p.price}</span>
-            </p>
-            <p className="dz-description-prodotto">
-              Discounted price: <span className="dz-prezzo-scontato">{p.discount_price}</span>
-            </p>
-          </div> */}
                     <div className="d-flex justify-content-around">
                         {product.result[0].discount_price &&
                             product.result[0].discount_price < product.result[0].price ? (
@@ -97,12 +89,14 @@ export default function Productpagedetail() {
                                 <p className="dz-description-prodotto">
                                     Prezzo Base :{" "}
                                     <span className="dz-prodotto-senza-sconto">
+                                        &euro;
                                         {product.result[0].price}
                                     </span>
                                 </p>
                                 <p className="dz-description-prodotto">
                                     Prezzo Scontato :{" "}
                                     <span className="dz-prezzo-scontato">
+                                        &euro;
                                         {product.result[0].discount_price}
                                     </span>
                                 </p>
@@ -111,6 +105,7 @@ export default function Productpagedetail() {
                             <p className="dz-description-prodotto">
                                 Prezzo :{" "}
                                 <span className="dz-prezzo-regular">
+                                    &euro;
                                     {product.result[0].price}
                                 </span>
                             </p>
