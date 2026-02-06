@@ -59,71 +59,81 @@ export default function ProductsPage() {
 
   return (
     <section className="container">
-      <h1>Lista Prodotti</h1>
+      <h1 className="pt-3">Lista Prodotti</h1>
 
       {loading && <p>Caricamento...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
 
-      {!loading && !error && (
-
-        <>
-          <div>
-            <button onClick={() => setisGridMode(1)}>Lista</button>
-            <button onClick={() => setisGridMode("")}>Griglia</button>
-          </div>
-          <div className={!isGridMode? "row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3": ""}>
-            {products.map((p, index) => (
-              <div className="col" key={p.id ?? p._id ?? index}>
-                {!isGridMode? <SingleProductCard product={p} />: <SingleProductList product={p}/>}
-              </div>
-            ))}
-          </div>
-          {/* Bottoni paginazione sotto la griglia */}
-          <div style={{ display: "flex", justifyContent: "center", gap: "1rem", marginTop: "2rem" }}>
-            <button
-              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-              disabled={page === 1}
-              style={{
-                background: "#d32f2f",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                padding: "0.5rem 1.5rem",
-                fontWeight: "bold",
-                fontSize: "1rem",
-                opacity: page === 1 ? 0.5 : 1,
-                cursor: page === 1 ? "not-allowed" : "pointer",
-                transition: "background 0.2s"
-              }}
-            >
-              Indietro
-            </button>
-            <span>Pagina {page} di {totalPages}</span>
-            <button
-              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={page === totalPages}
-              style={{
-                background: "#d32f2f",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                padding: "0.5rem 1.5rem",
-                fontWeight: "bold",
-                fontSize: "1rem",
-                opacity: page === totalPages ? 0.5 : 1,
-                cursor: page === totalPages ? "not-allowed" : "pointer",
-                transition: "background 0.2s"
-              }}
-            >
-              Avanti
-            </button>
-          </div>
-        </>
-      )}
-
       {!loading && !error && products.length === 0 && (
         <p>Nessun prodotto disponibile.</p>
       )}
+
+      {!loading && !error && products.length > 0 && (
+        <>
+          <div className="py-3 d-flex gap-2">
+            <button
+              type="button"
+              onClick={() => setisGridMode(false)}
+              className="btn btn-outline-primary btn-sm"
+            >
+              Lista
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setisGridMode(true)}
+              className="btn btn-outline-primary btn-sm"
+            >
+              Griglia
+            </button>
+          </div>
+
+          {/* GRIGLIA */}
+          {isGridMode ? (
+            <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+              {products.map((p, index) => (
+                <div className="col" key={p.id ?? p._id ?? index}>
+                  <SingleProductCard product={p} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            /* LISTA */
+            <div className="d-flex flex-column gap-3">
+              {products.map((p, index) => (
+                <SingleProductList key={p.id ?? p._id ?? index} product={p} />
+              ))}
+            </div>
+          )}
+
+          {/* PAGINAZIONE */}
+          {totalPages > 1 && (
+            <div className="ot-pagination-container mt-4">
+              <button
+                onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                disabled={page === 1}
+                className="ot-pagination-btn"
+              >
+                ← Indietro
+              </button>
+
+              <div className="ot-pagination-info">
+                <span>
+                  Pagina <strong>{page}</strong> di{" "}
+                  <strong>{totalPages}</strong>
+                </span>
+              </div>
+
+              <button
+                onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={page === totalPages}
+                className="ot-pagination-btn"
+              >
+                Avanti →
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </section>
-  );
-}
+  )};
