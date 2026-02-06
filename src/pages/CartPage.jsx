@@ -12,6 +12,16 @@ export default function CartPage() {
     totalItems,
     totalPrice,
   } = useCart();
+  //console.log(cart);
+  //console.log(cart[0].weight_kg);
+  //console.log(cart[0].quantity);
+  let totalWeight = 0;
+  for(let i in cart)
+  {
+    totalWeight = cart[i].weight_kg * cart[i].quantity; 
+  }
+  totalWeight = totalWeight.toFixed(2);
+  //console.log(totalWeight);
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
 
   return (
@@ -96,7 +106,11 @@ export default function CartPage() {
 
               <div className="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
                 <h5 className="mb-0">
-                  Totale: €{Number(totalPrice).toFixed(2)}
+                  Totale: &euro;{Number(totalPrice).toFixed(2)}
+                </h5>
+
+                <h5>
+                  Costi di spedizione: &euro;{totalPrice >= 100.00 ? 0 : (3 + 0.15 * totalWeight).toFixed(2)}
                 </h5>
 
                 <div className="d-grid d-sm-flex gap-2">
@@ -110,6 +124,7 @@ export default function CartPage() {
 
                 </div>
               </div>
+              {totalPrice < 100.00 ? <small>Gli ordini di &euro;100 o più hanno diritto alla spedizione gratuita</small> : <></>}
             </>
           )}
         </div>
