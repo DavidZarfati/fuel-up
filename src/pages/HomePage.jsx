@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Link, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useFavourites } from "../context/FavouritesContext";
+import { useCart } from "../context/CartContext";
 import "./HomePage.css";
 
 
@@ -11,6 +13,8 @@ export default function HomePage() {
     const [isGridMode, setisGridMode] = useState("");
     const [categoria, setcategoria] = useState("");
     const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
+    const { isFavourite, toggleFavourite } = useFavourites();
+    const { addToCart } = useCart();
 
 
     useEffect(() => {
@@ -66,7 +70,21 @@ export default function HomePage() {
                                 categoria === ""
                                     ? products.slice(0, 12).map((card, idx) => (
                                         <div className="col-sm-12 col-md-6 col-lg-4 d-flex" key={idx}>
-                                            <div className="card mb-3" style={{ border: '1px solid #ccc', background: '#f9f9f9', minHeight: 250 }}>
+                                            <div className="card mb-3 ot-product-card">
+                                                {/* HEART ICON */}
+                                                <button
+                                                    onClick={() => toggleFavourite(card)}
+                                                    className="ot-heart-button"
+                                                    aria-label={isFavourite(card.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+                                                >
+                                                    <i
+                                                        className={isFavourite(card.id) ? "bi bi-heart-fill" : "bi bi-heart"}
+                                                        style={{
+                                                            color: isFavourite(card.id) ? "#dc3545" : "#666",
+                                                            fontSize: "18px",
+                                                        }}
+                                                    ></i>
+                                                </button>
                                                 <div className="row no-gutters align-items-center">
                                                     <div className="col-12">
                                                         <div className="card-body">
@@ -77,9 +95,14 @@ export default function HomePage() {
                                                             />
                                                             <h5 className="card-title">{card.name}</h5>
                                                             <p className="card-text">{card.description}</p>
-                                                            <Link to={`/products/${card.slug}`} className="btn btn-outline-primary">
-                                                                Vedi dettagli
-                                                            </Link>
+                                                            <div className="ot-card-actions">
+                                                                <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
+                                                                    Vedi dettagli
+                                                                </Link>
+                                                                <button onClick={() => addToCart(card)} className="btn btn-primary btn-sm">
+                                                                    Aggiungi
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -88,7 +111,21 @@ export default function HomePage() {
                                     ))
                                     : products.filter(card => card.macro_categories_id === categoria).map((card, idx) => (
                                         <div className="col-sm-12 col-md-6 col-lg-4" key={idx}>
-                                            <div className="card mb-3" style={{ border: '1px solid #ccc', background: '#f9f9f9', minHeight: 250 }}>
+                                            <div className="card mb-3 ot-product-card">
+                                                {/* HEART ICON */}
+                                                <button
+                                                    onClick={() => toggleFavourite(card)}
+                                                    className="ot-heart-button"
+                                                    aria-label={isFavourite(card.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+                                                >
+                                                    <i
+                                                        className={isFavourite(card.id) ? "bi bi-heart-fill" : "bi bi-heart"}
+                                                        style={{
+                                                            color: isFavourite(card.id) ? "#dc3545" : "#666",
+                                                            fontSize: "18px",
+                                                        }}
+                                                    ></i>
+                                                </button>
                                                 <div className="row no-gutters align-items-center">
                                                     <div className="col-12">
                                                         <div className="card-body">
@@ -99,9 +136,14 @@ export default function HomePage() {
                                                             />
                                                             <h5 className="card-title">{card.name}</h5>
                                                             <p className="card-text">{card.description}</p>
-                                                            <Link to={`/products/${card.slug}`} className="btn btn-outline-primary">
-                                                                Vedi dettagli
-                                                            </Link>
+                                                            <div className="ot-card-actions">
+                                                                <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
+                                                                    Vedi dettagli
+                                                                </Link>
+                                                                <button onClick={() => addToCart(card)} className="btn btn-primary btn-sm">
+                                                                    Aggiungi
+                                                                </button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -114,20 +156,41 @@ export default function HomePage() {
                 ) : (<div>
                     {!loading && !error && Array.isArray(products) && products.map((card, idx) => (
                         <div className="col-12" key={idx}>
-                            <div className="card mb-3" style={{ border: '1px solid #ccc', background: '#f9f9f9', minHeight: 100 }}>
+                            <div className="card mb-3 ot-product-card-list">
+                                {/* HEART ICON */}
+                                <button
+                                    onClick={() => toggleFavourite(card)}
+                                    className="ot-heart-button"
+                                    aria-label={isFavourite(card.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+                                >
+                                    <i
+                                        className={isFavourite(card.id) ? "bi bi-heart-fill" : "bi bi-heart"}
+                                        style={{
+                                            color: isFavourite(card.id) ? "#dc3545" : "#666",
+                                            fontSize: "18px",
+                                        }}
+                                    ></i>
+                                </button>
                                 <div className="row no-gutters align-items-center">
                                     <div className="col-12">
-                                        <div className="card-body d-flex">
+                                        <div className="card-body ot-list-card-body">
                                             <img
                                                 src={`${backendBaseUrl}${card.image}`}
                                                 alt={card.name}
-                                                style={{ maxWidth: '100px', maxHeight: '100px', objectFit: 'contain', marginBottom: '10px' }}
+                                                className="ot-list-card-image"
                                             />
-                                            <h5 className="card-title">{card.name}- </h5>
-                                            <p className="card-text">{card.description}</p>
-                                            <Link to={`/products/${card.slug}`} className="btn btn-outline-primary dz-bottone-dettagli">
-                                                Vedi dettagli
-                                            </Link>
+                                            <div className="ot-list-card-content">
+                                                <h5 className="card-title">{card.name}</h5>
+                                                <p className="card-text">{card.description}</p>
+                                            </div>
+                                            <div className="ot-list-card-actions">
+                                                <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
+                                                    Vedi dettagli
+                                                </Link>
+                                                <button onClick={() => addToCart(card)} className="btn btn-primary btn-sm">
+                                                    Aggiungi
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

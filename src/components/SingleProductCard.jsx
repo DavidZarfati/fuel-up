@@ -38,7 +38,6 @@ export default function SingleProductCard({ product }) {
           alignItems: "center",
           justifyContent: "center",
           cursor: "pointer",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
           zIndex: 1,
         }}
         aria-label={isFavourite(product.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
