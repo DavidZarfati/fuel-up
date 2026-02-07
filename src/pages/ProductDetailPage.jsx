@@ -35,14 +35,7 @@ export default function ProductDetailPage() {
     function handleAddToCart() {
         if (!p) return;
 
-        addToCart({
-            id: p.id, // IMPORTANTISSIMO: deve esserci
-            name: slug.replaceAll ? slug.replaceAll("-", " ") : slug.split("-").join(" "),
-            brand: p.brand,
-            image: p.image,
-            // scelgo il prezzo scontato se c’è, altrimenti quello base
-            price: Number(p.discount_price ?? p.price ?? 0),
-        });
+        addToCart(p);
     }
 
     return (
