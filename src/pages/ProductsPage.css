@@ -2,3 +2,320 @@
 {
     margin-bottom: 5px;
 }
+
+/* color variables */
+:root {
+  --primary-color: #166ddf;
+  --primary-dark: #2a5fb9;
+  --danger-color: #d32f2f;
+  --danger-dark: #b71c1c;
+  --text-dark: #333;
+  --text-muted: #666;
+  --border-color: #e0e0e0;
+  --background-light: #f8f9fa;
+  --background-white: #ffffff;
+  --warning-bg: #fff3cd;
+  --warning-border: #ffc107;
+  --warning-text: #856404;
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-medium: rgba(0, 0, 0, 0.1);
+  --shadow-primary: rgba(102, 126, 234, 0.1);
+}
+
+.ot-products-page-container {
+  min-height: 100vh;
+  padding: 32px 16px;
+  background-color: var(--background-light);
+}
+
+.ot-products-page-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 32px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 4px 6px var(--shadow-medium);
+}
+
+.ot-products-page-header h1 {
+  margin: 0 0 16px 0;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.ot-products-count-display {
+  font-size: 17.6px;
+  margin: 8px 0;
+  opacity: 0.95;
+}
+
+/* Filters section */
+.ot-products-filters {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 32px;
+  padding: 24px;
+  background: var(--background-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-light);
+  flex-wrap: wrap;
+}
+
+.ot-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ot-filter-group label {
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+/* View buttons */
+.ot-view-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.ot-view-btn {
+  padding: 8px 16px;
+  background-color: #f8f9fa;
+  color: var(--text-dark);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ot-view-btn:hover {
+  background-color: #e9ecef;
+  border-color: var(--primary-color);
+}
+
+.ot-view-btn.active {
+  background-color: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+/* Products grid */
+.ot-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.ot-product-card-wrapper {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ot-product-card-wrapper:hover {
+  transform: translateY(-5px);
+}
+
+/* Products list */
+.ot-products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.ot-product-list-wrapper {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Loading state */
+.ot-loading-container {
+  text-align: center;
+  padding: 64px 32px;
+  font-size: 19.2px;
+  color: var(--text-muted);
+}
+
+.ot-loading-container p {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Error message */
+.ot-error-message {
+  background-color: var(--warning-bg);
+  border: 2px solid var(--warning-border);
+  border-radius: 8px;
+  padding: 32px;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.ot-error-message p {
+  color: var(--warning-text);
+  font-size: 17.6px;
+  margin: 0;
+}
+
+/* No products message */
+.ot-no-products-message {
+  text-align: center;
+  padding: 64px 32px;
+  background: var(--background-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+.ot-no-products-message p {
+  font-size: 17.6px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Pagination */
+.ot-pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  padding: 32px;
+  background: var(--background-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-light);
+  flex-wrap: wrap;
+}
+
+.ot-pagination-btn {
+  padding: 12px 24px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 15.2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ot-pagination-btn:hover:not(:disabled) {
+  background-color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.ot-pagination-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.ot-pagination-info {
+  font-size: 16px;
+  color: var(--text-dark);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .ot-products-page-container {
+    padding: 16px;
+  }
+
+  .ot-products-page-header {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .ot-products-page-header h1 {
+    font-size: 28.8px;
+  }
+
+  .ot-products-count-display {
+    font-size: 15.2px;
+  }
+
+  .ot-products-filters {
+    flex-direction: column;
+    gap: 16px;
+    padding: 16px;
+  }
+
+  .ot-filter-group {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ot-view-buttons {
+    width: 100%;
+  }
+
+  .ot-view-btn {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .ot-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .ot-pagination-container {
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .ot-pagination-btn {
+    padding: 8px 16px;
+    font-size: 13.6px;
+  }
+
+  .ot-pagination-info {
+    font-size: 14.4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ot-products-page-header h1 {
+    font-size: 24px;
+  }
+
+  .ot-products-count-display {
+    font-size: 14.4px;
+  }
+
+  .ot-products-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ot-pagination-container {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .ot-pagination-btn {
+    width: 100%;
+  }
+}
+
+
+.padding-low {
+  margin-bottom: 5px;
+}
