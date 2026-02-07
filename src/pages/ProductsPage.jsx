@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useGlobal } from "../context/GlobalContext";
 import SingleProductCard from "../components/SingleProductCard";
 import SingleProductList from "../components/SigleProductList";
+import "./ProductsPage.css";
 
 
 export default function ProductsPage() {
@@ -28,7 +29,7 @@ export default function ProductsPage() {
         // Adatta qui secondo la risposta del backend
         // Esempio: { products: [...], totalPages: 5 }
         const data = resp.data;
-        console.log('Risposta backend prodotti:', data); // DEBUG
+        //console.log('Risposta backend prodotti:', data); // DEBUG
         // Adattamento struttura: prodotti in data.result, totale pagine in data.info.totale_pagine
         const list = Array.isArray(data?.result) ? data.result : [];
         let pagine = 1;
@@ -88,6 +89,7 @@ export default function ProductsPage() {
                 color: "#fff",
                 border: "none",
                 borderRadius: "6px",
+                margin: "0 0 5px 0",
                 padding: "0.5rem 1.5rem",
                 fontWeight: "bold",
                 fontSize: "1rem",
@@ -101,6 +103,7 @@ export default function ProductsPage() {
             <span>Pagina {page} di {totalPages}</span>
             <button
               onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+
               disabled={page === totalPages}
               style={{
                 background: "#d32f2f",
@@ -108,6 +111,7 @@ export default function ProductsPage() {
                 border: "none",
                 borderRadius: "6px",
                 padding: "0.5rem 1.5rem",
+                margin: "0 0 5px 0",
                 fontWeight: "bold",
                 fontSize: "1rem",
                 opacity: page === totalPages ? 0.5 : 1,

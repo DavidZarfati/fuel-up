@@ -65,7 +65,7 @@ export default function HomePage() {
                             {!loading && !error && Array.isArray(products) && (
                                 categoria === ""
                                     ? products.slice(0, 12).map((card, idx) => (
-                                        <div className="col-sm-12 col-md-6 col-lg-4" key={idx}>
+                                        <div className="col-sm-12 col-md-6 col-lg-4 d-flex" key={idx}>
                                             <div className="card mb-3" style={{ border: '1px solid #ccc', background: '#f9f9f9', minHeight: 250 }}>
                                                 <div className="row no-gutters align-items-center">
                                                     <div className="col-12">

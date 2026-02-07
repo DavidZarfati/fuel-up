@@ -10,7 +10,8 @@ export default function Footer() {
             <div className="d-flex justify-content-between dz-bordi-footer dz-bg-footer">
                 <div className="">
                     <ul>
-                        <h2><img className="dz-logo-footer" src={logo} alt="Logo FuelUp" /></h2>
+                        {/* <h2><img className="dz-logo-footer" src={logo} alt="Logo FuelUp" /></h2> */}
+                        <img className="dz-logo-footer ml-logo-footer" src={logo} alt="Logo FuelUp" />
                         <li>Via esempio,1234</li>
                         <li>Selling Products is: Fitness</li>
                     </ul>
