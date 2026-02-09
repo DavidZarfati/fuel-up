@@ -60,7 +60,7 @@ export default function ProductsPage() {
   return (
     <section className="ot-products-page-container">
       <div className="ot-products-page-header">
-        <h1>I Nostri Prodotti</h1>
+        <h1>Prodotti professionali per risultati reali</h1>
       </div>
 
       {loading && <div className="ot-loading-container"><p>Caricamento...</p></div>}
