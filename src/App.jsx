@@ -6,6 +6,7 @@ import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import SearchPage from './pages/SearchPage';
 import FavouritePage from './pages/FavouritePage';
+import ThankYouPage from "./pages/ThankYouPage";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { GlobalProvider } from './context/GlobalContext';
@@ -33,6 +34,7 @@ function App() {
                   <Route path="/search" element={<SearchPage />} />
                   <Route path="/shopping-cart" element={<CartPage />} />
                   <Route path="/checkout" element={<CheckoutPage />} />
+                  <Route path="/thank-you" element={<ThankYouPage />} />
                   <Route path="*" element={<NotFoundPage />} />
                 </Route>
               </Routes>

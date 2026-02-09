@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import "./CheckoutPage.css"
 
@@ -7,7 +8,8 @@ export default function CheckoutPage() {
 
   const { cart, totalPrice, expeditionCost, clearCart } = useCart();
 
-  const [errorMessage, setErrorMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState([]);
+  const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,6 +23,8 @@ export default function CheckoutPage() {
     street_number: "",
     fiscal_code: ""
   });
+
+  const navigate = useNavigate();
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -39,67 +43,81 @@ export default function CheckoutPage() {
     return /^\+?\d{6,15}$/.test(phone);
   }
 
+  function isValidCAP(cap) {
+    return /^\d{5}$/.test(cap);
+  }
+
+  function isValidFiscalCode(fiscal_code) {
+    return /^[A-Za-z]{6}[0-9]{2}[A-Za-z][0-9]{2}[A-Za-z][0-9]{3}[A-Za-z]$/.test(fiscal_code);
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
-    console.log(cart);
+    if(submitting)
+    {
+      //Is already submitting
+      return;
+    }
 
-    let error = false;
-    let errors = [];
+    setSubmitting(true);
+
+    //console.log(cart);
+
+    let errorList = [];
 
     if (!formData.name) {
-      errors.push("Name is missing");
-      error = true;
+      errorList.push({field: "name", message: "Il nome è assente"});
     }
     if (!formData.surname) {
-      errors.push("Surname is missing");
-      error = true;
+      errorList.push({field: "surname", message: "Il cognome è assente"});
     }
     if (!formData.email) {
-      errors.push("Email is missing");
-      error = true;
+      errorList.push({field: "email", message: "L'email è assente"});
     } else if (!isValidEmail(formData.email)) {
-      errors.push("Email is not valid");
-      error = true;
+      errorList.push({field: "email", message: "L'email inserita non è valida"});
     }
     if (!formData.phone) {
-      errors.push("Phone number is missing");
-      error = true;
+      errorList.push({field: "phone_number", message: "Il numero di telefono è assente"});
     } else if (!isValidPhone(formData.phone)) {
-      errors.push("Phone number is not valid");
-      error = true;
-    }
-    if (!formData.address) {
-      errors.push("Address is missing");
-      error = true;
-    }
-    if (!formData.city) {
-      errors.push("City is missing");
-      error = true;
-    }
-    if (!formData.postal_code) {
-      errors.push("Postal code is missing");
-      error = true;
-    }
-    if (!formData.nation) {
-      errors.push("Nation is missing");
-      error = true;
-    }
-    if (!formData.street_number) {
-      errors.push("Street number is missing");
-      error = true;
+      errorList.push({field: "phone_number", message: "Il numero di telefono non è valido"});
     }
     if(!formData.fiscal_code) {
-      errors.push("Fiscal code is missing");
-      error = true;
+      errorList.push({field: "fiscal_code", message: "Il codice fiscale è assente"});
+    }
+    else if (!isValidFiscalCode(formData.fiscal_code)) {
+      errorList.push({field: "fiscal_code", message: "Il codice fiscale non è valido"});
+    }
+    if (!formData.nation) {
+      errorList.push({field: "nation", message: "La nazione è assente"});
+    }
+    if (!formData.city) {
+      errorList.push({field: "city", message: "La città è assente"});
+    }
+    if (!formData.postal_code) {
+      errorList.push({field: "postal_code", message: "Il CAP è assente"});
+    }
+    else if (!isValidCAP(formData.postal_code)) {
+      errorList.push({field: "postal_code", message: "Il CAP non è valido"});
+    }
+    if (!formData.address) {
+      errorList.push({field: "address", message: "L'indirizzo è assente"});
+    }
+    if (!formData.street_number) {
+      errorList.push({field: "street_number", message: "Il numero civico è assente"});
     }
 
-    if (error) {
-      setErrorMessage(errors);
+    //console.log(errorList);
+
+    //setErrors(errorList);
+
+    if (errorList.length > 0) {
+      setErrorMessage(errorList);
+      setSubmitting(false);
       return; // stop submission if there are errors
     }
 
-    setErrorMessage(null);
+    setErrorMessage([]);
 
     const items = cart.map(item => ({
       slug: item.slug,
@@ -108,16 +126,16 @@ export default function CheckoutPage() {
 
 
     const orderData = {
-      name: formData.name,
-      surname: formData.surname,
-      email: formData.email,
-      nation: formData.nation,
-      city: formData.city,
-      postal_code: formData.postal_code,
-      phone_number: formData.phone,
-      address: formData.address,
-      street_number: formData.street_number || "",
-      fiscal_code: formData.fiscal_code || "",
+      name: formData.name.trim(),
+      surname: formData.surname.trim(),
+      email: formData.email.trim(),
+      nation: formData.nation.trim(),
+      city: formData.city.trim(),
+      postal_code: formData.postal_code.trim(),
+      phone_number: formData.phone.trim(),
+      address: formData.address.trim(),
+      street_number: formData.street_number.trim(),
+      fiscal_code: formData.fiscal_code.toUpperCase().trim(),
       items: items
     };
 
@@ -133,11 +151,12 @@ export default function CheckoutPage() {
       if (!response.ok) {
         const errData = await response.json();
         setErrorMessage([errData.message || "Something went wrong"]);
+        setSubmitting(false);
         return;
       }
 
       const data = await response.json();
-      alert("Order submitted successfully");
+      //alert("Order submitted successfully");
       
       setFormData({
         name: "",
@@ -153,10 +172,14 @@ export default function CheckoutPage() {
       });
 
       clearCart();
+      navigate("/thank-you");
 
     } catch (err) {
       console.error(err);
       setErrorMessage([err.message || "Network error"]);
+    }
+    finally {
+      setSubmitting(false);
     }
   }
 
@@ -171,21 +194,36 @@ export default function CheckoutPage() {
         <div className="col-md-7">
 
           <form onSubmit={handleSubmit}>
-
-            <input className="form-control mb-2" name="name" placeholder="Nome" onChange={handleChange} value={formData.name}/>
-            <input className="form-control mb-2" name="surname" placeholder="Cognome" onChange={handleChange}  value={formData.surname}/>
-            <input className="form-control mb-2" name="email" placeholder="Email" onChange={handleChange}  value={formData.email}/>
-            <input className="form-control mb-2" name="phone" placeholder="Telefono" onChange={handleChange}  value={formData.phone}/>
-            <input className="form-control mb-3" name="nation" placeholder="Nazione" onChange={handleChange}  value={formData.nation}/>
-            <input className="form-control mb-2" name="city" placeholder="Città" onChange={handleChange}  value={formData.city}/>
-            <input className="form-control mb-2" name="postal_code" placeholder="CAP" onChange={handleChange}  value={formData.postal_code}/>
-            <input className="form-control mb-2" name="address" placeholder="Indirizzo" onChange={handleChange}  value={formData.address}/>
-            <input className="form-control mb-3" name="street_number" placeholder="Numero civico" onChange={handleChange}  value={formData.street_number}/>
-            <input className="form-control mb-3" name="fiscal_code" placeholder="Codice fiscale" onChange={handleChange}  value={formData.fiscal_code}/>
-
-            {errorMessage && errorMessage.map((err, idx) => (
-              <p key={idx} className="errorMessage">{err}</p>
-            ))}
+            <label htmlFor="name">Nome</label>
+            <input className="form-control" id="name" name="name" placeholder="Mario" onChange={handleChange} value={formData.name}/>
+            {errorMessage.some(e => e.field === "name") && <p className="errorMessage">{errorMessage.find(e => e.field === "name").message}</p>}
+            <label htmlFor="surname">Cognome</label>
+            <input className="form-control" id="surname" name="surname" placeholder="Rossi" onChange={handleChange}  value={formData.surname}/>
+            {errorMessage.some(e => e.field === "surname") && <p className="errorMessage">{errorMessage.find(e => e.field === "surname").message}</p>}
+            <label htmlFor="email">Email</label>
+            <input className="form-control" id="email" name="email" placeholder="mariorossi@gmail.com" onChange={handleChange}  value={formData.email}/>
+            {errorMessage.some(e => e.field === "email") && <p className="errorMessage">{errorMessage.find(e => e.field === "email").message}</p>}
+            <label htmlFor="phone">Numero di telefono</label>
+            <input className="form-control" id="phone" name="phone" placeholder="3334942030" onChange={handleChange}  value={formData.phone}/>
+            {errorMessage.some(e => e.field === "phone_number") && <p className="errorMessage">{errorMessage.find(e => e.field === "phone_number").message}</p>}
+            <label htmlFor="fiscal_code">Codice fiscale</label>
+            <input className="form-control text-uppercase" id="fiscal_code" name="fiscal_code" placeholder="RSSMRA00T01H501P" onChange={handleChange}  value={formData.fiscal_code}/>
+            {errorMessage.some(e => e.field === "fiscal_code") && <p className="errorMessage">{errorMessage.find(e => e.field === "fiscal_code").message}</p>}
+            <label htmlFor="nation">Nazione</label>
+            <input className="form-control" id="nation" name="nation" placeholder="Italia" onChange={handleChange}  value={formData.nation}/>
+            {errorMessage.some(e => e.field === "nation") && <p className="errorMessage">{errorMessage.find(e => e.field === "nation").message}</p>}
+            <label htmlFor="city">Città</label>
+            <input className="form-control" id="city" name="city" placeholder="Roma" onChange={handleChange}  value={formData.city}/>
+            {errorMessage.some(e => e.field === "city") && <p className="errorMessage">{errorMessage.find(e => e.field === "city").message}</p>}
+            <label htmlFor="postal_code">CAP</label>
+            <input className="form-control" id="postal_code" name="postal_code" placeholder="00000" onChange={handleChange}  value={formData.postal_code}/>
+            {errorMessage.some(e => e.field === "postal_code") && <p className="errorMessage">{errorMessage.find(e => e.field === "postal_code").message}</p>}
+            <label htmlFor="address">Indirizzo</label>
+            <input className="form-control" id="address" name="address" placeholder="Via Rossi" onChange={handleChange}  value={formData.address}/>
+            {errorMessage.some(e => e.field === "address") && <p className="errorMessage">{errorMessage.find(e => e.field === "address").message}</p>}
+            <label htmlFor="street_number">Numero civico</label>
+            <input className="form-control"id="street_number" name="street_number" placeholder="21" onChange={handleChange}  value={formData.street_number}/>
+            {errorMessage.some(e => e.field === "street_number") && <p className="errorMessage">{errorMessage.find(e => e.field === "street_number").message}</p>}
 
             <button className="btn btn-primary w-100">
               Conferma ordine
@@ -206,13 +244,13 @@ export default function CheckoutPage() {
               {cart.map(item => (
                 <div key={item.id} className="d-flex justify-content-between mb-2">
                   <span>{item.name} x{item.quantity}</span>
-                  <span>€{(item.price * item.quantity).toFixed(2)}</span>
+                  <span>&euro;{(item.discount_price * item.quantity).toFixed(2)}</span>
                 </div>
               ))}
 
               <hr />
 
-              <p>Totale articoli: €{Number(totalPrice).toFixed(2)}</p>
+              <p>Totale articoli: &euro;{Number(totalPrice).toFixed(2)}</p>
 
               <hr />
 
@@ -220,7 +258,7 @@ export default function CheckoutPage() {
 
               <hr />
 
-              <h5>Totale: €{Number(totalPrice + expeditionCost).toFixed(2)}</h5>
+              <h5>Totale: &euro;{Number(totalPrice + expeditionCost).toFixed(2)}</h5>
 
             </div>
           </div>
