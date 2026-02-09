@@ -12,7 +12,7 @@ export default function SingleProductList({ product }) {
   return (
     <div className="card shadow-sm mb-3">
       <div className="row g-0 align-items-center">
-        
+
         {/* IMMAGINE */}
         <div className="col-3 col-md-2 p-2 text-center">
           <img
@@ -52,7 +52,6 @@ export default function SingleProductList({ product }) {
               >
                 Dettagli
               </Link>
-
               <button
                 onClick={handleAddToCart}
                 className="btn btn-primary btn-sm"

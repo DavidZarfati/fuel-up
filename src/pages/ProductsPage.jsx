@@ -96,7 +96,6 @@ export default function ProductsPage() {
                 >
                   <i className="bi bi-grid-3x3-gap"></i> Griglia
                 </button>
-
                 <button
                   type="button"
                   onClick={() => setisGridMode(true)}
@@ -113,6 +112,28 @@ export default function ProductsPage() {
             <div className="ot-products-list">
               {products.map((p, index) => (
                 <div className="ot-product-list-wrapper" key={p.id ?? p._id ?? index}>
+                  {/* HEART ICON */}
+                  <button
+                    onClick={() => {
+                      toggleFavourite(p);
+                      if (!isFavourite(p.id)) {
+                        setFavToast({
+                          name: p.name,
+                          time: 'adesso',
+                          image: `${backendUrl}${p.image}`
+                        });
+                        setShowFavToast(true);
+                      }
+                    }}
+                    className="ot-heart-button"
+                    aria-label={isFavourite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+                    style={{ position: "absolute", top: "10px", right: "10px", background: "white", border: "none", borderRadius: "50%", width: "35px", height: "35px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 1 }}
+                  >
+                    <i
+                      className={isFavourite(p.id) ? "bi bi-heart-fill" : "bi bi-heart"}
+                      style={{ color: isFavourite(p.id) ? "#dc3545" : "#666", fontSize: "18px" }}
+                    ></i>
+                  </button>
                   <SingleProductList product={p} />
                 </div>
               ))}
@@ -122,9 +143,53 @@ export default function ProductsPage() {
             <div className="ot-products-grid">
               {products.map((p, index) => (
                 <div className="ot-product-card-wrapper" key={p.id ?? p._id ?? index}>
+                  {/* HEART ICON */}
+                  <button
+                    onClick={() => {
+                      toggleFavourite(p);
+                      if (!isFavourite(p.id)) {
+                        setFavToast({
+                          name: p.name,
+                          time: 'adesso',
+                          image: `${backendUrl}${p.image}`
+                        });
+                        setShowFavToast(true);
+                      }
+                    }}
+                    className="ot-heart-button"
+                    aria-label={isFavourite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+                    style={{ position: "absolute", top: "10px", right: "10px", background: "white", border: "none", borderRadius: "50%", width: "35px", height: "35px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 1 }}
+                  >
+                    <i
+                      className={isFavourite(p.id) ? "bi bi-heart-fill" : "bi bi-heart"}
+                      style={{ color: isFavourite(p.id) ? "#dc3545" : "#666", fontSize: "18px" }}
+                    ></i>
+                  </button>
                   <SingleProductCard product={p} />
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Toast notification preferiti */}
+          {favToast && showFavToast && (
+            <div className="toast-container position-fixed" style={{ bottom: 90, right: 30, zIndex: 9999 }}>
+              <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true" style={{ minWidth: 320, background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+                <div className="toast-header" style={{ background: '#f5f5f5', borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+                  <img src={favToast.image} className="rounded me-2" alt={favToast.name} style={{ width: 32, height: 32, objectFit: 'cover', marginRight: 8 }} />
+                  <strong className="me-auto">Preferiti</strong>
+                  <small className="text-body-secondary">{favToast.time}</small>
+                  <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowFavToast(false)} style={{ marginLeft: 8, border: 'none', background: 'transparent', fontSize: 18 }}>×</button>
+                </div>
+                <div className="toast-body" style={{ padding: '12px 24px', fontSize: 18 }}>
+                  Hai aggiunto <b>{favToast.name}</b> ai preferiti
+                  <div style={{ marginTop: 12 }}>
+                    <a href="/products/favourites" className="btn btn-danger btn-sm" style={{ fontWeight: 'bold', fontSize: 16 }} onClick={() => setShowFavToast(false)}>
+                      Vedi nella pagina dei preferiti
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
 
