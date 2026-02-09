@@ -87,9 +87,7 @@
   border-color: #166ddf;
 }
 
-/* ============================================
-   GRID VIEW
-   ============================================ */
+/* GRID VIEW */
 .ot-products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -105,9 +103,7 @@
   transform: translateY(-5px);
 }
 
-/* ============================================
-   LIST VIEW
-   ============================================ */
+/* LIST VIEW*/
 .ot-products-list {
   display: flex;
   flex-direction: column;
@@ -213,9 +209,7 @@
   white-space: nowrap;
 }
 
-/* ============================================
-   EMPTY STATE
-   ============================================ */
+/* EMPTY STATE*/
 .ot-no-favourites-message {
   text-align: center;
   padding: 64px 32px;
@@ -238,9 +232,7 @@
   font-size: 15.2px;
 }
 
-/* ============================================
-   RESPONSIVE DESIGN - TABLETS (768px and below)
-   ============================================ */
+/* RESPONSIVE DESIGN - TABLETS (768px and below)*/
 @media (max-width: 768px) {
   .ot-favourite-page-container {
     padding: 16px;
@@ -323,9 +315,7 @@
   }
 }
 
-/* ============================================
-   RESPONSIVE DESIGN - MOBILE (480px and below)
-   ============================================ */
+/* RESPONSIVE DESIGN - MOBILE (480px and below)*/
 @media (max-width: 480px) {
   .ot-favourite-page-header h1 {
     font-size: 24px;
@@ -359,9 +349,12 @@
   }
 
   .ot-list-item-description {
-    font-size: 13px;
-    -webkit-line-clamp: 1;
-  }
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 
   .ot-list-item-price {
     font-size: 14px;
