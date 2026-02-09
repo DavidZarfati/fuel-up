@@ -85,9 +85,9 @@ export default function Header({ nameApp }) {
                 </div>
 
                 {/* Logo */}
-                <div>
+                <div className="ml-no-shrink">
                     <Link to="/">
-                        <img className="ot-logo" src={logo} alt={nameApp} />
+                        <img className="ot-logo ml-no-shrink ml-logo" src={logo} alt={nameApp} />
                     </Link>
                 </div>
 

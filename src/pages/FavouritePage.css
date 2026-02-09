@@ -1,0 +1,135 @@
+/* color variables */
+:root {
+  --primary-color: #166ddf;
+  --primary-dark: #2a5fb9;
+  --danger-color: #d32f2f;
+  --danger-dark: #b71c1c;
+  --text-dark: #333;
+  --text-muted: #666;
+  --border-color: #e0e0e0;
+  --background-light: #f8f9fa;
+  --background-white: #ffffff;
+  --shadow-light: rgba(0, 0, 0, 0.05);
+  --shadow-medium: rgba(0, 0, 0, 0.1);
+}
+
+.ot-favourite-page-container {
+  min-height: 100vh;
+  padding: 32px 16px;
+  background-color: var(--background-light);
+}
+
+.ot-favourite-page-header {
+  text-align: center;
+  margin-bottom: 32px;
+  padding: 32px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 4px 6px var(--shadow-medium);
+}
+
+.ot-favourite-page-header h1 {
+  margin: 0 0 16px 0;
+  font-size: 40px;
+  font-weight: 700;
+}
+
+.ot-favourite-count-display {
+  font-size: 17.6px;
+  margin: 8px 0;
+  opacity: 0.95;
+}
+
+.ot-products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.ot-product-card-wrapper {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ot-product-card-wrapper:hover {
+  transform: translateY(-5px);
+}
+
+.ot-no-favourites-message {
+  text-align: center;
+  padding: 64px 32px;
+  background: var(--background-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ot-no-favourites-message p {
+  font-size: 17.6px;
+  color: var(--text-dark);
+  margin: 8px 0;
+}
+
+.ot-no-favourites-message .text-muted {
+  color: var(--text-muted);
+  font-size: 15.2px;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .ot-favourite-page-container {
+    padding: 16px;
+  }
+
+  .ot-favourite-page-header {
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .ot-favourite-page-header h1 {
+    font-size: 28.8px;
+  }
+
+  .ot-favourite-count-display {
+    font-size: 15.2px;
+  }
+
+  .ot-products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .ot-no-favourites-message {
+    padding: 48px 24px;
+  }
+
+  .ot-no-favourites-message p {
+    font-size: 15.2px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ot-favourite-page-header h1 {
+    font-size: 24px;
+  }
+
+  .ot-favourite-count-display {
+    font-size: 14.4px;
+  }
+
+  .ot-products-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .ot-no-favourites-message {
+    padding: 32px 16px;
+  }
+
+  .ot-no-favourites-message i {
+    font-size: 48px !important;
+  }
+}

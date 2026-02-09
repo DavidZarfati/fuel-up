@@ -22,6 +22,16 @@
     border-radius: 5px;
 }
 
+.ml-no-shrink
+{
+    flex-shrink: 0;
+}
+
+.ml-logo {
+    max-height: 70px;
+    width: auto;
+}
+
 /* Hamburger Menu Button - Mobile Only */
 .ot-hamburger {
     display: block;
