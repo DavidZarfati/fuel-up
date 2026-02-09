@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useFavourites } from "../context/FavouritesContext";
 import { useGlobal } from "../context/GlobalContext";
 import SingleProductCard from "../components/SingleProductCard";
 import SingleProductList from "../components/SingleProductList";
@@ -8,7 +9,7 @@ import "./ProductsPage.css";
 
 export default function ProductsPage() {
   const { backendUrl } = useGlobal();
-
+  const { isFavourite, toggleFavourite } = useFavourites();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -16,6 +17,16 @@ export default function ProductsPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [isGridMode, setisGridMode] = useState("");
   const limit = 12;
+  // Toast preferiti
+  const [favToast, setFavToast] = useState(null);
+  const [showFavToast, setShowFavToast] = useState(false);
+
+  useEffect(() => {
+    if (favToast && showFavToast) {
+      const timer = setTimeout(() => setShowFavToast(false), 4000);
+      return () => clearTimeout(timer);
+    }
+  }, [favToast, showFavToast]);
 
   useEffect(() => {
     let ignore = false;
@@ -66,51 +77,7 @@ export default function ProductsPage() {
       {loading && <div className="ot-loading-container"><p>Caricamento...</p></div>}
       {error && <div className="ot-error-message"><p>{error}</p></div>}
 
-      {!loading && !error && (
-
-        <>
-          <div className="ot-products-filters">
-            <div className="ot-filter-group">
-              <label>Visualizza:</label>
-              <div className="ot-view-buttons">
-                <button onClick={() => setisGridMode("")} className={`ot-view-btn ${!isGridMode ? "active" : ""}`}>
-                  <i className="bi bi-grid-3x3-gap"></i> Griglia
-                </button>
-                <button onClick={() => setisGridMode(1)} className={`ot-view-btn ${isGridMode ? "active" : ""}`}>
-                  <i className="bi bi-list-ul"></i> Lista
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className={!isGridMode? "ot-products-grid": "ot-products-list"}>
-            {products.map((p, index) => (
-              <div className={!isGridMode ? "ot-product-card-wrapper" : "ot-product-list-wrapper"} key={p.id ?? p._id ?? index}>
-                {!isGridMode? <SingleProductCard product={p} />: <SingleProductList product={p}/>}
-              </div>
-            ))}
-          </div>
-          {/* Bottoni paginazione sotto la griglia */}
-          <div className="ot-pagination-container">
-            <button
-              onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-              disabled={page === 1}
-              className="ot-pagination-btn"
-            >
-              ← Indietro
-            </button>
-            <div className="ot-pagination-info">
-              <span>Pagina <strong>{page}</strong> di <strong>{totalPages}</strong></span>
-            </div>
-            <button
-              onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-              disabled={page === totalPages}
-              className="ot-pagination-btn"
-            >
-              Avanti →
-            </button>
-          </div>
-        </>
-      )}
+      {/* ...existing code... */}
 
       {!loading && !error && products.length === 0 && (
         <div className="ot-no-products-message"><p>Nessun prodotto disponibile.</p></div>
@@ -191,4 +158,5 @@ export default function ProductsPage() {
         </>
       )}
     </section>
-  )};
+  )
+};
