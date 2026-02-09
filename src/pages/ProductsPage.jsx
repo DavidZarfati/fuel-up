@@ -114,20 +114,9 @@ export default function ProductsPage() {
                 <div className="ot-product-list-wrapper" key={p.id ?? p._id ?? index}>
                   {/* HEART ICON */}
                   <button
-                    onClick={() => {
-                      toggleFavourite(p);
-                      if (!isFavourite(p.id)) {
-                        setFavToast({
-                          name: p.name,
-                          time: 'adesso',
-                          image: `${backendUrl}${p.image}`
-                        });
-                        setShowFavToast(true);
-                      }
-                    }}
+                    onClick={() => toggleFavourite(p)}
                     className="ot-heart-button"
                     aria-label={isFavourite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
-                    style={{ position: "absolute", top: "10px", right: "10px", background: "white", border: "none", borderRadius: "50%", width: "35px", height: "35px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 1 }}
                   >
                     <i
                       className={isFavourite(p.id) ? "bi bi-heart-fill" : "bi bi-heart"}
@@ -221,7 +210,8 @@ export default function ProductsPage() {
             </div>
           )}
         </>
-      )}
-    </section>
+      )
+      }
+    </section >
   )
 };
