@@ -3,15 +3,45 @@ import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import SingleProductCard from "../components/SingleProductCard";
 import "./FavouritePage.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 
 export default function FavouritePage() {
 
-  const { favourites, isFavourite, toggleFavourite } = useFavourites();
+  const { favourites, isFavourite, toggleFavourite, clearFavourites } = useFavourites();
   const { addToCart } = useCart();
   const [isGridMode, setisGridMode] = useState("");
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
+
+  // Toast preferiti
+  const [favToast, setFavToast] = useState(null);
+  const [showFavToast, setShowFavToast] = useState(false);
+
+  useEffect(() => {
+    if (!favToast || !showFavToast) return;
+    const timer = setTimeout(() => setShowFavToast(false), 4000);
+    return () => clearTimeout(timer);
+  }, [favToast, showFavToast]);
+
+  function handleToggleFavourite(product) {
+    const alreadyFav = isFavourite(product.id);
+    toggleFavourite(product);
+
+    if (!alreadyFav) {
+      setFavToast({
+        name: product.name,
+        time: "adesso",
+        image: `${backendBaseUrl}${product.image}`,
+      });
+      setShowFavToast(true);
+    }
+  }
+
+  function handleClearAll() {
+    if (window.confirm("Sei sicuro di voler rimuovere tutti i prodotti dai preferiti?")) {
+      clearFavourites();
+    }
+  }
 
   return (
     <section className="ot-favourite-page-container">
@@ -45,6 +75,15 @@ export default function FavouritePage() {
               </button>
             </div>
           </div>
+
+          <button
+            onClick={handleClearAll}
+            className="ot-clear-all-btn"
+            disabled={favourites.length === 0}
+          >
+            <i className="bi bi-trash"></i> Svuota tutto
+          </button>
+
         </div>
       )}
 
@@ -64,6 +103,34 @@ export default function FavouritePage() {
         <div className="ot-products-grid">
           {favourites.map((product, index) => (
             <div className="ot-product-card-wrapper" key={product.id ?? index}>
+              <button
+                onClick={() => handleToggleFavourite(product)}
+                className="ot-heart-button"
+                aria-label={
+                  isFavourite(product.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"
+                }
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  background: "white",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "35px",
+                  height: "35px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  zIndex: 1,
+                }}
+              >
+                <i
+                  className={isFavourite(product.id) ? "bi bi-heart-fill" : "bi bi-heart"}
+                  style={{ color: isFavourite(product.id) ? "#dc3545" : "#666", fontSize: "18px" }}
+                />
+              </button>
+
               <SingleProductCard product={product} />
             </div>
           ))}
@@ -78,7 +145,7 @@ export default function FavouritePage() {
               <div className="ot-list-item-content">
                 {/* Heart button */}
                 <button
-                  onClick={() => toggleFavourite(product)}
+                  onClick={() => handleToggleFavourite(product)}
                   className="ot-heart-button-list"
                   aria-label={isFavourite(product.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
                 >
@@ -102,7 +169,20 @@ export default function FavouritePage() {
                 <div className="ot-list-item-details">
                   <h5 className="ot-list-item-title">{product.name}</h5>
                   <p className="ot-list-item-description">{product.description}</p>
-                  <p className="ot-list-item-price">€ {product.price?.toFixed(2)}</p>
+                  <p className="ot-list-item-price">
+                    {product.discount_price ? (
+                      <>
+                        <span style={{ textDecoration: 'line-through', color: 'black' }}>
+                          € {product.price?.toFixed(2)}
+                        </span>
+                        <span style={{ color: 'red', marginLeft: '8px' }}>
+                          € {product.discount_price.toFixed(2)}
+                        </span>
+                      </>
+                    ) : (
+                      <>€ {product.price?.toFixed(2)}</>
+                    )}
+                  </p>
                 </div>
 
                 {/* Action buttons */}
@@ -117,6 +197,40 @@ export default function FavouritePage() {
               </div>
             </div>
           ))}
+        </div>
+      )}
+
+      {/* Toast notification preferiti */}
+      {favToast && showFavToast && (
+        <div className="toast-container position-fixed" style={{ bottom: 90, right: 30, zIndex: 9999 }}>
+          <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true"
+            style={{ minWidth: 320, background: "#fff", borderRadius: 8, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
+            <div className="toast-header" style={{ background: "#f5f5f5", borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+              <img src={favToast.image} className="rounded me-2" alt={favToast.name}
+                style={{ width: 32, height: 32, objectFit: "cover", marginRight: 8 }} />
+              <strong className="me-auto">Preferiti</strong>
+              <small className="text-body-secondary">{favToast.time}</small>
+              <button type="button" className="btn-close" aria-label="Close"
+                onClick={() => setShowFavToast(false)}
+                style={{ marginLeft: 8, border: "none", background: "transparent", fontSize: 18 }}>
+                ×
+              </button>
+            </div>
+
+            <div className="toast-body" style={{ padding: "12px 24px", fontSize: 18 }}>
+              Hai aggiunto <b>{favToast.name}</b> ai preferiti
+              <div style={{ marginTop: 12 }}>
+                <Link
+                  to="/products/favourites"
+                  className="btn btn-danger btn-sm"
+                  style={{ fontWeight: "bold", fontSize: 16 }}
+                  onClick={() => setShowFavToast(false)}
+                >
+                  Vedi nella pagina dei preferiti
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </section>

@@ -20,7 +20,7 @@ export function FavouritesProvider({ children }) {
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(favourites));
-    } catch {}
+    } catch { }
   }, [favourites]);
 
   // sync tra schede
@@ -51,10 +51,16 @@ export function FavouritesProvider({ children }) {
 
   // rimuovi dai preferiti
   function removeFromFavourites(productId) {
-    setFavourites((prevFavourites) => 
+    setFavourites((prevFavourites) =>
       prevFavourites.filter((item) => item.id !== productId)
     );
   }
+
+  // svuota tutti i preferiti
+  function clearFavourites() {
+    setFavourites([]);
+  }
+
 
   // verifica se un prodotto è nei preferiti
   function isFavourite(productId) {
@@ -74,6 +80,7 @@ export function FavouritesProvider({ children }) {
     favourites,
     addToFavourites,
     removeFromFavourites,
+    clearFavourites,
     isFavourite,
     toggleFavourite,
   };
