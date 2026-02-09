@@ -89,7 +89,7 @@ export default function CheckoutPage() {
       errors.push("Street number is missing");
       error = true;
     }
-    if(!formData.fiscal_code) {
+    if (!formData.fiscal_code) {
       errors.push("Fiscal code is missing");
       error = true;
     }
@@ -138,7 +138,7 @@ export default function CheckoutPage() {
 
       const data = await response.json();
       alert("Order submitted successfully");
-      
+
       setFormData({
         name: "",
         surname: "",
@@ -172,16 +172,16 @@ export default function CheckoutPage() {
 
           <form onSubmit={handleSubmit}>
 
-            <input className="form-control mb-2" name="name" placeholder="Nome" onChange={handleChange} value={formData.name}/>
-            <input className="form-control mb-2" name="surname" placeholder="Cognome" onChange={handleChange}  value={formData.surname}/>
-            <input className="form-control mb-2" name="email" placeholder="Email" onChange={handleChange}  value={formData.email}/>
-            <input className="form-control mb-2" name="phone" placeholder="Telefono" onChange={handleChange}  value={formData.phone}/>
-            <input className="form-control mb-3" name="nation" placeholder="Nazione" onChange={handleChange}  value={formData.nation}/>
-            <input className="form-control mb-2" name="city" placeholder="Città" onChange={handleChange}  value={formData.city}/>
-            <input className="form-control mb-2" name="postal_code" placeholder="CAP" onChange={handleChange}  value={formData.postal_code}/>
-            <input className="form-control mb-2" name="address" placeholder="Indirizzo" onChange={handleChange}  value={formData.address}/>
-            <input className="form-control mb-3" name="street_number" placeholder="Numero civico" onChange={handleChange}  value={formData.street_number}/>
-            <input className="form-control mb-3" name="fiscal_code" placeholder="Codice fiscale" onChange={handleChange}  value={formData.fiscal_code}/>
+            <input className="form-control mb-2" name="name" placeholder="Nome" onChange={handleChange} value={formData.name} />
+            <input className="form-control mb-2" name="surname" placeholder="Cognome" onChange={handleChange} value={formData.surname} />
+            <input className="form-control mb-2" name="email" placeholder="Email" onChange={handleChange} value={formData.email} />
+            <input className="form-control mb-2" name="phone" placeholder="Telefono" onChange={handleChange} value={formData.phone} />
+            <input className="form-control mb-3" name="nation" placeholder="Nazione" onChange={handleChange} value={formData.nation} />
+            <input className="form-control mb-2" name="city" placeholder="Città" onChange={handleChange} value={formData.city} />
+            <input className="form-control mb-2" name="postal_code" placeholder="CAP" onChange={handleChange} value={formData.postal_code} />
+            <input className="form-control mb-2" name="address" placeholder="Indirizzo" onChange={handleChange} value={formData.address} />
+            <input className="form-control mb-3" name="street_number" placeholder="Numero civico" onChange={handleChange} value={formData.street_number} />
+            <input className="form-control mb-3" name="fiscal_code" placeholder="Codice fiscale" onChange={handleChange} value={formData.fiscal_code} />
 
             {errorMessage && errorMessage.map((err, idx) => (
               <p key={idx} className="errorMessage">{err}</p>

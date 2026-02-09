@@ -129,7 +129,7 @@ export default function HomePage() {
                             {!loading && !error && Array.isArray(products) && (
                                 categoria === ""
                                     ? products.slice(0, 12).map((card, idx) => (
-                                        <div className="col-sm-12 col-md-6 col-lg-4 d-flex" key={idx}>
+                                        <div className="col-sm-12 col-md-6 col-lg-4" key={idx}>
                                             <div className="card mb-3 ot-product-card">
                                                 {/* HEART ICON */}
                                                 <button
@@ -147,14 +147,14 @@ export default function HomePage() {
                                                 </button>
                                                 <div className="row no-gutters align-items-center">
                                                     <div className="col-12">
-                                                        <div className="card-body">
+                                                        <div className="card-body dz-card-body">
                                                             <img
                                                                 src={`${backendBaseUrl}${card.image}`}
                                                                 alt={card.name}
                                                                 style={{ maxWidth: '100%', maxHeight: '150px', objectFit: 'contain', marginBottom: '10px' }}
                                                             />
                                                             <h5 className="card-title">{card.name}</h5>
-                                                            <p className="card-text">{card.description}</p>
+                                                            <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                             <div className="ot-card-actions">
                                                                 <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
                                                                     Vedi dettagli
@@ -188,14 +188,14 @@ export default function HomePage() {
                                                 </button>
                                                 <div className="row no-gutters align-items-center">
                                                     <div className="col-12">
-                                                        <div className="card-body">
+                                                        <div className="card-body dz-card-body">
                                                             <img
                                                                 src={`${backendBaseUrl}${card.image}`}
                                                                 alt={card.name}
                                                                 style={{ maxWidth: '100%', maxHeight: '150px', objectFit: 'contain', marginBottom: '10px' }}
                                                             />
                                                             <h5 className="card-title">{card.name}</h5>
-                                                            <p className="card-text">{card.description}</p>
+                                                            <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                             <div className="ot-card-actions">
                                                                 <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
                                                                     Vedi dettagli
@@ -235,7 +235,7 @@ export default function HomePage() {
                                                 ></i>
                                             </button>
 
-                                            <div className="ot-list-card-body">
+                                            <div className="ot-list-card-body dz-card-body">
                                                 <img
                                                     src={`${backendBaseUrl}${card.image}`}
                                                     alt={card.name}
@@ -243,7 +243,7 @@ export default function HomePage() {
                                                 />
                                                 <div className="ot-list-card-content">
                                                     <h5 className="card-title">{card.name}</h5>
-                                                    <p className="card-text">{card.description}</p>
+                                                    <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                     <div className="ot-list-card-actions">
                                                         <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
                                                             Vedi dettagli
@@ -275,7 +275,7 @@ export default function HomePage() {
                                                 ></i>
                                             </button>
 
-                                            <div className="ot-list-card-body">
+                                            <div className="ot-list-card-body dz-card-body">
                                                 <img
                                                     src={`${backendBaseUrl}${card.image}`}
                                                     alt={card.name}
@@ -283,7 +283,7 @@ export default function HomePage() {
                                                 />
                                                 <div className="ot-list-card-content">
                                                     <h5 className="card-title">{card.name}</h5>
-                                                    <p className="card-text">{card.description}</p>
+                                                    <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                     <div className="ot-list-card-actions">
                                                         <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
                                                             Vedi dettagli

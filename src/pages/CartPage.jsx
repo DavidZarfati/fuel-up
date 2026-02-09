@@ -59,7 +59,8 @@ export default function CartPage() {
                               {item.name}
                             </div>
                             <div className="text-muted small">
-                              €{Number(item.price).toFixed(2)}
+                              <span className="dz-prodotto-senza-sconto">€{Number(item.price).toFixed(2)}</span>
+                              <span className="dz-prezzo-scontato"> €{Number(item.discount_price).toFixed(2)}</span>
                             </div>
                           </div>
                         </div>
