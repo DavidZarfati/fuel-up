@@ -79,8 +79,13 @@ export default function SingleProductCard({ product }) {
 
 
         {product.price && (
-          <p className="fw-bold mb-3">
-            € {product.price.toFixed(2)}
+          <p className="fw-bold mb-3 dz">
+            € <span className="dz-prodotto-senza-sconto">{product.price.toFixed(2)}</span>
+            {product.discount_price && (
+              <span className="dz-prezzo-scontato">
+                &nbsp;€ {product.discount_price.toFixed(2)}
+              </span>
+            )}
           </p>
         )}
 
