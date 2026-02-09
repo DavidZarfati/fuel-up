@@ -1,54 +1,126 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useFavourites } from "../context/FavouritesContext";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext";
+import { useFavourites } from "../context/FavouritesContext";
 import SingleProductCard from "../components/SingleProductCard";
 import SingleProductList from "../components/SingleProductList";
 import "./ProductsPage.css";
 
-
 export default function ProductsPage() {
   const { backendUrl } = useGlobal();
   const { isFavourite, toggleFavourite } = useFavourites();
+
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const urlState = useMemo(() => {
+    const pageFromUrl = parseInt(searchParams.get("page") || "1", 10);
+    const safePage = Number.isFinite(pageFromUrl) && pageFromUrl > 0 ? pageFromUrl : 1;
+
+    const view = searchParams.get("view") || "grid"; // "grid" | "list"
+    const safeView = view === "list" ? "list" : "grid";
+
+    const q = searchParams.get("q") || "";
+    const orderBy = searchParams.get("order_by") || "created_at";
+    const orderDir =
+      (searchParams.get("order_dir") || "desc").toLowerCase() === "asc" ? "asc" : "desc";
+
+    return { safePage, safeView, q, orderBy, orderDir };
+  }, [searchParams]);
+
+  const limit = 12;
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [page, setPage] = useState(1);
+
+  const [page, setPage] = useState(urlState.safePage);
   const [totalPages, setTotalPages] = useState(1);
-  const [isGridMode, setisGridMode] = useState("");
-  const limit = 12;
+
+  // View: uso SOLO questo stato
+  const [isListMode, setIsListMode] = useState(urlState.safeView === "list");
+
+  // Filtri (se li usi ora o dopo)
+  const [q, setQ] = useState(urlState.q);
+  const [orderBy, setOrderBy] = useState(urlState.orderBy);
+  const [orderDir, setOrderDir] = useState(urlState.orderDir);
+
   // Toast preferiti
   const [favToast, setFavToast] = useState(null);
   const [showFavToast, setShowFavToast] = useState(false);
 
   useEffect(() => {
-    if (favToast && showFavToast) {
-      const timer = setTimeout(() => setShowFavToast(false), 4000);
-      return () => clearTimeout(timer);
-    }
+    if (!favToast || !showFavToast) return;
+    const timer = setTimeout(() => setShowFavToast(false), 4000);
+    return () => clearTimeout(timer);
   }, [favToast, showFavToast]);
 
+  // Sync stato da URL
+  useEffect(() => {
+    if (page !== urlState.safePage) setPage(urlState.safePage);
+
+    const nextIsList = urlState.safeView === "list";
+    if (isListMode !== nextIsList) setIsListMode(nextIsList);
+
+    if (q !== urlState.q) setQ(urlState.q);
+    if (orderBy !== urlState.orderBy) setOrderBy(urlState.orderBy);
+    if (orderDir !== urlState.orderDir) setOrderDir(urlState.orderDir);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [urlState]);
+
+  function updateUrlParams(patch) {
+    const params = new URLSearchParams(searchParams);
+
+    Object.entries(patch).forEach(([key, value]) => {
+      if (value === null || value === undefined || value === "") params.delete(key);
+      else params.set(key, String(value));
+    });
+
+    params.set("limit", String(limit));
+    setSearchParams(params, { replace: false });
+  }
+
+  // Scrivo su URL quando cambia lo stato
+  useEffect(() => {
+    updateUrlParams({
+      page,
+      view: isListMode ? "list" : "grid",
+      q,
+      order_by: orderBy,
+      order_dir: orderDir,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, isListMode, q, orderBy, orderDir]);
+
+  // Fetch prodotti
   useEffect(() => {
     let ignore = false;
 
     async function fetchProducts() {
       setLoading(true);
       setError("");
+
       try {
-        const resp = await axios.get(`${backendUrl}/api/products?page=${page}&limit=${limit}`);
-        // Adatta qui secondo la risposta del backend
-        // Esempio: { products: [...], totalPages: 5 }
+        const params = new URLSearchParams();
+        params.set("page", String(page));
+        params.set("limit", String(limit));
+        if (q) params.set("q", q);
+        if (orderBy) params.set("order_by", orderBy);
+        if (orderDir) params.set("order_dir", orderDir);
+
+        const resp = await axios.get(`${backendUrl}/api/products?${params.toString()}`);
         const data = resp.data;
-        //console.log('Risposta backend prodotti:', data); // DEBUG
-        // Adattamento struttura: prodotti in data.result, totale pagine in data.info.totale_pagine
+
         const list = Array.isArray(data?.result) ? data.result : [];
+
         let pagine = 1;
         if (data?.info) {
           if (typeof data.info.totale_pagine === "number") pagine = data.info.totale_pagine;
           else if (typeof data.info.pages === "number") pagine = data.info.pages;
-        } else if (typeof data.totale_pagine === "number") {
+        } else if (typeof data?.totale_pagine === "number") {
           pagine = data.totale_pagine;
         }
+
         if (!ignore) {
           setProducts(list);
           setTotalPages(pagine);
@@ -62,11 +134,28 @@ export default function ProductsPage() {
     }
 
     fetchProducts();
-
     return () => {
       ignore = true;
     };
-  }, [backendUrl, page]);
+  }, [backendUrl, page, limit, q, orderBy, orderDir]);
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [totalPages, page]);
+
+  function handleToggleFavourite(p) {
+    const alreadyFav = isFavourite(p.id);
+    toggleFavourite(p);
+
+    if (!alreadyFav) {
+      setFavToast({
+        name: p.name,
+        time: "adesso",
+        image: `${backendUrl}${p.image}`,
+      });
+      setShowFavToast(true);
+    }
+  }
 
   return (
     <section className="ot-products-page-container">
@@ -74,32 +163,43 @@ export default function ProductsPage() {
         <h1>Prodotti professionali per risultati reali</h1>
       </div>
 
-      {loading && <div className="ot-loading-container"><p>Caricamento...</p></div>}
-      {error && <div className="ot-error-message"><p>{error}</p></div>}
-
-      {/* ...existing code... */}
-
-      {!loading && !error && products.length === 0 && (
-        <div className="ot-no-products-message"><p>Nessun prodotto disponibile.</p></div>
+      {loading && (
+        <div className="ot-loading-container">
+          <p>Caricamento...</p>
+        </div>
       )}
 
-      {!loading && !error && products.length > 0 && (
+      {error && (
+        <div className="ot-error-message">
+          <p>{error}</p>
+        </div>
+      )}
+
+      {!loading && !error && (
         <>
           <div className="ot-products-filters">
             <div className="ot-filter-group">
               <label>Visualizza:</label>
+
               <div className="ot-view-buttons">
                 <button
                   type="button"
-                  onClick={() => setisGridMode(false)}
-                  className={`ot-view-btn ${!isGridMode ? "active" : ""}`}
+                  onClick={() => {
+                    setIsListMode(false);
+                    setPage(1);
+                  }}
+                  className={`ot-view-btn ${!isListMode ? "active" : ""}`}
                 >
                   <i className="bi bi-grid-3x3-gap"></i> Griglia
                 </button>
+
                 <button
                   type="button"
-                  onClick={() => setisGridMode(true)}
-                  className={`ot-view-btn ${isGridMode ? "active" : ""}`}
+                  onClick={() => {
+                    setIsListMode(true);
+                    setPage(1);
+                  }}
+                  className={`ot-view-btn ${isListMode ? "active" : ""}`}
                 >
                   <i className="bi bi-list-ul"></i> Lista
                 </button>
@@ -108,53 +208,61 @@ export default function ProductsPage() {
           </div>
 
           {/* GRIGLIA */}
-          {isGridMode ? (
-            <div className="ot-products-list">
+          {!isListMode ? (
+            <div className="ot-products-grid">
               {products.map((p, index) => (
-                <div className="ot-product-list-wrapper" key={p.id ?? p._id ?? index}>
-                  {/* HEART ICON */}
+                <div className="ot-product-card-wrapper" key={p.id ?? p._id ?? index}>
                   <button
-                    onClick={() => toggleFavourite(p)}
+                    onClick={() => handleToggleFavourite(p)}
                     className="ot-heart-button"
-                    aria-label={isFavourite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+                    aria-label={
+                      isFavourite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"
+                    }
+                    style={{
+                      position: "absolute",
+                      top: "10px",
+                      right: "10px",
+                      background: "white",
+                      border: "none",
+                      borderRadius: "50%",
+                      width: "35px",
+                      height: "35px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      zIndex: 1,
+                    }}
                   >
                     <i
                       className={isFavourite(p.id) ? "bi bi-heart-fill" : "bi bi-heart"}
                       style={{ color: isFavourite(p.id) ? "#dc3545" : "#666", fontSize: "18px" }}
-                    ></i>
+                    />
                   </button>
-                  <SingleProductList product={p} />
+
+                  <SingleProductCard product={p} />
                 </div>
               ))}
             </div>
           ) : (
             /* LISTA */
-            <div className="ot-products-grid">
+            <div className="ot-products-list">
               {products.map((p, index) => (
-                <div className="ot-product-card-wrapper" key={p.id ?? p._id ?? index}>
-                  {/* HEART ICON */}
+                <div className="ot-product-list-wrapper" key={p.id ?? p._id ?? index}>
                   <button
-                    onClick={() => {
-                      toggleFavourite(p);
-                      if (!isFavourite(p.id)) {
-                        setFavToast({
-                          name: p.name,
-                          time: 'adesso',
-                          image: `${backendUrl}${p.image}`
-                        });
-                        setShowFavToast(true);
-                      }
-                    }}
+                    onClick={() => handleToggleFavourite(p)}
                     className="ot-heart-button"
-                    aria-label={isFavourite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
-                    style={{ position: "absolute", top: "10px", right: "10px", background: "white", border: "none", borderRadius: "50%", width: "35px", height: "35px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", zIndex: 1 }}
+                    aria-label={
+                      isFavourite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"
+                    }
                   >
                     <i
                       className={isFavourite(p.id) ? "bi bi-heart-fill" : "bi bi-heart"}
                       style={{ color: isFavourite(p.id) ? "#dc3545" : "#666", fontSize: "18px" }}
-                    ></i>
+                    />
                   </button>
-                  <SingleProductCard product={p} />
+
+                  <SingleProductList product={p} />
                 </div>
               ))}
             </div>
@@ -163,17 +271,29 @@ export default function ProductsPage() {
           {/* Toast notification preferiti */}
           {favToast && showFavToast && (
             <div className="toast-container position-fixed" style={{ bottom: 90, right: 30, zIndex: 9999 }}>
-              <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true" style={{ minWidth: 320, background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
-                <div className="toast-header" style={{ background: '#f5f5f5', borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
-                  <img src={favToast.image} className="rounded me-2" alt={favToast.name} style={{ width: 32, height: 32, objectFit: 'cover', marginRight: 8 }} />
+              <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true"
+                   style={{ minWidth: 320, background: "#fff", borderRadius: 8, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
+                <div className="toast-header" style={{ background: "#f5f5f5", borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+                  <img src={favToast.image} className="rounded me-2" alt={favToast.name}
+                       style={{ width: 32, height: 32, objectFit: "cover", marginRight: 8 }} />
                   <strong className="me-auto">Preferiti</strong>
                   <small className="text-body-secondary">{favToast.time}</small>
-                  <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowFavToast(false)} style={{ marginLeft: 8, border: 'none', background: 'transparent', fontSize: 18 }}>×</button>
+                  <button type="button" className="btn-close" aria-label="Close"
+                          onClick={() => setShowFavToast(false)}
+                          style={{ marginLeft: 8, border: "none", background: "transparent", fontSize: 18 }}>
+                    ×
+                  </button>
                 </div>
-                <div className="toast-body" style={{ padding: '12px 24px', fontSize: 18 }}>
+
+                <div className="toast-body" style={{ padding: "12px 24px", fontSize: 18 }}>
                   Hai aggiunto <b>{favToast.name}</b> ai preferiti
                   <div style={{ marginTop: 12 }}>
-                    <a href="/products/favourites" className="btn btn-danger btn-sm" style={{ fontWeight: 'bold', fontSize: 16 }} onClick={() => setShowFavToast(false)}>
+                    <a
+                      href="/products/favourites"
+                      className="btn btn-danger btn-sm"
+                      style={{ fontWeight: "bold", fontSize: 16 }}
+                      onClick={() => setShowFavToast(false)}
+                    >
                       Vedi nella pagina dei preferiti
                     </a>
                   </div>
@@ -195,8 +315,7 @@ export default function ProductsPage() {
 
               <div className="ot-pagination-info">
                 <span>
-                  Pagina <strong>{page}</strong> di{" "}
-                  <strong>{totalPages}</strong>
+                  Pagina <strong>{page}</strong> di <strong>{totalPages}</strong>
                 </span>
               </div>
 
@@ -210,8 +329,7 @@ export default function ProductsPage() {
             </div>
           )}
         </>
-      )
-      }
-    </section >
-  )
-};
+      )}
+    </section>
+  );
+}
