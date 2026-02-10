@@ -212,35 +212,7 @@ export default function ProductsPage() {
             <div className="ot-products-grid">
               {products.map((p, index) => (
                 <div className="ot-product-card-wrapper" key={p.id ?? p._id ?? index}>
-                  <button
-                    onClick={() => handleToggleFavourite(p)}
-                    className="ot-heart-button"
-                    aria-label={
-                      isFavourite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"
-                    }
-                    style={{
-                      position: "absolute",
-                      top: "10px",
-                      right: "10px",
-                      background: "white",
-                      border: "none",
-                      borderRadius: "50%",
-                      width: "35px",
-                      height: "35px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      cursor: "pointer",
-                      zIndex: 1,
-                    }}
-                  >
-                    <i
-                      className={isFavourite(p.id) ? "bi bi-heart-fill" : "bi bi-heart"}
-                      style={{ color: isFavourite(p.id) ? "#dc3545" : "#666", fontSize: "18px" }}
-                    />
-                  </button>
-
-                  <SingleProductCard product={p} />
+                  <SingleProductCard product={p} onToggleFavourite={handleToggleFavourite} />
                 </div>
               ))}
             </div>
@@ -270,7 +242,7 @@ export default function ProductsPage() {
 
           {/* Toast notification preferiti */}
           {favToast && showFavToast && (
-            <div className="toast-container position-fixed" style={{ bottom: 90, right: 30, zIndex: 9999 }}>
+            <div className="toast-container position-fixed" style={{ bottom: 30, right: 30, zIndex: 9999 }}>
               <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true"
                    style={{ minWidth: 320, background: "#fff", borderRadius: 8, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
                 <div className="toast-header" style={{ background: "#f5f5f5", borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>

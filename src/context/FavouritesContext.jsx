@@ -13,6 +13,11 @@ function loadFavourites() {
   }
 }
 
+function getProductKey(product) {
+  return product?.id ?? product?.product_id ?? product?.slug;
+}
+
+
 export function FavouritesProvider({ children }) {
   const [favourites, setFavourites] = useState(() => loadFavourites());
 
@@ -20,7 +25,7 @@ export function FavouritesProvider({ children }) {
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(favourites));
-    } catch {}
+    } catch { }
   }, [favourites]);
 
   // sync tra schede
@@ -40,8 +45,12 @@ export function FavouritesProvider({ children }) {
 
   // aggiungi ai preferiti
   function addToFavourites(product) {
+    const key = getProductKey(product);
+
     setFavourites((prevFavourites) => {
-      const existing = prevFavourites.find((item) => item.id === product.id);
+      const existing = prevFavourites.find(
+        (item) => getProductKey(item) === key
+      );
       if (existing) {
         return prevFavourites;
       }
@@ -49,31 +58,52 @@ export function FavouritesProvider({ children }) {
     });
   }
 
+
   // rimuovi dai preferiti
-  function removeFromFavourites(productId) {
-    setFavourites((prevFavourites) => 
-      prevFavourites.filter((item) => item.id !== productId)
+  function removeFromFavourites(product) {
+    const key = getProductKey(product);
+
+    setFavourites((prevFavourites) =>
+      prevFavourites.filter(
+        (item) => getProductKey(item) !== key
+      )
     );
   }
 
-  // verifica se un prodotto è nei preferiti
-  function isFavourite(productId) {
-    return favourites.some((item) => item.id === productId);
+
+  // svuota tutti i preferiti
+  function clearFavourites() {
+    setFavourites([]);
   }
+
+
+  // verifica se un prodotto è nei preferiti
+  function isFavourite(product) {
+    const key = typeof product === "object"
+      ? getProductKey(product)
+      : product;
+
+    return favourites.some(
+      (item) => getProductKey(item) === key
+    );
+  }
+
 
   // toggle preferito
   function toggleFavourite(product) {
-    if (isFavourite(product.id)) {
-      removeFromFavourites(product.id);
+    if (isFavourite(product)) {
+      removeFromFavourites(product);
     } else {
       addToFavourites(product);
     }
   }
 
+
   const value = {
     favourites,
     addToFavourites,
     removeFromFavourites,
+    clearFavourites,
     isFavourite,
     toggleFavourite,
   };

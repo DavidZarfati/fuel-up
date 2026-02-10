@@ -1,28 +1,7 @@
-/* color variables */
-:root {
-  --primary-color: #166ddf;
-  --primary-dark: #2a5fb9;
-  --danger-color: #d32f2f;
-  --danger-dark: #b71c1c;
-  --text-dark: #333;
-  --text-muted: #666;
-  --border-color: #e0e0e0;
-  --background-light: #f8f9fa;
-  --background-white: #ffffff;
-  --warning-bg: #fff3cd;
-  --warning-border: #ffc107;
-  --warning-text: #856404;
-  --shadow-light: rgba(0, 0, 0, 0.05);
-  --shadow-medium: rgba(0, 0, 0, 0.1);
-  --shadow-primary: rgba(102, 126, 234, 0.1);
-  --shadow-danger: rgba(211, 47, 47, 0.3);
-}
-
-
 .ot-search-page-container {
   min-height: 100vh;
   padding: 32px 16px;
-  background-color: var(--background-light);
+  background-color: #f8f9fa;
 }
 
 
@@ -30,10 +9,10 @@
   text-align: center;
   margin-bottom: 15px;
   padding: 15px;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(135deg, #166ddf 0%, #2a5fb9 100%);
   border-radius: 10px;
   color: white;
-  box-shadow: 0 4px 6px var(--shadow-medium);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .ot-search-page-header h1 {
@@ -65,58 +44,11 @@
   gap: 32px;
   justify-content: center;
   align-items: center;
-  margin-bottom: 15px;
-  padding: 10px;
-  background: var(--background-white);
-  border-radius: 8px;
-  box-shadow: 0 2px 4px var(--shadow-light);
-  flex-wrap: wrap;
-}
-
-.ot-filter-group {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.ot-filter-group label {
-  font-weight: 600;
-  color: var(--text-dark);
-  margin: 0;
-}
-
-.ot-filter-select {
-  padding: 8px 16px;
-  border: 2px solid var(--border-color);
-  border-radius: 6px;
-  font-size: 15.2px;
-  background-color: var(--background-white);
-  color: var(--text-dark);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.ot-filter-select:hover {
-  border-color: var(--primary-color);
-  box-shadow: 0 2px 6px var(--shadow-primary);
-}
-
-.ot-filter-select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--shadow-primary);
-}
-
-.ot-search-filters {
-  display: flex;
-  gap: 32px;
-  justify-content: center;
-  align-items: center;
   margin-bottom: 32px;
   padding: 24px;
-  background: var(--background-white);
+  background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px var(--shadow-light);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   flex-wrap: wrap;
 }
 
@@ -128,32 +60,31 @@
 
 .ot-filter-group label {
   font-weight: 600;
-  color: var(--text-dark);
+  color: #333;
   margin: 0;
 }
 
 .ot-filter-select {
   padding: 8px 16px;
-  border: 2px solid var(--border-color);
+  border: 2px solid #e0e0e0;
   border-radius: 6px;
   font-size: 15.2px;
-  background-color: var(--background-white);
-  color: var(--text-dark);
+  background-color: #ffffff;
+  color: #333;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .ot-filter-select:hover {
-  border-color: var(--primary-color);
-  box-shadow: 0 2px 6px var(--shadow-primary);
+  border-color: #166ddf;
+  box-shadow: 0 2px 6px rgba(102, 126, 234, 0.1);
 }
 
 .ot-filter-select:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px var(--shadow-primary);
+  border-color: #166ddf;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
-
 
 .ot-products-grid {
   display: grid;
@@ -175,7 +106,7 @@
   text-align: center;
   padding: 64px 32px;
   font-size: 19.2px;
-  color: var(--text-muted);
+  color: #666;
 }
 
 .ot-loading-container p {
@@ -184,8 +115,8 @@
 
 /* errors */
 .ot-error-message {
-  background-color: var(--warning-bg);
-  border: 2px solid var(--warning-border);
+  background-color: #fff3cd;
+  border: 2px solid #ffc107;
   border-radius: 8px;
   padding: 32px;
   text-align: center;
@@ -193,7 +124,7 @@
 }
 
 .ot-error-message p {
-  color: var(--warning-text);
+  color: #856404;
   font-size: 17.6px;
   margin: 0 0 16px 0;
 }
@@ -206,14 +137,14 @@
 .ot-no-search-message {
   text-align: center;
   padding: 64px 32px;
-  background: var(--background-white);
+  background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px var(--shadow-light);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .ot-no-search-message p {
   font-size: 17.6px;
-  color: var(--text-muted);
+  color: #666;
   margin: 0;
 }
 
@@ -224,15 +155,15 @@
   align-items: center;
   gap: 32px;
   padding: 32px;
-  background: var(--background-white);
+  background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px var(--shadow-light);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   flex-wrap: wrap;
 }
 
 .ot-pagination-btn {
   padding: 12px 24px;
-  background-color: var(--primary-dark);
+  background-color: #2a5fb9;
   color: white;
   border: none;
   border-radius: 6px;
@@ -243,7 +174,7 @@
 }
 
 .ot-pagination-btn:hover:not(:disabled) {
-  background-color: var(--primary-dark);
+  background-color: #2a5fb9;
   transform: translateY(-2px);
 }
 
@@ -255,7 +186,7 @@
 
 .ot-pagination-info {
   font-size: 16px;
-  color: var(--text-dark);
+  color: #333;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -264,7 +195,7 @@
 
 .ot-btn {
   padding: 12px 32px;
-  background-color: var(--primary-color);
+  background-color: #166ddf;
   color: white;
   border: none;
   border-radius: 6px;
@@ -274,16 +205,16 @@
 }
 
 .ot-btn:hover {
-  background-color: var(--primary-dark);
-  box-shadow: 0 4px 8px var(--shadow-primary);
+  background-color: #2a5fb9;
+  box-shadow: 0 4px 8px rgba(102, 126, 234, 0.1);
 }
 
 .btn-primary {
-  background-color: var(--primary-color);
+  background-color: #166ddf;
 }
 
 .ot-btn-primary:hover {
-  background-color: var(--primary-dark);
+  background-color: #2a5fb9;
 }
 
 

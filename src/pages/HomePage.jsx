@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useFavourites } from "../context/FavouritesContext";
 import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
 import "./HomePage.css";
 
 
@@ -14,7 +15,8 @@ export default function HomePage() {
     const [categoria, setcategoria] = useState("");
     const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
     const { isFavourite, toggleFavourite } = useFavourites();
-    const { addToCart } = useCart();
+    const { cart, addToCart, increaseQuantity, decreaseQuantity, removeFromCart } = useCart();
+    const navigate = useNavigate();
     const [toast, setToast] = useState(null);
     const [showToast, setShowToast] = useState(false);
     const [favToast, setFavToast] = useState(null);
@@ -74,31 +76,31 @@ export default function HomePage() {
                                 onClick={() => setcategoria("")}
                                 className={`ot-category-btn ${categoria === "" ? "active" : ""}`}
                             >
-                                Prodotti Più Venduti
+                                Prodotti più venduti
                             </button>
                             <button
                                 onClick={() => setcategoria(1)}
                                 className={`ot-category-btn ${categoria === 1 ? "active" : ""}`}
                             >
-                                Supplements
+                                Integratori
                             </button>
                             <button
                                 onClick={() => setcategoria(2)}
                                 className={`ot-category-btn ${categoria === 2 ? "active" : ""}`}
                             >
-                                Apparel
+                                Abbigliamento
                             </button>
                             <button
                                 onClick={() => setcategoria(3)}
                                 className={`ot-category-btn ${categoria === 3 ? "active" : ""}`}
                             >
-                                Accessories
+                                Accessori
                             </button>
                             <button
                                 onClick={() => setcategoria(4)}
                                 className={`ot-category-btn ${categoria === 4 ? "active" : ""}`}
                             >
-                                Food & Snacks
+                                Cibo & Snacks
                             </button>
                         </div>
                     </div>
@@ -169,22 +171,63 @@ export default function HomePage() {
                                                             <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                             <div className="ot-card-actions">
                                                                 <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
-                                                                    Vedi dettagli
+                                                                    Dettagli
                                                                 </Link>
-                                                                <button
-                                                                    onClick={() => {
-                                                                        addToCart(card);
-                                                                        setToast({
-                                                                            name: card.name,
-                                                                            time: 'adesso',
-                                                                            image: `${backendBaseUrl}${card.image}`
-                                                                        });
-                                                                        setShowToast(true);
-                                                                    }}
-                                                                    className="btn btn-primary btn-sm"
-                                                                >
-                                                                    Aggiungi <i className="bi bi-cart-plus"></i>
-                                                                </button>
+                                                                {(() => {
+                                                                    const cartItem = cart.find(item => item.id === card.id);
+                                                                    const isInCart = !!cartItem;
+                                                                    const quantity = cartItem?.quantity || 0;
+                                                                    if (!isInCart) {
+                                                                        return (
+                                                                            <button
+                                                                                onClick={() => {
+                                                                                    addToCart(card);
+                                                                                    setToast({
+                                                                                        name: card.name,
+                                                                                        time: 'adesso',
+                                                                                        image: `${backendBaseUrl}${card.image}`
+                                                                                    });
+                                                                                    setShowToast(true);
+                                                                                }}
+                                                                                className="btn btn-primary btn-sm"
+                                                                            >
+                                                                                Aggiungi
+                                                                            </button>
+                                                                        );
+                                                                    } else {
+                                                                        return (
+                                                                            <>
+                                                                                <div className="d-flex align-items-center gap-1">
+                                                                                    <button
+                                                                                        onClick={() => decreaseQuantity(card.id)}
+                                                                                        className="btn btn-outline-secondary btn-sm"
+                                                                                    >
+                                                                                        -
+                                                                                    </button>
+                                                                                    <span className="fw-bold">{quantity}</span>
+                                                                                    <button
+                                                                                        onClick={() => increaseQuantity(card.id)}
+                                                                                        className="btn btn-outline-secondary btn-sm"
+                                                                                    >
+                                                                                        +
+                                                                                    </button>
+                                                                                </div>
+                                                                                <button
+                                                                                    onClick={() => navigate("/shopping-cart")}
+                                                                                    className="btn btn-success btn-sm"
+                                                                                >
+                                                                                    Carrello
+                                                                                </button>
+                                                                                <button
+                                                                                    onClick={() => removeFromCart(card.id)}
+                                                                                    className="btn btn-outline-danger btn-sm"
+                                                                                >
+                                                                                    Rimuovi
+                                                                                </button>
+                                                                            </>
+                                                                        );
+                                                                    }
+                                                                })()}
                                                             </div>
                                                         </div>
                                                     </div>
@@ -324,7 +367,7 @@ export default function HomePage() {
                                                         <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
                                                             Vedi dettagli
                                                         </Link>
-                                                        <button
+                                                        {/* <button
                                                             onClick={() => {
                                                                 addToCart(card);
                                                                 setToast({
@@ -337,7 +380,8 @@ export default function HomePage() {
                                                             className="btn btn-primary btn-sm"
                                                         >
                                                             Aggiungi <i className="bi bi-cart-plus"></i>
-                                                        </button>
+                                                        </button> */}
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -373,11 +417,55 @@ export default function HomePage() {
                                                     <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                     <div className="ot-list-card-actions">
                                                         <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
-                                                            Vedi dettagli
+                                                            Dettagli
                                                         </Link>
-                                                        <button onClick={() => addToCart(card)} className="btn btn-primary btn-sm">
-                                                            Aggiungi <i className="bi bi-cart-plus"></i>
-                                                        </button>
+                                                        {(() => {
+                                                            const cartItem = cart.find(item => item.id === card.id);
+                                                            const isInCart = !!cartItem;
+                                                            const quantity = cartItem?.quantity || 0;
+                                                            if (!isInCart) {
+                                                                return (
+                                                                    <button
+                                                                        onClick={() => addToCart(card)}
+                                                                        className="btn btn-primary btn-sm"
+                                                                    >
+                                                                        Aggiungi
+                                                                    </button>
+                                                                );
+                                                            } else {
+                                                                return (
+                                                                    <>
+                                                                        <div className="d-flex align-items-center gap-1">
+                                                                            <button
+                                                                                onClick={() => decreaseQuantity(card.id)}
+                                                                                className="btn btn-outline-secondary btn-sm"
+                                                                            >
+                                                                                -
+                                                                            </button>
+                                                                            <span className="fw-bold">{quantity}</span>
+                                                                            <button
+                                                                                onClick={() => increaseQuantity(card.id)}
+                                                                                className="btn btn-outline-secondary btn-sm"
+                                                                            >
+                                                                                +
+                                                                            </button>
+                                                                        </div>
+                                                                        <button
+                                                                            onClick={() => navigate("/shopping-cart")}
+                                                                            className="btn btn-success btn-sm"
+                                                                        >
+                                                                            Carrello
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => removeFromCart(card.id)}
+                                                                            className="btn btn-outline-danger btn-sm"
+                                                                        >
+                                                                            Rimuovi
+                                                                        </button>
+                                                                    </>
+                                                                );
+                                                            }
+                                                        })()}
                                                     </div>
                                                 </div>
                                             </div>

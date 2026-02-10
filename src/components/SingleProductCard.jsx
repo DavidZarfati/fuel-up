@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useFavourites } from "../context/FavouritesContext";
 
-export default function SingleProductCard({ product }) {
+export default function SingleProductCard({ product, onToggleFavourite }) {
 
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -23,7 +23,13 @@ export default function SingleProductCard({ product }) {
   const quantity = cartItem?.quantity || 0;
 
   function handleToggleFavourite() {
-    toggleFavourite(product);
+    // If parent provides a callback, use it (for toast notification)
+    if (onToggleFavourite) {
+      onToggleFavourite(product);
+    } else {
+      // Otherwise, just toggle without notification
+      toggleFavourite(product);
+    }
   }
 
   return (
@@ -80,8 +86,8 @@ export default function SingleProductCard({ product }) {
         )}
 
         {product.price && (
-          <p className="fw-bold mb-3 dz">
-            € {product.price.toFixed(2)}
+          <p className="fw-bold mb-3">
+            <span className="dz-prodotto-senza-sconto">€ {product.price.toFixed(2)}</span>
             {product.discount_price && (
               <span className="dz-prezzo-scontato">
                 &nbsp;€ {product.discount_price.toFixed(2)}

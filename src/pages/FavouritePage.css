@@ -32,8 +32,8 @@
 .ot-favourite-filters {
   display: flex;
   gap: 32px;
-  justify-content: center;
-  align-items: flex-start;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 20px;
   padding: 24px;
   background: #ffffff;
@@ -85,6 +85,34 @@
   background-color: #166ddf;
   color: white;
   border-color: #166ddf;
+}
+
+/* Clear All button */
+.ot-clear-all-btn {
+  padding: 8px 20px;
+  background-color: #dc3545;
+  color: white;
+  border: 2px solid #dc3545;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.ot-clear-all-btn:hover {
+  background-color: #c82333;
+  border-color: #bd2130;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(220, 53, 69, 0.3);
+}
+
+.ot-clear-all-btn:active {
+  transform: translateY(0);
 }
 
 /* GRID VIEW */
@@ -185,11 +213,12 @@
   color: #666;
   font-size: 14px;
   line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 
 .ot-list-item-price {
   margin: 0;
@@ -268,6 +297,11 @@
 
   .ot-favourite-filters .ot-view-btn {
     flex: 1;
+    justify-content: center;
+  }
+
+  .ot-clear-all-btn {
+    width: 100%;
     justify-content: center;
   }
 
@@ -372,6 +406,11 @@
   .ot-favourite-filters .ot-view-btn {
     font-size: 13px;
     padding: 6px 12px;
+  }
+
+  .ot-clear-all-btn {
+    font-size: 13px;
+    padding: 6px 16px;
   }
 
   /* Empty state */
