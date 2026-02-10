@@ -96,8 +96,8 @@ export default function HomePage() {
     <section className="page-section">
       <div className="app-container">
         <HeroSection
-          title="MyProtein-style performance marketplace, built for serious athletes."
-          subtitle="Scopri integratori, apparel e accessori premium con esperienza dark PRO e acquisto rapido."
+          title={<>FuelUp: la scienza<br /> della performance a un<br /> click da te.</>}
+          subtitle="Scopri integratori, apparel e accessori premium con esperienza personalizzata FuelUp e acquisto rapido."
           primaryText="Esplora prodotti"
           secondaryText="Offerte attive"
         />
