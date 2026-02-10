@@ -399,24 +399,56 @@ export default function HomePage() {
                                                     <h5 className="card-title">{card.name}</h5>
                                                     <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                     <div className="ot-list-card-actions">
-                                                        <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-xs p-1">
+                                                        <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
                                                             Dettagli
                                                         </Link>
-                                                        {/* <button
-                                                            onClick={() => {
-                                                                addToCart(card);
-                                                                setToast({
-                                                                    name: card.name,
-                                                                    time: 'adesso',
-                                                                    image: `${backendBaseUrl}${card.image}`
-                                                                });
-                                                                setShowToast(true);
-                                                            }}
-                                                            className="btn btn-primary btn-sm"
-                                                        >
-                                                            Aggiungi <i className="bi bi-cart-plus"></i>
-                                                        </button> */}
-
+                                                        {(() => {
+                                                            const cartItem = cart.find(item => item.id === card.id);
+                                                            const isInCart = !!cartItem;
+                                                            const quantity = cartItem?.quantity || 0;
+                                                            if (!isInCart) {
+                                                                return (
+                                                                    <button
+                                                                        onClick={() => addToCart(card)}
+                                                                        className="btn btn-primary btn-sm"
+                                                                    >
+                                                                        Aggiungi<i className="bi bi-cart-plus"></i>
+                                                                    </button>
+                                                                );
+                                                            } else {
+                                                                return (
+                                                                    <>
+                                                                        <div className="d-flex align-items-center gap-1">
+                                                                            <button
+                                                                                onClick={() => decreaseQuantity(card.id)}
+                                                                                className="btn btn-outline-secondary btn-sm"
+                                                                            >
+                                                                                -
+                                                                            </button>
+                                                                            <span className="fw-bold">{quantity}</span>
+                                                                            <button
+                                                                                onClick={() => increaseQuantity(card.id)}
+                                                                                className="btn btn-outline-secondary btn-sm"
+                                                                            >
+                                                                                +
+                                                                            </button>
+                                                                        </div>
+                                                                        <button
+                                                                            onClick={() => navigate("/shopping-cart")}
+                                                                            className="btn btn-success btn-sm"
+                                                                        >
+                                                                            Carrello
+                                                                        </button>
+                                                                        <button
+                                                                            onClick={() => removeFromCart(card.id)}
+                                                                            className="btn btn-outline-danger btn-sm"
+                                                                        >
+                                                                            Rimuovi
+                                                                        </button>
+                                                                    </>
+                                                                );
+                                                            }
+                                                        })()}
                                                     </div>
                                                 </div>
                                             </div>
