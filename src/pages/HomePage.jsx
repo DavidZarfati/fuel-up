@@ -191,7 +191,7 @@ export default function HomePage() {
                                                                                 }}
                                                                                 className="btn btn-primary btn-sm"
                                                                             >
-                                                                                Aggiungi
+                                                                                Aggiungi <i className="bi bi-cart-plus"></i>
                                                                             </button>
                                                                         );
                                                                     } else {
@@ -429,7 +429,7 @@ export default function HomePage() {
                                                                         onClick={() => addToCart(card)}
                                                                         className="btn btn-primary btn-sm"
                                                                     >
-                                                                        Aggiungi
+                                                                        Aggiungi<i className="bi bi-cart-plus"></i>
                                                                     </button>
                                                                 );
                                                             } else {
