@@ -240,7 +240,17 @@ export default function HomePage() {
                                             <div className="card mb-3 ot-product-card">
                                                 {/* HEART ICON */}
                                                 <button
-                                                    onClick={() => toggleFavourite(card)}
+                                                    onClick={() => {
+                                                        toggleFavourite(card);
+                                                        if (!isFavourite(card.id)) {
+                                                            setFavToast({
+                                                                name: card.name,
+                                                                time: 'adesso',
+                                                                image: `${backendBaseUrl}${card.image}`
+                                                            });
+                                                            setShowFavToast(true);
+                                                        }
+                                                    }}
                                                     className="ot-heart-button"
                                                     aria-label={isFavourite(card.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
                                                 >
@@ -382,7 +392,17 @@ export default function HomePage() {
                                         <div className="card mb-3 ot-product-card-list">
                                             {/* HEART ICON */}
                                             <button
-                                                onClick={() => toggleFavourite(card)}
+                                                onClick={() => {
+                                                    toggleFavourite(card);
+                                                    if (!isFavourite(card.id)) {
+                                                        setFavToast({
+                                                            name: card.name,
+                                                            time: 'adesso',
+                                                            image: `${backendBaseUrl}${card.image}`
+                                                        });
+                                                        setShowFavToast(true);
+                                                    }
+                                                }}
                                                 className="ot-heart-button"
                                                 aria-label={isFavourite(card.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
                                             >
@@ -434,7 +454,17 @@ export default function HomePage() {
                                         <div className="card mb-3 ot-product-card-list">
                                             {/* HEART ICON */}
                                             <button
-                                                onClick={() => toggleFavourite(card)}
+                                                onClick={() => {
+                                                    toggleFavourite(card);
+                                                    if (!isFavourite(card.id)) {
+                                                        setFavToast({
+                                                            name: card.name,
+                                                            time: 'adesso',
+                                                            image: `${backendBaseUrl}${card.image}`
+                                                        });
+                                                        setShowFavToast(true);
+                                                    }
+                                                }}
                                                 className="ot-heart-button"
                                                 aria-label={isFavourite(card.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
                                             >
