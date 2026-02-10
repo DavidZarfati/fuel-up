@@ -1,4 +1,121 @@
-.dz-bg-footer {
+/* MOBILE FIRST (0–767px)*/
+
+.ot-footer {
+    background-color: rgb(73, 185, 216);
+    padding: 40px 45px;
+}
+
+.ot-footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+/* Columns */
+
+.ot-footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Logo */
+
+.ot-footer-logo {
+    height: 60px;
+    max-width: 150px;
+    border-radius: 6px;
+}
+
+/* Titles */
+
+.ot-footer-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: rgb(15, 78, 160);
+    margin-bottom: 5px;
+}
+
+/* Lists */
+
+.ot-footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: rgb(15, 78, 160);
+    font-size: 14px;
+}
+
+.ot-footer-list li {
+    margin-bottom: 6px;
+}
+
+/* Social */
+
+.ot-footer-social li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ot-footer-social a {
+    text-decoration: none;
+    color: rgb(15, 78, 160);
+    transition: opacity 0.2s ease;
+}
+
+.ot-footer-social a:hover {
+    opacity: 0.7;
+}
+
+
+/* TABLET (768px+) */
+
+@media (min-width: 768px) {
+    .ot-footer-content {
+        flex-direction: row;
+        justify-content: space-between;
+        gap: 40px;
+    }
+
+    .ot-footer-column {
+        flex: 1;
+    }
+
+    .ot-footer-logo {
+        height: 70px;
+    }
+}
+
+
+/* DESKTOP (1024px+)*/
+
+@media (min-width: 1024px) {
+    .ot-footer {
+        padding: 40px 45px;
+    }
+
+    .ot-footer-title {
+        font-size: 20px;
+    }
+
+    .ot-footer-list {
+        font-size: 15px;
+    }
+}
+
+
+/* LARGE DESKTOP (1280px+)*/
+
+@media (min-width: 1280px) {
+    .ot-footer-content {
+        gap: 60px;
+    }
+}
+
+/* .dz-bg-footer {
     background-color: rgb(73, 185, 216);
 }
 
@@ -23,4 +140,4 @@
     text-decoration: none;
     padding-left: 5px;
 
-}
+} */
