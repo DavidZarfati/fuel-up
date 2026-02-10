@@ -1,4 +1,4 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useFavourites } from "../context/FavouritesContext";
@@ -13,10 +13,10 @@ const MAIN_LINKS = [
 
 const CATEGORY_LINKS = [
   { title: "Prodotti", path: "/products" },
-  { title: "Integratori", path: "/products?category=1" },
-  { title: "Abbigliamento", path: "/products?category=2" },
-  { title: "Accessori", path: "/products?category=3" },
-  { title: "Offerte", path: "/products?on_sale=1" },
+  { title: "Integratori", path: "/products?category=1", category: "1" },
+  { title: "Abbigliamento", path: "/products?category=2", category: "2" },
+  { title: "Accessori", path: "/products?category=3", category: "3" },
+  { title: "Offerte", path: "/products?on_sale=1", onSale: "1" },
 ];
 
 function IconAction({ icon, badge, label, onClick }) {
@@ -32,9 +32,14 @@ export default function Header({ nameApp }) {
   const [search, setSearch] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const { totalItems } = useCart();
   const { favourites } = useFavourites();
   const favouritesCount = useMemo(() => favourites.length, [favourites]);
+
+  const queryParams = new URLSearchParams(location.search);
+  const category = queryParams.get("category");
+  const onSale = queryParams.get("on_sale");
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -112,17 +117,49 @@ export default function Header({ nameApp }) {
         </div>
 
         <div className={`ot-header-nav-wrap ${isMenuOpen ? "open" : ""}`}>
+          {/* Main Navigation */}
           <nav className="ot-header-main-nav">
             {MAIN_LINKS.map((link) => (
-              <NavLink key={link.path} to={link.path} onClick={() => setIsMenuOpen(false)}>
+              <NavLink
+                key={link.path}
+                to={link.path}
+                className={({ isActive }) => {
+                  // Custom logic for products vs favourites
+                  if (link.path === "/products") {
+                    return location.pathname === "/products" && !category && !onSale ? "active" : "";
+                  }
+                  if (link.path === "/products/favourites") {
+                    return location.pathname === "/products/favourites" ? "active" : "";
+                  }
+                  return location.pathname === link.path ? "active" : "";
+                }}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 {link.title}
               </NavLink>
             ))}
           </nav>
 
+          {/* Category Navigation */}
           <nav className="ot-header-category-nav">
             {CATEGORY_LINKS.map((link) => (
-              <NavLink key={link.title} to={link.path} onClick={() => setIsMenuOpen(false)}>
+              <NavLink
+                key={link.title}
+                to={link.path}
+                className={({ isActive }) => {
+                  if (link.path === "/products") {
+                    return location.pathname === "/products" && !category && !onSale ? "active" : "";
+                  }
+                  if (link.category) {
+                    return location.pathname === "/products" && category === link.category ? "active" : "";
+                  }
+                  if (link.onSale) {
+                    return location.pathname === "/products" && onSale === link.onSale ? "active" : "";
+                  }
+                  return "";
+                }}
+                onClick={() => setIsMenuOpen(false)}
+              >
                 {link.title}
               </NavLink>
             ))}
