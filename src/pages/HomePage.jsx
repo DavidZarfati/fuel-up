@@ -126,7 +126,7 @@ export default function HomePage() {
 
 
                 {!isGridMode ? (
-                    <div className="d-flex container ot-bg-teal">
+                    <div className="container ot-bg-teal">
                         <div className="row">
                             {loading && <p>Caricamento prodotti...</p>}
                             {error && <p>{error}</p>}
