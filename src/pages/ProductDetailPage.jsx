@@ -6,6 +6,7 @@ import { useCart } from "../context/CartContext";
 import RelatedProductsCarousel from "../components/CaroselProducts";
 import "./ProductDetailPage.css";
 
+
 export default function ProductDetailPage() {
   const { slug } = useParams();
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
@@ -89,22 +90,62 @@ export default function ProductDetailPage() {
       {!loading && !error && p && (
         <>
           <div className="d-flex flex-column">
-            <img
-              src={`${backendBaseUrl}${p.image}`}
-              alt={p.name}
-              style={{
-                maxWidth: "20%",
-                height: "30%",
-                display: "block",
-                margin: "40px auto",
-              }}
-            />
+            <div className="ml-image-wrap align-self-center">
+              <img
+                src={`${backendBaseUrl}${p.image}`}
+                alt={p.name}
+                style={{
+                  width: "300px",
+                  height: "auto",
+                  display: "block",
+                  margin: "0 0 15px 0",
+                  //border: "1px solid black"
+                }}
+                //className=".ml-main-image"
+              />
+              <button
+                onClick={handleToggleFav}
+                className="ot-heart-button"
+                aria-label={
+                  isFavourite(p.id)
+                    ? "Rimuovi dai preferiti"
+                    : "Aggiungi ai preferiti"
+                }
+                style={{
+                  marginLeft: 16,
+                  position: "absolute",
+                  top: "24px",
+                  right: "12px",
+                  background: "white",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "35px",
+                  height: "35px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  zIndex: 10,
+                }}
+              >
+                <i
+                  className={isFavourite(p.id) ? "bi bi-heart-fill" : "bi bi-heart"}
+                  style={{
+                    color: isFavourite(p.id) ? "#dc3545" : "#666",
+                    fontSize: "18px",
+                  }}
+                />
+              </button>
+            </div>
 
-            <h2 className="dz-titolo-prodotto">
+          
+
+
+          {/* <h2 className="dz-titolo-prodotto">
               {p.name || "No name available."}{" "}
               <span className="dz-brand-badge">{p.brand}</span>
 
-              {/* HEART ICON */}
+              {HEART ICON}
               <button
                 onClick={handleToggleFav}
                 className="ot-heart-button"
@@ -135,123 +176,131 @@ export default function ProductDetailPage() {
                   }}
                 />
               </button>
-            </h2>
+            </h2> */}
 
+          <h2 className="dz-titolo-prodotto">
+            {p.name || "No name available."}{" "}
+            <span className="dz-brand-badge">{p.brand}</span>
+
+
+          </h2>
+
+          <p className="dz-description-prodotto">
+            {p.description || "No description available."}
+          </p>
+
+          <p className="dz-description-prodotto">
+            {p.size ? `Size: ${p.size}` : ""}
+          </p>
+
+          {p.manufacturer_note && (
             <p className="dz-description-prodotto">
-              {p.description || "No description available."}
+              Additional information: {p.manufacturer_note}
             </p>
+          )}
 
-            <p className="dz-description-prodotto">
-              {p.size ? `Size: ${p.size}` : ""}
-            </p>
-
-            {p.manufacturer_note && (
-              <p className="dz-description-prodotto">
-                Additional information: {p.manufacturer_note}
-              </p>
-            )}
-
-            <p className="dz-description-prodotto">
-              {p.color
-                ? `Color: ${p.color}`
-                : p.flavor
+          <p className="dz-description-prodotto">
+            {p.color
+              ? `Color: ${p.color}`
+              : p.flavor
                 ? `Taste: ${p.flavor}`
                 : ""}
-            </p>
+          </p>
 
-            <div className="d-flex justify-content-around">
-              {p.discount_price && p.discount_price < p.price ? (
-                <>
-                  <p className="dz-description-prodotto">
-                    Prezzo Base:{" "}
-                    <span className="dz-prodotto-senza-sconto">€{p.price}</span>
-                  </p>
-                  <p className="dz-description-prodotto">
-                    Prezzo Scontato:{" "}
-                    <span className="dz-prezzo-scontato">€{p.discount_price}</span>
-                  </p>
-                </>
-              ) : (
+          <div className="d-flex justify-content-around">
+            {p.discount_price && p.discount_price < p.price ? (
+              <>
                 <p className="dz-description-prodotto">
-                  Prezzo: <span className="dz-prezzo-regular">€{p.price}</span>
+                  Prezzo Base:{" "}
+                  <span className="dz-prodotto-senza-sconto">€{p.price}</span>
                 </p>
-              )}
-            </div>
-
-            {/* bottone aggiungi al carrello */}
-            <div className="d-flex justify-content-center" style={{ marginTop: 20 }}>
-              <button className="btn btn-primary" onClick={handleAddToCart}>
-                Aggiungi al carrello
-              </button>
-            </div>
-
-            {/* Toast notification preferiti */}
-            {favToast && showFavToast && (
-              <div
-                className="toast-container position-fixed"
-                style={{ bottom: 90, right: 30, zIndex: 9999 }}
-              >
-                <div
-                  className="toast show"
-                  role="alert"
-                  aria-live="assertive"
-                  aria-atomic="true"
-                  style={{
-                    minWidth: 320,
-                    background: "#fff",
-                    borderRadius: 8,
-                    boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                  }}
-                >
-                  <div
-                    className="toast-header"
-                    style={{
-                      background: "#f5f5f5",
-                      borderTopLeftRadius: 8,
-                      borderTopRightRadius: 8,
-                    }}
-                  >
-                    <img
-                      src={favToast.image}
-                      className="rounded me-2"
-                      alt={favToast.name}
-                      style={{
-                        width: 32,
-                        height: 32,
-                        objectFit: "cover",
-                        marginRight: 8,
-                      }}
-                    />
-                    <strong className="me-auto">Preferiti</strong>
-                    <small className="text-body-secondary">{favToast.time}</small>
-                    <button
-                      type="button"
-                      className="btn-close"
-                      aria-label="Close"
-                      onClick={() => setShowFavToast(false)}
-                      style={{
-                        marginLeft: 8,
-                        border: "none",
-                        background: "transparent",
-                        fontSize: 18,
-                      }}
-                    >
-                      ×
-                    </button>
-                  </div>
-                  <div className="toast-body" style={{ padding: "12px 24px", fontSize: 18 }}>
-                    Hai aggiunto <b>{favToast.name}</b> ai preferiti
-                  </div>
-                </div>
-              </div>
+                <p className="dz-description-prodotto">
+                  Prezzo Scontato:{" "}
+                  <span className="dz-prezzo-scontato">€{p.discount_price}</span>
+                </p>
+              </>
+            ) : (
+              <p className="dz-description-prodotto">
+                Prezzo: <span className="dz-prezzo-regular">€{p.price}</span>
+              </p>
             )}
           </div>
 
-          <RelatedProductsCarousel slug={slug} />
-        </>
-      )}
+          {/* bottone aggiungi al carrello */}
+          <div className="d-flex justify-content-center" style={{ marginTop: 20 }}>
+            <button className="btn btn-primary" onClick={handleAddToCart}>
+              Aggiungi al carrello
+            </button>
+          </div>
 
-      {!loading && !error && !p && <div>Product data not available.</div>}
+          {/* Toast notification preferiti */}
+          {favToast && showFavToast && (
+            <div
+              className="toast-container position-fixed"
+              style={{ bottom: 90, right: 30, zIndex: 9999 }}
+            >
+              <div
+                className="toast show"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+                style={{
+                  minWidth: 320,
+                  background: "#fff",
+                  borderRadius: 8,
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                }}
+              >
+                <div
+                  className="toast-header"
+                  style={{
+                    background: "#f5f5f5",
+                    borderTopLeftRadius: 8,
+                    borderTopRightRadius: 8,
+                  }}
+                >
+                  <img
+                    src={favToast.image}
+                    className="rounded me-2"
+                    alt={favToast.name}
+                    style={{
+                      width: 32,
+                      height: 32,
+                      objectFit: "cover",
+                      marginRight: 8,
+                    }}
+                  />
+                  <strong className="me-auto">Preferiti</strong>
+                  <small className="text-body-secondary">{favToast.time}</small>
+                  <button
+                    type="button"
+                    className="btn-close"
+                    aria-label="Close"
+                    onClick={() => setShowFavToast(false)}
+                    style={{
+                      marginLeft: 8,
+                      border: "none",
+                      background: "transparent",
+                      fontSize: 18,
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+                <div className="toast-body" style={{ padding: "12px 24px", fontSize: 18 }}>
+                  Hai aggiunto <b>{favToast.name}</b> ai preferiti
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+      <RelatedProductsCarousel slug={slug} />
+    </>
+  )
+}
+
+{ !loading && !error && !p && <div>Product data not available.</div> }
     </>
   );
 }

@@ -18,6 +18,21 @@
     color: white;
 }
 
+.ml-image-wrap {
+    position: relative;
+    display: inline-block;
+    margin: 0px 0px;
+    max-width: 320px;
+}
+
+.ml-main-image {
+    max-width: 20%;
+    height: auto;
+    display: inline-block;
+    margin: 40px auto;
+    border: 1px solid black;
+}
+
 .dz-brand-badge {
     animation: cambiaColore 10s infinite;
 }
