@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { useFavourites } from "../context/FavouritesContext";
 import "./Header.css";
-import logo from "../assets/images/logo.jpg";
+import logo from "../assets/images/logo.png";
 
 const MAIN_LINKS = [
   { title: "Chi siamo", path: "/about-us" },
