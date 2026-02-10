@@ -2,11 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext";
+import { useFavourites } from "../context/FavouritesContext";
 import SingleProductCard from "../components/SingleProductCard";
 import "./SearchPage.css";
 
 export default function SearchPage() {
   const { backendUrl } = useGlobal();
+  const { isFavourite, toggleFavourite } = useFavourites();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -24,7 +26,17 @@ export default function SearchPage() {
   const [localOrderBy, setLocalOrderBy] = useState(orderBy);
   const [localOrderDir, setLocalOrderDir] = useState(orderDir);
 
+  // Toast preferiti
+  const [favToast, setFavToast] = useState(null);
+  const [showFavToast, setShowFavToast] = useState(false);
+
   const limit = 12;
+
+  useEffect(() => {
+    if (!favToast || !showFavToast) return;
+    const timer = setTimeout(() => setShowFavToast(false), 4000);
+    return () => clearTimeout(timer);
+  }, [favToast, showFavToast]);
 
   useEffect(() => {
     let ignore = false;
@@ -57,7 +69,13 @@ export default function SearchPage() {
         console.log("Risposta backend ricerca:", data);
 
         if (!ignore) {
-          const list = Array.isArray(data?.risultati) ? data.risultati : [];
+          const list = Array.isArray(data?.risultati)
+            ? data.risultati.map((p) => ({
+              ...p,
+              id: p.id ?? p.product_id ?? p.slug, // ✅ FIX: ensure stable id
+            }))
+            : [];
+
           const total = data?.paginazione?.totale_risultati || 0;
           const pages = data?.paginazione?.totale_pagine || 0;
 
@@ -88,6 +106,7 @@ export default function SearchPage() {
       ignore = true;
     };
   }, [backendUrl, searchTerm, page, localOrderBy, localOrderDir]);
+
 
   // Aggiorna l'URL quando cambiano i parametri
   useEffect(() => {
@@ -127,6 +146,20 @@ export default function SearchPage() {
     }
   };
 
+  function handleToggleFavourite(p) {
+    const alreadyFav = isFavourite(p.id);
+    toggleFavourite(p);
+
+    if (!alreadyFav) {
+      setFavToast({
+        name: p.name,
+        time: "adesso",
+        image: `${backendUrl}${p.image}`,
+      });
+      setShowFavToast(true);
+    }
+  }
+
   return (
     <section className="ot-search-page-container">
       <div className="ot-search-page-header">
@@ -136,7 +169,7 @@ export default function SearchPage() {
             Ricerca per: <strong>"{searchTerm}"</strong>
           </p>
         )}
-        
+
       </div>
 
       {/* Filtri e ordinamento */}
@@ -196,7 +229,7 @@ export default function SearchPage() {
           <div className="ot-products-grid">
             {products.map((product, index) => (
               <div className="ot-product-card-wrapper" key={product.id ?? index}>
-                <SingleProductCard product={product} />
+                <SingleProductCard product={product} onToggleFavourite={handleToggleFavourite} />
               </div>
             ))}
           </div>
@@ -233,6 +266,40 @@ export default function SearchPage() {
       {!loading && !error && products.length === 0 && !searchTerm && (
         <div className="ot-no-search-message">
           <p>Usa la barra di ricerca per trovare i tuoi prodotti preferiti.</p>
+        </div>
+      )}
+
+      {/* Toast notification preferiti */}
+      {favToast && showFavToast && (
+        <div className="toast-container position-fixed" style={{ bottom: 30, right: 30, zIndex: 9999 }}>
+          <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true"
+            style={{ minWidth: 320, background: "#fff", borderRadius: 8, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
+            <div className="toast-header" style={{ background: "#f5f5f5", borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+              <img src={favToast.image} className="rounded me-2" alt={favToast.name}
+                style={{ width: 32, height: 32, objectFit: "cover", marginRight: 8 }} />
+              <strong className="me-auto">Preferiti</strong>
+              <small className="text-body-secondary">{favToast.time}</small>
+              <button type="button" className="btn-close" aria-label="Close"
+                onClick={() => setShowFavToast(false)}
+                style={{ marginLeft: 8, border: "none", background: "transparent", fontSize: 18 }}>
+                ×
+              </button>
+            </div>
+
+            <div className="toast-body" style={{ padding: "12px 24px", fontSize: 18 }}>
+              Hai aggiunto <b>{favToast.name}</b> ai preferiti
+              <div style={{ marginTop: 12 }}>
+                <a
+                  href="/products/favourites"
+                  className="btn btn-danger btn-sm"
+                  style={{ fontWeight: "bold", fontSize: 16 }}
+                  onClick={() => setShowFavToast(false)}
+                >
+                  Vedi nella pagina dei preferiti
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </section>
