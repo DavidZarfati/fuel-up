@@ -142,7 +142,7 @@ export default function ProductsPage() {
   return (
     <section className="page-section">
       <div className="app-container">
-        <div className="products-page-header surface-card">
+        {/* <div className="products-page-header surface-card">
           <div>
             <h1 className="title-lg">Catalogo FuelUp PRO</h1>
             <p className="text-muted">Prodotti premium in stile fitness performance dark.</p>
@@ -151,7 +151,7 @@ export default function ProductsPage() {
             <i className="bi bi-sliders"></i>
             Filtri
           </button>
-        </div>
+        </div> */}
 
         <div className="products-page-layout">
           <aside className={`surface-card products-filters-panel ${filtersOpen ? "open" : ""}`}>

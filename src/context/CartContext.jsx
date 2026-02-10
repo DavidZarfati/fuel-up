@@ -99,7 +99,12 @@ export function CartProvider({ children }) {
   );
 
   const totalPrice = useMemo(
-    () => cart.reduce((sum, item) => sum + (item.discount_price ?? 0) * (item.quantity ?? 1), 0),
+    () => cart.reduce((sum, item) => {
+      const priceToSum = (Number(item.discount_price) > 0 && Number(item.discount_price) < Number(item.price))
+        ? Number(item.discount_price)
+        : Number(item.price);
+      return sum + priceToSum * (item.quantity ?? 1);
+    }, 0),
     [cart]
   );
 
