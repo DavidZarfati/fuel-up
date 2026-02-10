@@ -85,7 +85,7 @@ export default function SingleProductList({ product }) {
 
   return (
     <>
-      <div className="card shadow-sm mb-3 position-relative">
+      <div className="card h-100 shadow-sm position-relative pb-2e">
         {/* ❤️ CUORE */}
         <button
           onClick={handleToggleFavourite}
@@ -114,7 +114,7 @@ export default function SingleProductList({ product }) {
           />
         </button>
 
-        <div className="row g-0 align-items-center">
+        <div className="row g-0 align-items-center p-2">
           <div className="col-3 col-md-2 p-2 text-center">
             <img
               src={`${backendBaseUrl}${product.image}`}

@@ -10,12 +10,22 @@ export default function Toasts({
 }) {
   return (
     <>
-      {/* TOAST PREFERITI */}
-      {favToast && showFavToast && (
-        <div
-          className="toast-container position-fixed"
-          style={{ bottom: 90, right: 30, zIndex: 9999 }}
-        >
+      {/* CONTENITORE UNICO: basso a destra */}
+      <div
+        className="toast-container position-fixed"
+        style={{
+          bottom: 0,
+          
+          left: 10,
+          zIndex: 9999,
+          display: "flex",
+          flexDirection: "column",
+          gap: 16, // distanza verticale tra i toast
+          alignItems: "flex-end",
+        }}
+      >
+        {/* TOAST PREFERITI */}
+        {favToast && showFavToast && (
           <div
             className="toast show"
             role="alert"
@@ -40,7 +50,12 @@ export default function Toasts({
                 src={favToast.image}
                 className="rounded me-2"
                 alt={favToast.name}
-                style={{ width: 32, height: 32, objectFit: "cover", marginRight: 8 }}
+                style={{
+                  width: 32,
+                  height: 32,
+                  objectFit: "cover",
+                  marginRight: 8,
+                }}
               />
               <strong className="me-auto">Preferiti</strong>
               <small className="text-body-secondary">{favToast.time}</small>
@@ -59,6 +74,7 @@ export default function Toasts({
                 ×
               </button>
             </div>
+
             <div className="toast-body" style={{ padding: "12px 24px", fontSize: 18 }}>
               {favToast.message ? (
                 <>
@@ -69,6 +85,7 @@ export default function Toasts({
                   Hai aggiunto <b>{favToast.name}</b> ai preferiti
                 </>
               )}
+
               <div style={{ marginTop: 12 }}>
                 <Link
                   to="/products/favourites"
@@ -81,15 +98,10 @@ export default function Toasts({
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* TOAST CARRELLO */}
-      {toast && showToast && (
-        <div
-          className="toast-container position-fixed"
-          style={{ bottom: 30, right: 30, zIndex: 9999 }}
-        >
+        {/* TOAST CARRELLO */}
+        {toast && showToast && (
           <div
             className="toast show"
             role="alert"
@@ -114,7 +126,12 @@ export default function Toasts({
                 src={toast.image}
                 className="rounded me-2"
                 alt={toast.name}
-                style={{ width: 32, height: 32, objectFit: "cover", marginRight: 8 }}
+                style={{
+                  width: 32,
+                  height: 32,
+                  objectFit: "cover",
+                  marginRight: 8,
+                }}
               />
               <strong className="me-auto">Carrello</strong>
               <small className="text-body-secondary">{toast.time}</small>
@@ -133,6 +150,7 @@ export default function Toasts({
                 ×
               </button>
             </div>
+
             <div className="toast-body" style={{ padding: "12px 24px", fontSize: 18 }}>
               {toast.message ? (
                 <>
@@ -143,6 +161,7 @@ export default function Toasts({
                   Hai aggiunto <b>{toast.name}</b> al carrello
                 </>
               )}
+
               <div style={{ marginTop: 12 }}>
                 <Link
                   to="/shopping-cart"
@@ -155,8 +174,8 @@ export default function Toasts({
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   );
 }

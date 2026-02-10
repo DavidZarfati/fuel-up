@@ -16,7 +16,7 @@ export function useToasts() {
 
   useEffect(() => {
     if (favToast && showFavToast) {
-      const timer = setTimeout(() => setShowFavToast(false), 2000);
+      const timer = setTimeout(() => setShowFavToast(false), 3000);
       return () => clearTimeout(timer);
     }
   }, [favToast, showFavToast]);

@@ -2,14 +2,12 @@ import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useGlobal } from "../context/GlobalContext";
-import { useFavourites } from "../context/FavouritesContext";
 import SingleProductCard from "../components/SingleProductCard";
 import SingleProductList from "../components/SingleProductList";
 import "./ProductsPage.css";
 
 export default function ProductsPage() {
   const { backendUrl } = useGlobal();
-  const { isFavourite, toggleFavourite } = useFavourites();
 
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -17,7 +15,7 @@ export default function ProductsPage() {
     const pageFromUrl = parseInt(searchParams.get("page") || "1", 10);
     const safePage = Number.isFinite(pageFromUrl) && pageFromUrl > 0 ? pageFromUrl : 1;
 
-    const view = searchParams.get("view") || "grid"; // "grid" | "list"
+    const view = searchParams.get("view") || "grid";
     const safeView = view === "list" ? "list" : "grid";
 
     const q = searchParams.get("q") || "";
@@ -37,23 +35,11 @@ export default function ProductsPage() {
   const [page, setPage] = useState(urlState.safePage);
   const [totalPages, setTotalPages] = useState(1);
 
-  // View: uso SOLO questo stato
   const [isListMode, setIsListMode] = useState(urlState.safeView === "list");
 
-  // Filtri (se li usi ora o dopo)
   const [q, setQ] = useState(urlState.q);
   const [orderBy, setOrderBy] = useState(urlState.orderBy);
   const [orderDir, setOrderDir] = useState(urlState.orderDir);
-
-  // Toast preferiti
-  const [favToast, setFavToast] = useState(null);
-  const [showFavToast, setShowFavToast] = useState(false);
-
-  useEffect(() => {
-    if (!favToast || !showFavToast) return;
-    const timer = setTimeout(() => setShowFavToast(false), 4000);
-    return () => clearTimeout(timer);
-  }, [favToast, showFavToast]);
 
   // Sync stato da URL
   useEffect(() => {
@@ -143,20 +129,6 @@ export default function ProductsPage() {
     if (page > totalPages) setPage(totalPages);
   }, [totalPages, page]);
 
-  function handleToggleFavourite(p) {
-    const alreadyFav = isFavourite(p.id);
-    toggleFavourite(p);
-
-    if (!alreadyFav) {
-      setFavToast({
-        name: p.name,
-        time: "adesso",
-        image: `${backendUrl}${p.image}`,
-      });
-      setShowFavToast(true);
-    }
-  }
-
   return (
     <section className="ot-products-page-container">
       <div className="ot-products-page-header">
@@ -212,7 +184,8 @@ export default function ProductsPage() {
             <div className="ot-products-grid">
               {products.map((p, index) => (
                 <div className="ot-product-card-wrapper" key={p.id ?? p._id ?? index}>
-                  <SingleProductCard product={p} onToggleFavourite={handleToggleFavourite} />
+                  {/* niente onToggleFavourite: lo gestisce la card internamente */}
+                  <SingleProductCard product={p} />
                 </div>
               ))}
             </div>
@@ -221,56 +194,10 @@ export default function ProductsPage() {
             <div className="ot-products-list">
               {products.map((p, index) => (
                 <div className="ot-product-list-wrapper" key={p.id ?? p._id ?? index}>
-                  <button
-                    onClick={() => handleToggleFavourite(p)}
-                    className="ot-heart-button"
-                    aria-label={
-                      isFavourite(p.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"
-                    }
-                  >
-                    <i
-                      className={isFavourite(p.id) ? "bi bi-heart-fill" : "bi bi-heart"}
-                      style={{ color: isFavourite(p.id) ? "#dc3545" : "#666", fontSize: "18px" }}
-                    />
-                  </button>
-
+                  {/* niente cuore esterno: lo gestisce SingleProductList */}
                   <SingleProductList product={p} />
                 </div>
               ))}
-            </div>
-          )}
-
-          {/* Toast notification preferiti */}
-          {favToast && showFavToast && (
-            <div className="toast-container position-fixed" style={{ bottom: 30, right: 30, zIndex: 9999 }}>
-              <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true"
-                   style={{ minWidth: 320, background: "#fff", borderRadius: 8, boxShadow: "0 2px 8px rgba(0,0,0,0.2)" }}>
-                <div className="toast-header" style={{ background: "#f5f5f5", borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
-                  <img src={favToast.image} className="rounded me-2" alt={favToast.name}
-                       style={{ width: 32, height: 32, objectFit: "cover", marginRight: 8 }} />
-                  <strong className="me-auto">Preferiti</strong>
-                  <small className="text-body-secondary">{favToast.time}</small>
-                  <button type="button" className="btn-close" aria-label="Close"
-                          onClick={() => setShowFavToast(false)}
-                          style={{ marginLeft: 8, border: "none", background: "transparent", fontSize: 18 }}>
-                    ×
-                  </button>
-                </div>
-
-                <div className="toast-body" style={{ padding: "12px 24px", fontSize: 18 }}>
-                  Hai aggiunto <b>{favToast.name}</b> ai preferiti
-                  <div style={{ marginTop: 12 }}>
-                    <a
-                      href="/products/favourites"
-                      className="btn btn-danger btn-sm"
-                      style={{ fontWeight: "bold", fontSize: 16 }}
-                      onClick={() => setShowFavToast(false)}
-                    >
-                      Vedi nella pagina dei preferiti
-                    </a>
-                  </div>
-                </div>
-              </div>
             </div>
           )}
 
