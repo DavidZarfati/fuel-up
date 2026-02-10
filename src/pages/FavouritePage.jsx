@@ -38,9 +38,7 @@ export default function FavouritePage() {
   }
 
   function handleClearAll() {
-    if (window.confirm("Sei sicuro di voler rimuovere tutti i prodotti dai preferiti?")) {
-      clearFavourites();
-    }
+    clearFavourites();
   }
 
   return (
