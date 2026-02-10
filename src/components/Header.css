@@ -1,209 +1,369 @@
+/* MOBILE FIRST - BASE STYLES (0-767px)*/
+
 .ot-header {
     background-color: rgb(73, 185, 216);
-    padding: 15px;
+    padding: 12px 15px;
     position: sticky;
     top: 0;
     z-index: 1000;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .ot-header-content {
     max-width: 1400px;
-    gap: 20px;
+    margin: 0 auto;
     display: flex;
-   
     justify-content: space-between;
     align-items: center;
+    gap: 15px;
     position: relative;
 }
 
-.ot-logo {
-    height: 60px;
-    max-width: 200px;
-    border-radius: 5px;
-}
+/* LOGO - Always visible on left*/
 
-.ml-no-shrink
-{
+.ot-logo-container {
     flex-shrink: 0;
+    order: 1; /* Logo is always first (leftmost) */
 }
 
-.ml-logo {
-    max-height: 70px;
-    width: auto;
-}
-
-/* Hamburger Menu Button - Mobile Only */
-.ot-hamburger {
+.ot-logo-link {
     display: block;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.ot-logo-link:hover {
+    transform: scale(1.1);
+}
+
+.ot-logo {
+    height: 40px;
+    width: auto;
+    max-width: 80px;
+    border-radius: 5px;
+    display: block;
+}
+
+/* HAMBURGER MENU - Mobile only*/
+
+.ot-hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: none;
     border: none;
     color: rgb(15, 78, 160);
     font-size: 28px;
     cursor: pointer;
-    padding: 10px;
-    z-index: 1001;
+    padding: 8px;
+    order: 2; /* Hamburger comes after logo */
+    transition: color 0.3s ease;
 }
 
 .ot-hamburger:hover {
-    color: rgb(27, 98, 184);
+    transform: scale(1.1);
 }
 
-/* Navigation Container */
-.ot-flex-inline {
-    display: none; /* Hidden on mobile by default */
+/* NAVIGATION MENU - Mobile overlay */
+
+.ot-nav-menu {
+    display: none;
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 0;
+    right: 0;
+    background-color: rgb(73, 185, 216);
+    padding: 20px 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 0 0 8px 8px;
 }
 
-
-
-/* Header icons */
-.ot-mobile-icons {
+.ot-nav-menu.ot-menu-open {
     display: flex;
-    gap: 10px;
-    align-items: center;
+    flex-direction: column;
+    gap: 15px;
 }
 
+.ot-nav-menu.ot-menu-open .ot-search-bar {
+    display: flex; /* Show search bar when mobile menu is open */
+}
+
+.ot-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.ot-nav-item {
+    width: 100%;
+}
+
+.ot-nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: rgb(225, 226, 235);
+    background-color: rgb(15, 78, 160);
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    width: 100%;
+    transition: all 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.ot-nav-link:hover,
+.ot-nav-link.active {
+    color: rgb(15, 78, 160);
+    background-color: rgb(228, 229, 238);
+    transform: translateX(4px);
+}
+
+.ot-badge {
+    background-color: rgb(220, 38, 38);
+    color: white;
+    border-radius: 50%;
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 22px;
+    text-align: center;
+}
+
+/* SEARCH BAR - Below nav on mobile*/
+
+.ot-search-bar {
+    display: none; /* Hide search bar on mobile by default */
+    gap: 8px;
+    width: 100%;
+}
+
+.ot-search-bar input {
+    flex: 1;
+    background-color: rgb(238, 239, 243);
+    color: rgb(15, 78, 160);
+    border: 2px solid transparent;
+    border-radius: 6px;
+    font-size: 13px;
+    padding: 5px 12px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.ot-search-bar input:focus {
+    border-color: rgb(15, 78, 160);
+}
+
+.ot-search-bar input::placeholder {
+    color: rgb(100, 116, 139);
+}
+
+.ot-search-bar button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: rgb(243, 244, 249);
+    background-color: rgb(15, 78, 160);
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 12px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background-color 0.3s ease;
+}
+
+.ot-search-bar button:hover {
+    background-color: rgb(27, 98, 184);
+}
+
+.ot-search-bar button i {
+    font-size: 18px;
+}
+
+.ot-search-text {
+    display: inline;
+}
+
+/*  MOBILE ACTION ICONS - Right side*/
+
+.ot-mobile-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    order: 3;
+    margin-left: auto; /* Push mobile actions to the right */
+}
 
 .ot-icon-button {
-    display: block;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: none;
     border: none;
     color: rgb(15, 78, 160);
     font-size: 24px;
     cursor: pointer;
-    padding: 10px;
-    transition: color 0.3s;
+    padding: 8px;
+    transition: color 0.3s ease;
 }
 
 .ot-icon-button:hover {
-    color: rgb(27, 98, 184);
+    transform: scale(1.1);
 }
 
-
-
-.ot-nav-item {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.ot-nav-link {
-    color: rgb(225, 226, 235);
-    padding: 15px 10px;
-    background-color: rgb(15, 78, 160);
-    border-radius: 5px;
-    font-size: 16px;
-    text-decoration: none;
-    width: 100%;
-    white-space: nowrap; /* Prevent text wrapping inside links */
-}
-
-.ot-nav-link:hover {
-    color: rgb(27, 98, 184);
-    background-color: rgb(228, 229, 238);
-    border-radius: 5px;
-}
-
-/* Mobile Menu Open State */
-.ot-flex-inline.ot-menu-open {
-    display: flex;
+.ot-cart-badge {
     position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: rgb(73, 185, 216);
-    width: 100%;
-    padding: 20px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin: 10px;
-}
-
-/* Search Bar */
-.ot-search-bar {
-    display: flex;
-    gap: 5px;
-    max-width: 500px;
-}
-
-.ot-search-bar input {
-    background-color: rgb(238, 239, 243);
-    color: rgb(15, 78, 160);
-    border: 1px solid;
-    border-radius: 5px;
-    font-size: 14px;
-    padding: 10px;
-    flex: 1;
-    outline: none;
-    min-width: 0;
-     width: 150px;
-}
-
-.ot-search-bar input:hover {
-    border-color: rgb(15, 78, 160);
-}
-
-.ot-search-bar button {
-    color: rgb(243, 244, 249);
-    background-color: rgb(15, 78, 160);
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    padding: 8px 12px;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.ot-search-bar button:hover {
-    background-color: rgb(245, 246, 250);
-    color: rgb(15, 78, 160);
+    top: 2px;
+    right: 2px;
+    background-color: rgb(220, 38, 38);
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    text-align: center;
+    line-height: 1;
 }
 
 
+/* TABLET - 768px and up*/
 
-
-/* Tablet - 768px and up */
 @media (min-width: 768px) {
+    .ot-header {
+        padding: 15px 20px;
+    }
+
+    .ot-logo {
+        height: 50px;
+        max-width: 100px;
+    }
+    
+    .ot-logo-container {
+        order: 1; /* Logo remains first position on tablet/desktop */
+    }
+
+    /* Hide mobile-only elements */
+    .ot-hamburger,
+    .ot-mobile-actions {
+        display: flex;
+    }
+
+    
+}
+
+
+/* DESKTOP - 1024px and up*/
+
+@media (min-width: 1024px) {
     .ot-header-content {
-        flex-wrap: nowrap; /* Prevent wrapping on tablet and desktop */
+        gap: 25px;
     }
 
-    .ot-mobile-icons {
-        display: none; /* Hide all mobile icons on tablet and desktop */
+    .ot-logo {
+        height: 70px;
+        max-width: 200px;
     }
 
-    .ot-hamburger {
-        display: none; /* Hide hamburger on tablet and desktop */
-    }
-
-    .ot-flex-inline {
-        display: inline-flex; /* Show navigation links */
-        position: static;
-        width: auto;
-        padding: 0;
-        box-shadow: none;
-    }
-
-    .ot-nav-item {
-        flex-direction: row;
-        align-items: center;
-        gap: 10px;
-        white-space: nowrap; /* Prevent navigation from wrapping */
+    .ot-nav-list {
+        gap: 15px;
     }
 
     .ot-nav-link {
-        width: auto;
+        padding: 12px 18px;
+        font-size: 16px;
     }
 
-   
+    .ot-search-bar {
+        min-width: 320px;
+        max-width: 500px;
+    }
+
+    .ot-search-bar input {
+        padding: 12px 16px;
+    }
+
+    .ot-search-bar button {
+        padding: 12px 20px;
+    }
+
+    /* Show navigation inline */
+    .ot-nav-menu {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: static;
+        background: none;
+        padding: 0;
+        box-shadow: none;
+        border-radius: 0;
+        flex: 1; /* Take remaining space */
+        gap: 20px;
+        order: 2; /* Nav comes after logo */
+        justify-content: space-between; /* Spread nav list and search */
+    }
+
+    .ot-nav-list {
+        flex-direction: row;
+        gap: 12px;
+        width: auto;
+        flex-wrap: nowrap; /* Prevent wrapping */
+    }
+
+    .ot-nav-item {
+        width: auto;
+        flex-shrink: 0; /* Prevent items from shrinking */
+    }
+
+    .ot-nav-link {
+        padding: 10px 16px;
+        font-size: 15px;
+        width: auto;
+        white-space: nowrap; /* Prevent text wrapping */
+    }
+
+    .ot-nav-link:hover,
+    .ot-nav-link.active {
+        transform: translateY(-2px);
+    }
+
+    /* Search bar on right side of nav */
+    .ot-search-bar {
+        display: flex; /* Show search bar on tablet/desktop */
+        width: auto;
+        min-width: 280px;
+        max-width: 400px;
+    }
+
+    .ot-search-bar input {
+        min-width: 200px;
+    }
+       /* Hide mobile-only elements */
+    .ot-hamburger,
+    .ot-mobile-actions {
+        display: none;
+    }
+
 }
 
-/* Desktop - 1024px and up */
-@media (min-width: 1024px) {
-    .ot-logo {
-        margin-right: 25px;
+
+/* LARGE DESKTOP - 1280px and up */
+
+@media (min-width: 1280px) {
+    .ot-nav-list {
+        gap: 20px;
     }
 
-   
+    .ot-nav-link {
+        padding: 12px 20px;
+    }
 }

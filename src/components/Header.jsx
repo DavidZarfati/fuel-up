@@ -9,7 +9,7 @@ import { useCart } from "../context/CartContext";
 export default function Header({ nameApp }) {
 
     const headerLinks = [
-        { title: "Chi siamo", path: "/" },
+        { title: "About Us", path: "/about-us" },
         { title: "Nostri prodotti", path: "/products" },
         { title: "Prodotti preferiti", path: "/products/favourites" },
         { title: "Carrello", path: "/shopping-cart" },
@@ -29,6 +29,7 @@ export default function Header({ nameApp }) {
         // Naviga alla pagina di ricerca con il termine come parametro query
         navigate(`/search?q=${encodeURIComponent(search)}`);
         setSearch("");
+        setIsMenuOpen(false); // Close menu after search on mobile
     }
 
     function handleSubmit(event) {
@@ -43,64 +44,37 @@ export default function Header({ nameApp }) {
     return (
         <header className="ot-header">
             <div className="ot-header-content">
-                <div className="ot-mobile-icons">
-                    <button
-                        className="ot-hamburger"
-                        onClick={toggleMenu}
-                        aria-label="Toggle menu"
-                    >
-                        <i className={isMenuOpen ? "bi bi-x-lg" : "bi bi-list"}></i>
-                    </button>
-
-                    <button
-                        className="ot-icon-button ot-favourites-icon"
-                        onClick={() => navigate("/products/favourites")}
-                        aria-label="Favourites"
-                    >
-                        <i className="bi bi-heart"></i>
-                    </button>
-
-                    <button
-                        className="ot-icon-button ot-cart-icon position-relative"
-                        onClick={() => navigate("/shopping-cart")}
-                    >
-
-                        <i className="bi bi-cart"></i>
-
-                        {totalItems > 0 && (
-                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                {totalItems}
-                            </span>
-                        )}
-
-                    </button>
+                
+                {/* Logo - Always visible on left (order: 1) */}
+                <div className="ot-logo-container">
+                    <Link to="/" className="ot-logo-link" onClick={() => setIsMenuOpen(false)}>
+                        <img className="ot-logo" src={logo} alt={nameApp} />
+                    </Link>
                 </div>
 
-                {/* Navigation Links */}
-                <div className={`ot-flex-inline ${isMenuOpen ? 'ot-menu-open' : ''}`}>
-                    <ul className="ot-nav-item">
+                {/* Hamburger Menu - Mobile Only (order: 2) */}
+                <button
+                    className="ot-hamburger"
+                    onClick={toggleMenu}
+                    aria-label="Toggle menu"
+                    aria-expanded={isMenuOpen}
+                >
+                    <i className={isMenuOpen ? "bi bi-x-lg" : "bi bi-list"}></i>
+                </button>
+
+                {/* Navigation Menu - Desktop: inline (order: 2), Mobile: overlay */}
+                <nav className={`ot-nav-menu ${isMenuOpen ? 'ot-menu-open' : ''}`}>
+                    <ul className="ot-nav-list">
                         {headerLinks.map((link, index) => (
-                            <li key={index}>
+                            <li key={index} className="ot-nav-item">
                                 <NavLink
                                     className="ot-nav-link"
-                                    aria-current="page"
                                     to={link.path}
                                     onClick={() => setIsMenuOpen(false)}
                                 >
                                     {link.title}
-
                                     {link.title === "Carrello" && totalItems > 0 && (
-                                        <span
-                                            style={{
-                                                marginLeft: "6px",
-                                                background: "red",
-                                                color: "white",
-                                                borderRadius: "50%",
-                                                padding: "2px 6px",
-                                                fontSize: "12px",
-                                                fontWeight: "bold"
-                                            }}
-                                        >
+                                        <span className="ot-badge">
                                             {totalItems}
                                         </span>
                                     )}
@@ -108,17 +82,8 @@ export default function Header({ nameApp }) {
                             </li>
                         ))}
                     </ul>
-                </div>
 
-                {/* Logo */}
-                <div className="ml-no-shrink">
-                    <Link to="/">
-                        <img className="ot-logo ml-no-shrink ml-logo" src={logo} alt={nameApp} />
-                    </Link>
-                </div>
-
-                {/* Search Bar */}
-                <div>
+                    {/* Search Bar - Inside mobile menu, pinned right on desktop (order: 3) */}
                     <form className="ot-search-bar" onSubmit={handleSubmit}>
                         <input
                             type="search"
@@ -128,9 +93,34 @@ export default function Header({ nameApp }) {
                             aria-label="Search products"
                         />
                         <button type="submit" aria-label="Search button">
-                            Cerca
+                            <i className="bi bi-search"></i>
+                            <span className="ot-search-text">Cerca</span>
                         </button>
                     </form>
+                </nav>
+
+                {/* Mobile Action Icons - Mobile Only */}
+                <div className="ot-mobile-actions">
+                    <button
+                        className="ot-icon-button"
+                        onClick={() => navigate("/products/favourites")}
+                        aria-label="Prodotti preferiti"
+                    >
+                        <i className="bi bi-heart"></i>
+                    </button>
+
+                    <button
+                        className="ot-icon-button ot-cart-button"
+                        onClick={() => navigate("/shopping-cart")}
+                        aria-label="Carrello"
+                    >
+                        <i className="bi bi-cart"></i>
+                        {totalItems > 0 && (
+                            <span className="ot-cart-badge">
+                                {totalItems}
+                            </span>
+                        )}
+                    </button>
                 </div>
             </div>
         </header>

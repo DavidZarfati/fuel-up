@@ -2,6 +2,7 @@ import './App.css'
 import DefaultLayout from './layouts/DefaultLayout';
 import NotFoundPage from './pages/NotFoundPage';
 import HomePage from './pages/HomePage';
+import AboutUsPage from './pages/AboutUsPage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import SearchPage from './pages/SearchPage';
@@ -28,6 +29,7 @@ function App() {
               <Routes>
                 <Route element={<DefaultLayout nameApp={nameApp} />}>
                   <Route path="/" element={<HomePage />} />
+                  <Route path="/about-us" element={<AboutUsPage />} />
                   <Route path="/products" element={<ProductsPage />} />
                   <Route path="/products/:slug" element={<ProductDetailPage />} />
                   <Route path="/products/favourites" element={<FavouritePage />} />
