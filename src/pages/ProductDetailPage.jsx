@@ -23,6 +23,10 @@ export default function ProductDetailPage() {
   const [favToast, setFavToast] = useState(null);
   const [showFavToast, setShowFavToast] = useState(false);
 
+  //Toast cart
+  const [cartToast, setCartToast] = useState(null);
+  const [showCartToast, setShowCartToast] = useState(false);
+
   // Carico prodotto
   useEffect(() => {
     let cancelled = false;
@@ -63,6 +67,13 @@ export default function ProductDetailPage() {
   function handleAddToCart() {
     if (!p) return;
     addToCart(p);
+
+    setCartToast({
+      name: p.name,
+      time: "adesso",
+      image: `${backendBaseUrl}${p.image}`,
+    });
+    setShowCartToast(true);
   }
 
   function handleToggleFav() {
@@ -297,6 +308,79 @@ export default function ProductDetailPage() {
                           className="btn btn-danger btn-sm"
                           style={{ fontWeight: 'bold', fontSize: 16 }}
                           onClick={() => setShowFavToast(false)}
+                        >
+                          Vedi nella pagina dei preferiti
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Toast notification preferiti */}
+            {cartToast && showCartToast && (
+              <div
+                className="toast-container position-fixed"
+                style={{ bottom: 30, right: 30, zIndex: 9999 }}
+              >
+                <div
+                  className="toast show"
+                  role="alert"
+                  aria-live="assertive"
+                  aria-atomic="true"
+                  style={{
+                    minWidth: 320,
+                    background: "#fff",
+                    borderRadius: 8,
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+                  }}
+                >
+                  <div
+                    className="toast-header"
+                    style={{
+                      background: "#f5f5f5",
+                      borderTopLeftRadius: 8,
+                      borderTopRightRadius: 8,
+                    }}
+                  >
+                    <img
+                      src={cartToast?.image}
+                      className="rounded me-2"
+                      alt={cartToast?.name}
+                      style={{
+                        width: 32,
+                        height: 32,
+                        objectFit: "cover",
+                        marginRight: 8,
+                      }}
+                    />
+                    <strong className="me-auto">Preferiti</strong>
+                    <small className="text-body-secondary">{cartToast?.time}</small>
+                    <button
+                      type="button"
+                      className="btn-close"
+                      aria-label="Close"
+                      onClick={() => setShowCartToast(false)}
+                      style={{
+                        marginLeft: 8,
+                        border: "none",
+                        background: "transparent",
+                        fontSize: 18,
+                      }}
+                    >
+                      ×
+                    </button>
+                  </div>
+                  <div className="toast-body" style={{ padding: "12px 24px", fontSize: 18 }}>
+                    Hai aggiunto <b>{cartToast?.name}</b> ai preferiti
+                    {cartToast && (
+                      <div style={{ marginTop: 12 }}>
+                        <Link
+                          to="/shopping-cart"
+                          className="btn btn-danger btn-sm"
+                          style={{ fontWeight: 'bold', fontSize: 16 }}
+                          onClick={() => setShowCartToast(false)}
                         >
                           Vedi nella pagina dei preferiti
                         </Link>
