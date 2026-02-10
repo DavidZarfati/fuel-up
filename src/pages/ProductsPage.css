@@ -2,39 +2,20 @@
   margin-bottom: 5px;
 }
 
-/* color variables */
-:root {
-  --primary-color: #166ddf;
-  --primary-dark: #2a5fb9;
-  --danger-color: #d32f2f;
-  --danger-dark: #b71c1c;
-  --text-dark: #333;
-  --text-muted: #666;
-  --border-color: #e0e0e0;
-  --background-light: #f8f9fa;
-  --background-white: #ffffff;
-  --warning-bg: #fff3cd;
-  --warning-border: #ffc107;
-  --warning-text: #856404;
-  --shadow-light: rgba(0, 0, 0, 0.05);
-  --shadow-medium: rgba(0, 0, 0, 0.1);
-  --shadow-primary: rgba(102, 126, 234, 0.1);
-}
-
 .ot-products-page-container {
   min-height: 100vh;
   padding: 32px 16px;
-  background-color: var(--background-light);
+  background-color: #f8f9fa;
 }
 
 .ot-products-page-header {
   text-align: center;
   margin-bottom: 20px;
   padding: 15px;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  background: linear-gradient(135deg, #166ddf 0%, #2a5fb9 100%);
   border-radius: 10px;
   color: white;
-  box-shadow: 0 4px 6px var(--shadow-medium);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .ot-products-page-header h1 {
@@ -57,9 +38,9 @@
   align-items: center;
   margin-bottom: 32px;
   padding: 24px;
-  background: var(--background-white);
+  background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px var(--shadow-light);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   flex-wrap: wrap;
 }
 
@@ -71,7 +52,7 @@
 
 .ot-filter-group label {
   font-weight: 600;
-  color: var(--text-dark);
+  color: #333;
   margin: 0;
 }
 
@@ -84,8 +65,8 @@
 .ot-view-btn {
   padding: 8px 16px;
   background-color: #f8f9fa;
-  color: var(--text-dark);
-  border: 2px solid var(--border-color);
+  color: #333;
+  border: 2px solid #e0e0e0;
   border-radius: 6px;
   font-size: 14px;
   font-weight: 500;
@@ -98,13 +79,13 @@
 
 .ot-view-btn:hover {
   background-color: #e9ecef;
-  border-color: var(--primary-color);
+  border-color: #166ddf;
 }
 
 .ot-view-btn.active {
-  background-color: var(--primary-color);
+  background-color: #166ddf;
   color: white;
-  border-color: var(--primary-color);
+  border-color: #166ddf;
 }
 
 /* Products grid */
@@ -140,7 +121,7 @@
   text-align: center;
   padding: 64px 32px;
   font-size: 19.2px;
-  color: var(--text-muted);
+  color: #666;
 }
 
 .ot-loading-container p {
@@ -161,8 +142,8 @@
 
 /* Error message */
 .ot-error-message {
-  background-color: var(--warning-bg);
-  border: 2px solid var(--warning-border);
+  background-color: #fff3cd;
+  border: 2px solid #ffc107;
   border-radius: 8px;
   padding: 32px;
   text-align: center;
@@ -170,7 +151,7 @@
 }
 
 .ot-error-message p {
-  color: var(--warning-text);
+  color: #856404;
   font-size: 17.6px;
   margin: 0;
 }
@@ -179,14 +160,14 @@
 .ot-no-products-message {
   text-align: center;
   padding: 64px 32px;
-  background: var(--background-white);
+  background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px var(--shadow-light);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .ot-no-products-message p {
   font-size: 17.6px;
-  color: var(--text-muted);
+  color: #666;
   margin: 0;
 }
 
@@ -197,15 +178,15 @@
   align-items: center;
   gap: 32px;
   padding: 32px;
-  background: var(--background-white);
+  background: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px var(--shadow-light);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   flex-wrap: wrap;
 }
 
 .ot-pagination-btn {
   padding: 12px 24px;
-  background-color: var(--primary-color);
+  background-color: #166ddf;
   color: white;
   border: none;
   border-radius: 6px;
@@ -216,7 +197,7 @@
 }
 
 .ot-pagination-btn:hover:not(:disabled) {
-  background-color: var(--primary-dark);
+  background-color: #2a5fb9;
   transform: translateY(-2px);
 }
 
@@ -228,7 +209,7 @@
 
 .ot-pagination-info {
   font-size: 16px;
-  color: var(--text-dark);
+  color: #333;
   font-weight: 500;
   white-space: nowrap;
 }
@@ -317,11 +298,6 @@
   }
 }
 
-
-.padding-low {
-  margin-bottom: 5px;
-}
-
 /* Heart button styling */
 .ot-heart-button {
   position: absolute;
@@ -336,8 +312,6 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
-  /* REMOVED */
   z-index: 1;
   transition: transform 0.2s ease;
 }
