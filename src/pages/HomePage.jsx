@@ -278,7 +278,7 @@ export default function HomePage() {
                                                                     }}
                                                                     className="btn btn-primary btn-sm"
                                                                 >
-                                                                    <i className="bi bi-cart-plus"></i>
+                                                                    Aggiungi <i className="bi bi-cart-plus"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
