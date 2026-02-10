@@ -28,8 +28,8 @@
 
 .ot-search-page-header {
   text-align: center;
-  margin-bottom: 32px;
-  padding: 32px;
+  margin-bottom: 15px;
+  padding: 15px;
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   border-radius: 10px;
   color: white;
@@ -38,7 +38,7 @@
 
 .ot-search-page-header h1 {
   margin: 0 0 16px 0;
-  font-size: 40px;
+  font-size: 30px;
   font-weight: 700;
 }
 
@@ -59,6 +59,53 @@
   opacity: 0.9;
 }
 
+/* FILTERS & SORTING*/
+.ot-search-filters {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  background: var(--background-white);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px var(--shadow-light);
+  flex-wrap: wrap;
+}
+
+.ot-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ot-filter-group label {
+  font-weight: 600;
+  color: var(--text-dark);
+  margin: 0;
+}
+
+.ot-filter-select {
+  padding: 8px 16px;
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 15.2px;
+  background-color: var(--background-white);
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ot-filter-select:hover {
+  border-color: var(--primary-color);
+  box-shadow: 0 2px 6px var(--shadow-primary);
+}
+
+.ot-filter-select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--shadow-primary);
+}
 
 .ot-search-filters {
   display: flex;
@@ -96,7 +143,7 @@
   transition: all 0.3s ease;
 }
 
-.filter-select:hover {
+.ot-filter-select:hover {
   border-color: var(--primary-color);
   box-shadow: 0 2px 6px var(--shadow-primary);
 }

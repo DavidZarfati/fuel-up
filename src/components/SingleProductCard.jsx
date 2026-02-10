@@ -1,20 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useFavourites } from "../context/FavouritesContext";
-
-
 
 export default function SingleProductCard({ product }) {
 
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
-  const { addToCart } = useCart();
+
+  const {
+    cart,
+    addToCart,
+    removeFromCart,
+    increaseQuantity,
+    decreaseQuantity
+  } = useCart();
+
   const { isFavourite, toggleFavourite } = useFavourites();
 
+  const navigate = useNavigate();
 
-  function handleAddToCart() {
-    addToCart(product);
-  }
-
+  const cartItem = cart.find(item => item.id === product.id);
+  const isInCart = !!cartItem;
+  const quantity = cartItem?.quantity || 0;
 
   function handleToggleFavourite() {
     toggleFavourite(product);
@@ -22,7 +28,8 @@ export default function SingleProductCard({ product }) {
 
   return (
     <div className="card h-100 shadow-sm container pb-2" style={{ position: "relative" }}>
-      {/* HEART ICON */}
+
+      {/* ❤️ CUORE PREFERITI */}
       <button
         onClick={handleToggleFavourite}
         style={{
@@ -40,7 +47,6 @@ export default function SingleProductCard({ product }) {
           cursor: "pointer",
           zIndex: 1,
         }}
-        aria-label={isFavourite(product.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
       >
         <i
           className={isFavourite(product.id) ? "bi bi-heart-fill" : "bi bi-heart"}
@@ -50,8 +56,6 @@ export default function SingleProductCard({ product }) {
           }}
         ></i>
       </button>
-
-
 
       <img
         src={`${backendBaseUrl}${product.image}`}
@@ -63,9 +67,8 @@ export default function SingleProductCard({ product }) {
         }}
       />
 
-
-
       <div className="card-body d-flex flex-column">
+
         <h5 className="card-title text-truncate">
           {product.name}
         </h5>
@@ -76,17 +79,20 @@ export default function SingleProductCard({ product }) {
           </p>
         )}
 
-
-
         {product.price && (
-          <p className="fw-bold mb-3">
+          <p className="fw-bold mb-3 dz">
             € {product.price.toFixed(2)}
+            {product.discount_price && (
+              <span className="dz-prezzo-scontato">
+                &nbsp;€ {product.discount_price.toFixed(2)}
+              </span>
+            )}
           </p>
         )}
 
+        {/* BOTTONI */}
+        <div className="mt-auto d-flex gap-2 flex-wrap align-items-center">
 
-
-        <div className="mt-auto d-flex justify-content-between align-items-center">
           <Link
             to={`/products/${product.slug}`}
             className="btn btn-outline-primary btn-sm"
@@ -94,11 +100,59 @@ export default function SingleProductCard({ product }) {
             Dettagli
           </Link>
 
+          {!isInCart ? (
 
-          <button onClick={handleAddToCart} className="btn btn-primary btn-sm">
-            Aggiungi
-          </button>
+            <button
+              onClick={() => addToCart(product)}
+              className="btn btn-primary btn-sm"
+            >
+              Aggiungi
+            </button>
+
+          ) : (
+
+            <>
+              <div className="d-flex align-items-center gap-1">
+
+                <button
+                  onClick={() => decreaseQuantity(product.id)}
+                  className="btn btn-outline-secondary btn-sm"
+                >
+                  -
+                </button>
+
+                <span className="fw-bold">
+                  {quantity}
+                </span>
+
+                <button
+                  onClick={() => increaseQuantity(product.id)}
+                  className="btn btn-outline-secondary btn-sm"
+                >
+                  +
+                </button>
+
+              </div>
+
+              <button
+                onClick={() => navigate("/shopping-cart")}
+                className="btn btn-success btn-sm"
+              >
+                Carrello
+              </button>
+
+              <button
+                onClick={() => removeFromCart(product.id)}
+                className="btn btn-outline-danger btn-sm"
+              >
+                Rimuovi
+              </button>
+
+            </>
+          )}
+
         </div>
+
       </div>
     </div>
   );

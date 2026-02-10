@@ -4,6 +4,7 @@ import "../index.css"
 import "bootstrap-icons/font/bootstrap-icons.css";
 import logo from "../assets/images/logo.jpg";
 import { useState } from "react";
+import { useCart } from "../context/CartContext";
 
 export default function Header({ nameApp }) {
 
@@ -17,6 +18,8 @@ export default function Header({ nameApp }) {
     const [search, setSearch] = useState("");
     const navigate = useNavigate();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { totalItems } = useCart();
+
 
     function searchProduct() {
         if (!search.trim()) {
@@ -58,11 +61,18 @@ export default function Header({ nameApp }) {
                     </button>
 
                     <button
-                        className="ot-icon-button ot-cart-icon"
+                        className="ot-icon-button ot-cart-icon position-relative"
                         onClick={() => navigate("/shopping-cart")}
-                        aria-label="Shopping cart"
                     >
+
                         <i className="bi bi-cart"></i>
+
+                        {totalItems > 0 && (
+                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                {totalItems}
+                            </span>
+                        )}
+
                     </button>
                 </div>
 
@@ -78,6 +88,22 @@ export default function Header({ nameApp }) {
                                     onClick={() => setIsMenuOpen(false)}
                                 >
                                     {link.title}
+
+                                    {link.title === "Carrello" && totalItems > 0 && (
+                                        <span
+                                            style={{
+                                                marginLeft: "6px",
+                                                background: "red",
+                                                color: "white",
+                                                borderRadius: "50%",
+                                                padding: "2px 6px",
+                                                fontSize: "12px",
+                                                fontWeight: "bold"
+                                            }}
+                                        >
+                                            {totalItems}
+                                        </span>
+                                    )}
                                 </NavLink>
                             </li>
                         ))}

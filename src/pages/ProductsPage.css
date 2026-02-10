@@ -1,6 +1,5 @@
-.padding-low
-{
-    margin-bottom: 5px;
+.padding-low {
+  margin-bottom: 5px;
 }
 
 /* color variables */
@@ -30,8 +29,8 @@
 
 .ot-products-page-header {
   text-align: center;
-  margin-bottom: 32px;
-  padding: 32px;
+  margin-bottom: 20px;
+  padding: 15px;
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   border-radius: 10px;
   color: white;
@@ -40,7 +39,7 @@
 
 .ot-products-page-header h1 {
   margin: 0 0 16px 0;
-  font-size: 40px;
+  font-size: 30px;
   font-weight: 700;
 }
 
@@ -149,9 +148,12 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.5;
   }
@@ -318,4 +320,28 @@
 
 .padding-low {
   margin-bottom: 5px;
+}
+
+/* Heart button styling */
+.ot-heart-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+  /* REMOVED */
+  z-index: 1;
+  transition: transform 0.2s ease;
+}
+
+.ot-heart-button:hover {
+  transform: scale(1.1);
 }

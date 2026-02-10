@@ -15,6 +15,23 @@ export default function HomePage() {
     const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
     const { isFavourite, toggleFavourite } = useFavourites();
     const { addToCart } = useCart();
+    const [toast, setToast] = useState(null);
+    const [showToast, setShowToast] = useState(false);
+    const [favToast, setFavToast] = useState(null);
+    const [showFavToast, setShowFavToast] = useState(false);
+    useEffect(() => {
+        if (toast && showToast) {
+            const timer = setTimeout(() => setShowToast(false), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [toast, showToast]);
+
+    useEffect(() => {
+        if (favToast && showFavToast) {
+            const timer = setTimeout(() => setShowFavToast(false), 2000);
+            return () => clearTimeout(timer);
+        }
+    }, [favToast, showFavToast]);
 
 
     useEffect(() => {
@@ -43,26 +60,11 @@ export default function HomePage() {
     return (
         <>
             <div style={{ color: 'red', fontWeight: 'bold', fontSize: 22, margin: 10 }}>
-                {/* DEBUG: prodotti caricati: {Array.isArray(products) ? products.length : 'non array'} */}
             </div>
             <section className="ot-home-container ot-bg-teal">
                 <div className="ot-hero-section"></div>
 
-                {/* <div className="d-flex justify-content-around">
 
-
-                    <div>
-                        <button onClick={() => setcategoria("")}>Prodotti Piu Venduti</button>
-                        <button onClick={() => setcategoria(1)}>Supplements</button>
-                        <button onClick={() => setcategoria(2)}>Apparel</button>
-                        <button onClick={() => setcategoria(3)}>Accessories</button>
-                        <button onClick={() => setcategoria(4)}>Food & Snacks</button>
-                    </div>
-                    <div>
-                        <button onClick={() => setisGridMode(1)}>Lista</button>
-                        <button onClick={() => setisGridMode("")}>Griglia</button>
-                    </div>
-                </div> */}
 
                 <div className="ot-home-filters">
                     <div className="ot-filter-group">
@@ -129,11 +131,21 @@ export default function HomePage() {
                             {!loading && !error && Array.isArray(products) && (
                                 categoria === ""
                                     ? products.slice(0, 12).map((card, idx) => (
-                                        <div className="col-sm-12 col-md-6 col-lg-4 d-flex" key={idx}>
+                                        <div className="col-sm-12 col-md-6 col-lg-4" key={idx}>
                                             <div className="card mb-3 ot-product-card">
                                                 {/* HEART ICON */}
                                                 <button
-                                                    onClick={() => toggleFavourite(card)}
+                                                    onClick={() => {
+                                                        toggleFavourite(card);
+                                                        if (!isFavourite(card.id)) {
+                                                            setFavToast({
+                                                                name: card.name,
+                                                                time: 'adesso',
+                                                                image: `${backendBaseUrl}${card.image}`
+                                                            });
+                                                            setShowFavToast(true);
+                                                        }
+                                                    }}
                                                     className="ot-heart-button"
                                                     aria-label={isFavourite(card.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
                                                 >
@@ -147,20 +159,31 @@ export default function HomePage() {
                                                 </button>
                                                 <div className="row no-gutters align-items-center">
                                                     <div className="col-12">
-                                                        <div className="card-body">
+                                                        <div className="card-body dz-card-body">
                                                             <img
                                                                 src={`${backendBaseUrl}${card.image}`}
                                                                 alt={card.name}
                                                                 style={{ maxWidth: '100%', maxHeight: '150px', objectFit: 'contain', marginBottom: '10px' }}
                                                             />
                                                             <h5 className="card-title">{card.name}</h5>
-                                                            <p className="card-text">{card.description}</p>
+                                                            <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                             <div className="ot-card-actions">
                                                                 <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
                                                                     Vedi dettagli
                                                                 </Link>
-                                                                <button onClick={() => addToCart(card)} className="btn btn-primary btn-sm">
-                                                                    Aggiungi
+                                                                <button
+                                                                    onClick={() => {
+                                                                        addToCart(card);
+                                                                        setToast({
+                                                                            name: card.name,
+                                                                            time: 'adesso',
+                                                                            image: `${backendBaseUrl}${card.image}`
+                                                                        });
+                                                                        setShowToast(true);
+                                                                    }}
+                                                                    className="btn btn-primary btn-sm"
+                                                                >
+                                                                    Aggiungi <i className="bi bi-cart-plus"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -188,20 +211,31 @@ export default function HomePage() {
                                                 </button>
                                                 <div className="row no-gutters align-items-center">
                                                     <div className="col-12">
-                                                        <div className="card-body">
+                                                        <div className="card-body dz-card-body">
                                                             <img
                                                                 src={`${backendBaseUrl}${card.image}`}
                                                                 alt={card.name}
                                                                 style={{ maxWidth: '100%', maxHeight: '150px', objectFit: 'contain', marginBottom: '10px' }}
                                                             />
                                                             <h5 className="card-title">{card.name}</h5>
-                                                            <p className="card-text">{card.description}</p>
+                                                            <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                             <div className="ot-card-actions">
                                                                 <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
                                                                     Vedi dettagli
                                                                 </Link>
-                                                                <button onClick={() => addToCart(card)} className="btn btn-primary btn-sm">
-                                                                    Aggiungi
+                                                                <button
+                                                                    onClick={() => {
+                                                                        addToCart(card);
+                                                                        setToast({
+                                                                            name: card.name,
+                                                                            time: 'adesso',
+                                                                            image: `${backendBaseUrl}${card.image}`
+                                                                        });
+                                                                        setShowToast(true);
+                                                                    }}
+                                                                    className="btn btn-primary btn-sm"
+                                                                >
+                                                                    <i className="bi bi-cart-plus"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -210,6 +244,48 @@ export default function HomePage() {
                                             </div>
                                         </div>
                                     ))
+                            )}
+                            {/* Toast notification */}
+                            {/* Toast notification preferiti */}
+                            {favToast && showFavToast && (
+                                <div className="toast-container position-fixed" style={{ bottom: 90, right: 30, zIndex: 9999 }}>
+                                    <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true" style={{ minWidth: 320, background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+                                        <div className="toast-header" style={{ background: '#f5f5f5', borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+                                            <img src={favToast.image} className="rounded me-2" alt={favToast.name} style={{ width: 32, height: 32, objectFit: 'cover', marginRight: 8 }} />
+                                            <strong className="me-auto">Preferiti</strong>
+                                            <small className="text-body-secondary">{favToast.time}</small>
+                                            <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowFavToast(false)} style={{ marginLeft: 8, border: 'none', background: 'transparent', fontSize: 18 }}>×</button>
+                                        </div>
+                                        <div className="toast-body" style={{ padding: '12px 24px', fontSize: 18 }}>
+                                            Hai aggiunto <b>{favToast.name}</b> ai preferiti
+                                            <div style={{ marginTop: 12 }}>
+                                                <Link to="products/favourites" className="btn btn-danger btn-sm" style={{ fontWeight: 'bold', fontSize: 16 }} onClick={() => setShowFavToast(false)}>
+                                                    Vedi nella pagina dei preferiti
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                            {toast && showToast && (
+                                <div className="toast-container position-fixed" style={{ bottom: 30, right: 30, zIndex: 9999 }}>
+                                    <div className="toast show" role="alert" aria-live="assertive" aria-atomic="true" style={{ minWidth: 320, background: '#fff', borderRadius: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+                                        <div className="toast-header" style={{ background: '#f5f5f5', borderTopLeftRadius: 8, borderTopRightRadius: 8 }}>
+                                            <img src={toast.image} className="rounded me-2" alt={toast.name} style={{ width: 32, height: 32, objectFit: 'cover', marginRight: 8 }} />
+                                            <strong className="me-auto">Carrello</strong>
+                                            <small className="text-body-secondary">{toast.time}</small>
+                                            <button type="button" className="btn-close" aria-label="Close" onClick={() => setShowToast(false)} style={{ marginLeft: 8, border: 'none', background: 'transparent', fontSize: 18 }}>×</button>
+                                        </div>
+                                        <div className="toast-body" style={{ padding: '12px 24px', fontSize: 18 }}>
+                                            Hai aggiunto <b>{toast.name}</b> al carrello
+                                            <div style={{ marginTop: 12 }}>
+                                                <Link to="/shopping-cart" className="btn btn-success btn-sm" style={{ fontWeight: 'bold', fontSize: 16 }} onClick={() => setShowToast(false)}>
+                                                    Vedi nel carrello
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             )}
                         </div>
                     </div>
@@ -235,7 +311,7 @@ export default function HomePage() {
                                                 ></i>
                                             </button>
 
-                                            <div className="ot-list-card-body">
+                                            <div className="ot-list-card-body dz-card-body">
                                                 <img
                                                     src={`${backendBaseUrl}${card.image}`}
                                                     alt={card.name}
@@ -243,13 +319,24 @@ export default function HomePage() {
                                                 />
                                                 <div className="ot-list-card-content">
                                                     <h5 className="card-title">{card.name}</h5>
-                                                    <p className="card-text">{card.description}</p>
+                                                    <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                     <div className="ot-list-card-actions">
                                                         <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
                                                             Vedi dettagli
                                                         </Link>
-                                                        <button onClick={() => addToCart(card)} className="btn btn-primary btn-sm">
-                                                            Aggiungi
+                                                        <button
+                                                            onClick={() => {
+                                                                addToCart(card);
+                                                                setToast({
+                                                                    name: card.name,
+                                                                    time: 'adesso',
+                                                                    image: `${backendBaseUrl}${card.image}`
+                                                                });
+                                                                setShowToast(true);
+                                                            }}
+                                                            className="btn btn-primary btn-sm"
+                                                        >
+                                                            Aggiungi <i className="bi bi-cart-plus"></i>
                                                         </button>
                                                     </div>
                                                 </div>
@@ -275,7 +362,7 @@ export default function HomePage() {
                                                 ></i>
                                             </button>
 
-                                            <div className="ot-list-card-body">
+                                            <div className="ot-list-card-body dz-card-body">
                                                 <img
                                                     src={`${backendBaseUrl}${card.image}`}
                                                     alt={card.name}
@@ -283,13 +370,13 @@ export default function HomePage() {
                                                 />
                                                 <div className="ot-list-card-content">
                                                     <h5 className="card-title">{card.name}</h5>
-                                                    <p className="card-text">{card.description}</p>
+                                                    <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
                                                     <div className="ot-list-card-actions">
                                                         <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
                                                             Vedi dettagli
                                                         </Link>
                                                         <button onClick={() => addToCart(card)} className="btn btn-primary btn-sm">
-                                                            Aggiungi
+                                                            Aggiungi <i className="bi bi-cart-plus"></i>
                                                         </button>
                                                     </div>
                                                 </div>

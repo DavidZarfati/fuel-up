@@ -21,7 +21,7 @@ export function CartProvider({ children }) {
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(cart));
-    } catch {}
+    } catch { }
   }, [cart]);
 
   // sync tra schede (quando cambia localStorage in un’altra tab)
@@ -40,23 +40,23 @@ export function CartProvider({ children }) {
   }, []);
 
   // 👉 aggiunge al carrello (o aumenta qty)
-function addToCart(product) {
-  setCart((prevCart) => {
-    const existing = prevCart.find((item) => item.id === product.id);
+  function addToCart(product) {
+    setCart((prevCart) => {
+      const existing = prevCart.find((item) => item.id === product.id);
 
-    if (existing) {
-      return prevCart.map((item) =>
-        item.id === product.id
-          ? { ...item, quantity: (item.quantity ?? 1) + 1 }
-          : item
-      );
-    }
+      if (existing) {
+        return prevCart.map((item) =>
+          item.id === product.id
+            ? { ...item, quantity: (item.quantity ?? 1) + 1 }
+            : item
+        );
+      }
 
-    return [...prevCart, { ...product, quantity: 1 }];
-  });
+      return [...prevCart, { ...product, quantity: 1 }];
+    });
 
-  alert(`${product.name} aggiunto al carrello 🛒`);
-}
+    // alert(`${product.name} aggiunto al carrello 🛒`);
+  }
 
   // 👉 aumenta qty di un prodotto (se vuoi un tasto +)
   function increaseQuantity(productId) {
@@ -104,14 +104,14 @@ function addToCart(product) {
   );
 
   const totalWeight = useMemo(() => {
-  return cart
-    .reduce((sum, item) => sum + (item.weight_kg ?? 0) * (item.quantity ?? 1), 0);
-}, [cart]);
+    return cart
+      .reduce((sum, item) => sum + (item.weight_kg ?? 0) * (item.quantity ?? 1), 0);
+  }, [cart]);
 
-const expeditionCost = useMemo(() => {
-  if (totalPrice >= 100) return 0;
-  return (3 + 0.15 * totalWeight);
-}, [totalPrice, totalWeight]);
+  const expeditionCost = useMemo(() => {
+    if (totalPrice >= 100) return 0;
+    return (3 + 0.15 * totalWeight);
+  }, [totalPrice, totalWeight]);
 
   const value = {
     cart,
