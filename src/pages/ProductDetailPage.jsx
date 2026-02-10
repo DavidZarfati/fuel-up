@@ -3,8 +3,10 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFavourites } from "../context/FavouritesContext";
 import { useCart } from "../context/CartContext";
+import { Link } from "react-router-dom";
 import RelatedProductsCarousel from "../components/CaroselProducts";
 import "./ProductDetailPage.css";
+
 
 export default function ProductDetailPage() {
   const { slug } = useParams();
@@ -89,22 +91,62 @@ export default function ProductDetailPage() {
       {!loading && !error && p && (
         <>
           <div className="d-flex flex-column">
-            <img
-              src={`${backendBaseUrl}${p.image}`}
-              alt={p.name}
-              style={{
-                maxWidth: "20%",
-                height: "30%",
-                display: "block",
-                margin: "40px auto",
-              }}
-            />
+            <div className="ml-image-wrap align-self-center">
+              <img
+                src={`${backendBaseUrl}${p.image}`}
+                alt={p.name}
+                style={{
+                  width: "300px",
+                  height: "auto",
+                  display: "block",
+                  margin: "0 0 15px 0",
+                  //border: "1px solid black"
+                }}
+              //className=".ml-main-image"
+              />
+              <button
+                onClick={handleToggleFav}
+                className="ot-heart-button"
+                aria-label={
+                  isFavourite(p.id)
+                    ? "Rimuovi dai preferiti"
+                    : "Aggiungi ai preferiti"
+                }
+                style={{
+                  marginLeft: 16,
+                  position: "absolute",
+                  top: "24px",
+                  right: "-12px",
+                  background: "white",
+                  border: "none",
+                  borderRadius: "50%",
+                  width: "35px",
+                  height: "35px",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  zIndex: 10,
+                }}
+              >
+                <i
+                  className={isFavourite(p.id) ? "bi bi-heart-fill" : "bi bi-heart"}
+                  style={{
+                    color: isFavourite(p.id) ? "#dc3545" : "#666",
+                    fontSize: "18px",
+                  }}
+                />
+              </button>
+            </div>
 
-            <h2 className="dz-titolo-prodotto">
+
+
+
+            {/* <h2 className="dz-titolo-prodotto">
               {p.name || "No name available."}{" "}
               <span className="dz-brand-badge">{p.brand}</span>
 
-              {/* HEART ICON */}
+              {HEART ICON}
               <button
                 onClick={handleToggleFav}
                 className="ot-heart-button"
@@ -135,6 +177,13 @@ export default function ProductDetailPage() {
                   }}
                 />
               </button>
+            </h2> */}
+
+            <h2 className="dz-titolo-prodotto">
+              {p.name || "No name available."}{" "}
+              <span className="dz-brand-badge">{p.brand}</span>
+
+
             </h2>
 
             <p className="dz-description-prodotto">
@@ -155,8 +204,8 @@ export default function ProductDetailPage() {
               {p.color
                 ? `Color: ${p.color}`
                 : p.flavor
-                ? `Taste: ${p.flavor}`
-                : ""}
+                  ? `Taste: ${p.flavor}`
+                  : ""}
             </p>
 
             <div className="d-flex justify-content-around">
@@ -212,9 +261,9 @@ export default function ProductDetailPage() {
                     }}
                   >
                     <img
-                      src={favToast.image}
+                      src={favToast?.image}
                       className="rounded me-2"
-                      alt={favToast.name}
+                      alt={favToast?.name}
                       style={{
                         width: 32,
                         height: 32,
@@ -223,7 +272,7 @@ export default function ProductDetailPage() {
                       }}
                     />
                     <strong className="me-auto">Preferiti</strong>
-                    <small className="text-body-secondary">{favToast.time}</small>
+                    <small className="text-body-secondary">{favToast?.time}</small>
                     <button
                       type="button"
                       className="btn-close"
@@ -240,7 +289,19 @@ export default function ProductDetailPage() {
                     </button>
                   </div>
                   <div className="toast-body" style={{ padding: "12px 24px", fontSize: 18 }}>
-                    Hai aggiunto <b>{favToast.name}</b> ai preferiti
+                    Hai aggiunto <b>{favToast?.name}</b> ai preferiti
+                    {favToast && (
+                      <div style={{ marginTop: 12 }}>
+                        <Link
+                          to="/products/favourites"
+                          className="btn btn-danger btn-sm"
+                          style={{ fontWeight: 'bold', fontSize: 16 }}
+                          onClick={() => setShowFavToast(false)}
+                        >
+                          Vedi nella pagina dei preferiti
+                        </Link>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -249,7 +310,8 @@ export default function ProductDetailPage() {
 
           <RelatedProductsCarousel slug={slug} />
         </>
-      )}
+      )
+      }
 
       {!loading && !error && !p && <div>Product data not available.</div>}
     </>
