@@ -76,31 +76,31 @@ export default function HomePage() {
                                 onClick={() => setcategoria("")}
                                 className={`ot-category-btn ${categoria === "" ? "active" : ""}`}
                             >
-                                Prodotti Più Venduti
+                                Prodotti più venduti
                             </button>
                             <button
                                 onClick={() => setcategoria(1)}
                                 className={`ot-category-btn ${categoria === 1 ? "active" : ""}`}
                             >
-                                Supplements
+                                Integratori
                             </button>
                             <button
                                 onClick={() => setcategoria(2)}
                                 className={`ot-category-btn ${categoria === 2 ? "active" : ""}`}
                             >
-                                Apparel
+                                Abbigliamento
                             </button>
                             <button
                                 onClick={() => setcategoria(3)}
                                 className={`ot-category-btn ${categoria === 3 ? "active" : ""}`}
                             >
-                                Accessories
+                                Accessori
                             </button>
                             <button
                                 onClick={() => setcategoria(4)}
                                 className={`ot-category-btn ${categoria === 4 ? "active" : ""}`}
                             >
-                                Food & Snacks
+                                Cibo & Snacks
                             </button>
                         </div>
                     </div>
@@ -126,7 +126,7 @@ export default function HomePage() {
 
 
                 {!isGridMode ? (
-                    <div className="container ot-bg-teal">
+                    <div className="d-flex container ot-bg-teal">
                         <div className="row">
                             {loading && <p>Caricamento prodotti...</p>}
                             {error && <p>{error}</p>}
@@ -161,7 +161,7 @@ export default function HomePage() {
                                                 </button>
                                                 <div className="row no-gutters align-items-center">
                                                     <div className="col-12">
-                                                        <div className="card-body dz-card-body d-flex flex-column">
+                                                        <div className="card-body dz-card-body">
                                                             <img
                                                                 src={`${backendBaseUrl}${card.image}`}
                                                                 alt={card.name}
@@ -191,7 +191,7 @@ export default function HomePage() {
                                                                                 }}
                                                                                 className="btn btn-primary btn-sm"
                                                                             >
-                                                                                Aggiungi <i className="bi bi-cart-plus"></i>
+                                                                                Aggiungi
                                                                             </button>
                                                                         );
                                                                     } else {
@@ -254,67 +254,32 @@ export default function HomePage() {
                                                 </button>
                                                 <div className="row no-gutters align-items-center">
                                                     <div className="col-12">
-                                                        <div className="ot-list-card-body dz-card-body  d-flex flex-column">
+                                                        <div className="card-body dz-card-body">
                                                             <img
                                                                 src={`${backendBaseUrl}${card.image}`}
                                                                 alt={card.name}
-                                                                className="ot-list-card-image"
+                                                                style={{ maxWidth: '100%', maxHeight: '150px', objectFit: 'contain', marginBottom: '10px' }}
                                                             />
-                                                            <div className="ot-list-card-content">
-                                                                <h5 className="card-title">{card.name}</h5>
-                                                                <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
-                                                                <div className="ot-list-card-actions">
-                                                                    <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
-                                                                        Dettagli
-                                                                    </Link>
-                                                                    {(() => {
-                                                                        const cartItem = cart.find(item => item.id === card.id);
-                                                                        const isInCart = !!cartItem;
-                                                                        const quantity = cartItem?.quantity || 0;
-                                                                        if (!isInCart) {
-                                                                            return (
-                                                                                <button
-                                                                                    onClick={() => addToCart(card)}
-                                                                                    className="btn btn-primary btn-sm"
-                                                                                >
-                                                                                    Aggiungi<i className="bi bi-cart-plus"></i>
-                                                                                </button>
-                                                                            );
-                                                                        } else {
-                                                                            return (
-                                                                                <>
-                                                                                    <div className="d-flex align-items-center gap-1">
-                                                                                        <button
-                                                                                            onClick={() => decreaseQuantity(card.id)}
-                                                                                            className="btn btn-outline-secondary btn-sm"
-                                                                                        >
-                                                                                            -
-                                                                                        </button>
-                                                                                        <span className="fw-bold">{quantity}</span>
-                                                                                        <button
-                                                                                            onClick={() => increaseQuantity(card.id)}
-                                                                                            className="btn btn-outline-secondary btn-sm"
-                                                                                        >
-                                                                                            +
-                                                                                        </button>
-                                                                                    </div>
-                                                                                    <button
-                                                                                        onClick={() => navigate("/shopping-cart")}
-                                                                                        className="btn btn-success btn-sm"
-                                                                                    >
-                                                                                        Carrello
-                                                                                    </button>
-                                                                                    <button
-                                                                                        onClick={() => removeFromCart(card.id)}
-                                                                                        className="btn btn-outline-danger btn-sm"
-                                                                                    >
-                                                                                        Rimuovi
-                                                                                    </button>
-                                                                                </>
-                                                                            );
-                                                                        }
-                                                                    })()}
-                                                                </div>
+                                                            <h5 className="card-title">{card.name}</h5>
+                                                            <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
+                                                            <div className="ot-card-actions">
+                                                                <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
+                                                                    Vedi dettagli
+                                                                </Link>
+                                                                <button
+                                                                    onClick={() => {
+                                                                        addToCart(card);
+                                                                        setToast({
+                                                                            name: card.name,
+                                                                            time: 'adesso',
+                                                                            image: `${backendBaseUrl}${card.image}`
+                                                                        });
+                                                                        setShowToast(true);
+                                                                    }}
+                                                                    className="btn btn-primary btn-sm"
+                                                                >
+                                                                    <i className="bi bi-cart-plus"></i>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -373,7 +338,59 @@ export default function HomePage() {
                             categoria === ""
                                 ? products.slice(0, 12).map((card, idx) => (
                                     <div className="col-12" key={idx}>
-                                        <div className="card mb-3 ot-product-card-list d-flex flex-column">
+                                        <div className="card mb-3 ot-product-card-list">
+                                            {/* HEART ICON */}
+                                            <button
+                                                onClick={() => toggleFavourite(card)}
+                                                className="ot-heart-button"
+                                                aria-label={isFavourite(card.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
+                                            >
+                                                <i
+                                                    className={isFavourite(card.id) ? "bi bi-heart-fill" : "bi bi-heart"}
+                                                    style={{
+                                                        color: isFavourite(card.id) ? "#dc3545" : "#666",
+                                                        fontSize: "18px",
+                                                    }}
+                                                ></i>
+                                            </button>
+
+                                            <div className="ot-list-card-body dz-card-body">
+                                                <img
+                                                    src={`${backendBaseUrl}${card.image}`}
+                                                    alt={card.name}
+                                                    className="ot-list-card-image"
+                                                />
+                                                <div className="ot-list-card-content">
+                                                    <h5 className="card-title">{card.name}</h5>
+                                                    <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
+                                                    <div className="ot-list-card-actions">
+                                                        <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
+                                                            Vedi dettagli
+                                                        </Link>
+                                                        {/* <button
+                                                            onClick={() => {
+                                                                addToCart(card);
+                                                                setToast({
+                                                                    name: card.name,
+                                                                    time: 'adesso',
+                                                                    image: `${backendBaseUrl}${card.image}`
+                                                                });
+                                                                setShowToast(true);
+                                                            }}
+                                                            className="btn btn-primary btn-sm"
+                                                        >
+                                                            Aggiungi <i className="bi bi-cart-plus"></i>
+                                                        </button> */}
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))
+                                : products.filter(card => card.macro_categories_id === categoria).map((card, idx) => (
+                                    <div className="col-12" key={idx}>
+                                        <div className="card mb-3 ot-product-card-list">
                                             {/* HEART ICON */}
                                             <button
                                                 onClick={() => toggleFavourite(card)}
@@ -412,7 +429,7 @@ export default function HomePage() {
                                                                         onClick={() => addToCart(card)}
                                                                         className="btn btn-primary btn-sm"
                                                                     >
-                                                                        Aggiungi<i className="bi bi-cart-plus"></i>
+                                                                        Aggiungi
                                                                     </button>
                                                                 );
                                                             } else {
@@ -444,90 +461,6 @@ export default function HomePage() {
                                                                             className="btn btn-outline-danger btn-sm"
                                                                         >
                                                                             Rimuovi
-                                                                        </button>
-                                                                    </>
-                                                                );
-                                                            }
-                                                        })()}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))
-                                : products.filter(card => card.macro_categories_id === categoria).map((card, idx) => (
-                                    <div className="col-12" key={idx}>
-                                        <div className="card mb-3 ot-product-card-list  d-flex flex-column">
-                                            {/* HEART ICON */}
-                                            <button
-                                                onClick={() => toggleFavourite(card)}
-                                                className="ot-heart-button"
-                                                aria-label={isFavourite(card.id) ? "Rimuovi dai preferiti" : "Aggiungi ai preferiti"}
-                                            >
-                                                <i
-                                                    className={isFavourite(card.id) ? "bi bi-heart-fill" : "bi bi-heart"}
-                                                    style={{
-                                                        color: isFavourite(card.id) ? "#dc3545" : "#666",
-                                                        fontSize: "18px",
-                                                    }}
-                                                ></i>
-                                            </button>
-
-                                            <div className="ot-list-card-body dz-card-body">
-                                                <img
-                                                    src={`${backendBaseUrl}${card.image}`}
-                                                    alt={card.name}
-                                                    className="ot-list-card-image"
-                                                />
-                                                <div className="ot-list-card-content">
-                                                    <h5 className="card-title">{card.name}</h5>
-                                                    <p className="card-text">{isGridMode === "" ? "" : card.description}</p>
-                                                    <div className="ot-list-card-actions">
-                                                        <Link to={`/products/${card.slug}`} className="btn btn-outline-primary btn-sm">
-                                                            Dettagli
-                                                        </Link>
-                                                        {(() => {
-                                                            const cartItem = cart.find(item => item.id === card.id);
-                                                            const isInCart = !!cartItem;
-                                                            const quantity = cartItem?.quantity || 0;
-                                                            if (!isInCart) {
-                                                                return (
-                                                                    <button
-                                                                        onClick={() => addToCart(card)}
-                                                                        className="btn btn-primary btn-xs p-1"
-                                                                    >
-                                                                        <i className="bi bi-cart-plus"></i>
-                                                                    </button>
-                                                                );
-                                                            } else {
-                                                                return (
-                                                                    <>
-                                                                        <div className="d-flex align-items-center gap-1">
-                                                                            <button
-                                                                                onClick={() => decreaseQuantity(card.id)}
-                                                                                className="btn btn-outline-secondary btn-xs p-1"
-                                                                            >
-                                                                                -
-                                                                            </button>
-                                                                            <span className="fw-bold" style={{ fontSize: '0.9em' }}>{quantity}</span>
-                                                                            <button
-                                                                                onClick={() => increaseQuantity(card.id)}
-                                                                                className="btn btn-outline-secondary btn-xs p-1"
-                                                                            >
-                                                                                +
-                                                                            </button>
-                                                                        </div>
-                                                                        <button
-                                                                            onClick={() => navigate("/shopping-cart")}
-                                                                            className="btn btn-success btn-xs p-1"
-                                                                        >
-                                                                            <i className="bi bi-cart"></i>
-                                                                        </button>
-                                                                        <button
-                                                                            onClick={() => removeFromCart(card.id)}
-                                                                            className="btn btn-outline-danger btn-xs p-1"
-                                                                        >
-                                                                            <i className="bi bi-x"></i>
                                                                         </button>
                                                                     </>
                                                                 );
