@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useFavourites } from "../context/FavouritesContext";
 
-export default function SingleProductCard({ product, onToggleFavourite }) {
+export default function SingleProductCard({ product, onToggleFavourite, onToggleCart }) {
 
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
 
@@ -30,6 +30,17 @@ export default function SingleProductCard({ product, onToggleFavourite }) {
       // Otherwise, just toggle without notification
       toggleFavourite(product);
     }
+  }
+
+  function handleToggleCart() {
+    // If parent provides a callback, use it (for toast notification)
+    if (onToggleCart) {
+      onToggleCart(product);
+    } 
+    // else {
+    //   // Otherwise, just toggle without notification
+    //   toggleFavourite(product);
+    // }
   }
 
   return (
@@ -109,7 +120,8 @@ export default function SingleProductCard({ product, onToggleFavourite }) {
           {!isInCart ? (
 
             <button
-              onClick={() => addToCart(product)}
+              //onClick={() => addToCart(product)}
+              onClick={() => onToggleCart(product)}
               className="btn btn-primary btn-sm"
             >
               Aggiungi
