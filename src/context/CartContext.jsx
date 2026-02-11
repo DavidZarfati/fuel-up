@@ -40,22 +40,21 @@ export function CartProvider({ children }) {
   }, []);
 
   // 👉 aggiunge al carrello (o aumenta qty)
-  function addToCart(product) {
+  function addToCart(product, qty = 1) {
+    const addQty = Number.isFinite(Number(qty)) && Number(qty) > 0 ? Number(qty) : 1;
     setCart((prevCart) => {
       const existing = prevCart.find((item) => item.id === product.id);
 
       if (existing) {
         return prevCart.map((item) =>
           item.id === product.id
-            ? { ...item, quantity: (item.quantity ?? 1) + 1 }
+            ? { ...item, quantity: (item.quantity ?? 1) + addQty }
             : item
         );
       }
 
-      return [...prevCart, { ...product, quantity: 1 }];
+      return [...prevCart, { ...product, quantity: addQty }];
     });
-
-    // alert(`${product.name} aggiunto al carrello 🛒`);
   }
 
   // 👉 aumenta qty di un prodotto (se vuoi un tasto +)

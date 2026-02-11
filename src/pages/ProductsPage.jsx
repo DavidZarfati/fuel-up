@@ -23,6 +23,17 @@ function hasDiscount(product) {
   return Number.isFinite(discount) && Number.isFinite(price) && discount > 0 && discount < price;
 }
 
+function getProductCategory(product) {
+  return Number(
+    product?.macro_categories_id ??
+    product?.category_id ??
+    product?.category ??
+    product?.categories_id ??
+    product?.macro_category_id ??
+    product?.macro_category
+  );
+}
+
 export default function ProductsPage() {
   const { backendUrl } = useGlobal();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -98,6 +109,8 @@ export default function ProductsPage() {
         if (q) params.set("q", q);
         if (orderBy) params.set("order_by", orderBy);
         if (orderDir) params.set("order_dir", orderDir);
+        // NON filtriamo per categoria lato backend (schema non omogeneo); filtriamo lato client
+        if (onSaleOnly) params.set("on_sale", "1");
 
         const resp = await axios.get(`${backendUrl}/api/products?${params.toString()}`);
         const data = resp.data;
@@ -125,7 +138,7 @@ export default function ProductsPage() {
     return () => {
       ignore = true;
     };
-  }, [backendUrl, page, q, orderBy, orderDir]);
+  }, [backendUrl, page, q, orderBy, orderDir, category, onSaleOnly]);
 
   useEffect(() => {
     if (page > totalPages) setPage(totalPages);
@@ -133,7 +146,8 @@ export default function ProductsPage() {
 
   const visibleProducts = useMemo(() => {
     return products.filter((product) => {
-      const matchesCategory = category === "" || Number(product.macro_categories_id) === Number(category);
+      const productCategory = getProductCategory(product);
+      const matchesCategory = category === "" || productCategory === Number(category);
       const matchesSale = !onSaleOnly || hasDiscount(product);
       return matchesCategory && matchesSale;
     });
@@ -171,7 +185,7 @@ export default function ProductsPage() {
             <div className="toolbar-group">
               <span className="toolbar-label">Ordinamento</span>
               <select className="select-ui" value={orderBy} onChange={(event) => { setOrderBy(event.target.value); setPage(1); }}>
-                <option value="created_at">Data creazione</option>
+                <option value="created_at">Nuovi arrivi / Novità</option>
                 <option value="name">Nome</option>
                 <option value="price">Prezzo</option>
                 <option value="brand">Brand</option>

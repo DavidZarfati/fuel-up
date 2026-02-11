@@ -131,7 +131,7 @@ export default function SearchPage() {
                   setPage(1);
                 }}
               >
-                <option value="created_at">Data creazione</option>
+                <option value="created_at">Nuovi arrivi / Novità</option>
                 <option value="name">Nome (A-Z)</option>
                 <option value="price">Prezzo</option>
                 <option value="brand">Brand</option>

@@ -90,7 +90,7 @@ export default function ProductRow({ product }) {
 
   return (
     <>
-      <article className="surface-card product-row">
+      <article className="surface-card product-row neon-card">
         <button
           type="button"
           className={`product-heart ${isFavourite(product.id) ? "active" : ""}`}
@@ -120,12 +120,12 @@ export default function ProductRow({ product }) {
         </div>
 
         <div className="product-row-actions">
-          <Link to={`/products/${product.slug}`} className="btn-ui btn-ui-outline">
-            Dettagli
+          <Link to={`/products/${product.slug}`} className="btn-ui btn-ui-outline" aria-label="Dettagli prodotto">
+            <i className="bi bi-eye" title="Dettagli prodotto" aria-hidden="true"></i>
           </Link>
 
           {!isInCart ? (
-            <button type="button" className="btn-ui btn-ui-primary" onClick={addItem}>
+            <button type="button" className="btn-ui btn-ui-primary neon-btn" onClick={addItem}>
               Aggiungi
             </button>
           ) : (
@@ -139,7 +139,7 @@ export default function ProductRow({ product }) {
                   +
                 </button>
               </div>
-              <button type="button" className="btn-ui btn-ui-outline" onClick={() => navigate("/shopping-cart")}>
+              <button type="button" className="btn-ui btn-ui-outline neon-btn" onClick={() => navigate("/shopping-cart")}>
                 Carrello
               </button>
             </>

@@ -215,9 +215,9 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <button type="submit" className="btn-ui btn-ui-primary checkout-submit" disabled={submitting}>
-              {submitting ? "Invio in corso..." : "Conferma ordine"}
-            </button>
+        <button type="submit" className="btn-ui btn-ui-primary checkout-submit neon-btn" disabled={submitting}>
+          {submitting ? "Invio in corso..." : "Conferma ordine"}
+        </button>
           </form>
 
           <aside className="surface-card checkout-summary">

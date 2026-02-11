@@ -15,7 +15,7 @@ export default function ThankYouPage() {
           </p>
 
           <div className="thankyou-actions">
-            <Link to="/products" className="btn-ui btn-ui-primary">
+            <Link to="/products" className="btn-ui btn-ui-primary neon-btn">
               Continua lo shopping
             </Link>
             <Link to="/" className="btn-ui btn-ui-outline">

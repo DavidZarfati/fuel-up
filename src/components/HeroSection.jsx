@@ -16,8 +16,8 @@ export default function HeroSection({
         <p className="hero-kicker">FuelUp Collezione Premium</p>
         <h1 className="title-xl">{title}</h1>
         <p className="hero-subtitle">{subtitle}</p>
-        <div className="hero-actions">
-          <Link className="btn-ui btn-ui-primary" to={primaryTo}>
+          <div className="hero-actions">
+          <Link className="btn-ui btn-ui-primary neon-btn" to={primaryTo}>
             {primaryText}
           </Link>
           <Link className="btn-ui btn-ui-outline" to={secondaryTo}>
