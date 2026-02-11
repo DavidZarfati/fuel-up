@@ -23,11 +23,16 @@
 }
 
 .ot-header-brand img {
-  width: 100px;
   height: 44px;
+  width: auto;
+  max-width: 140px;
   border-radius: 10px;
+<<<<<<< HEAD
   object-fit: cover;
   transition: all 0.2s ease;
+=======
+  object-fit: contain;
+>>>>>>> origin/fix--mediaquery
 }
 
 .ot-header-brand img:hover {
@@ -351,7 +356,7 @@
     grid-template-rows: auto auto;
     align-items: center;
     gap: 10px;
-    min-height: 76px;
+    min-height: 72px;
   }
 
   .ot-header-brand {
@@ -429,4 +434,11 @@
   .ot-header-search .btn-ui {
     min-width: 84px;
   }
+}
+
+@media (max-width: 420px) {
+  .ot-header-main-row { min-height: 64px; gap: 8px; }
+  .ot-header-brand img { height: 36px; max-width: 120px; }
+  .ot-header-search .btn-ui { min-width: 64px; padding-inline: 8px; height: 36px; }
+  .ot-header-actions { gap: 6px; }
 }

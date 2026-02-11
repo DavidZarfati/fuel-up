@@ -65,3 +65,9 @@
     flex: 1;
   }
 }
+
+@media (max-width: 420px) {
+  .hero-section { min-height: 260px; }
+  .hero-content { padding: var(--space-3) var(--space-2); }
+  .hero-subtitle { max-width: 100%; }
+}
