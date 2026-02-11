@@ -1,9 +1,11 @@
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useCart } from "../context/CartContext";
 import { useFavourites } from "../context/FavouritesContext";
+import { useRef } from "react";
 import "./Header.css";
 import logo from "../assets/images/logo.png";
+
 
 const MAIN_LINKS = [
   { title: "Chi siamo", path: "/about-us" },
@@ -12,7 +14,7 @@ const MAIN_LINKS = [
 ];
 
 const CATEGORY_LINKS = [
-  { title: "Prodotti", path: "/products" },
+  { title: "Tutti i prodotti", path: "/products" },
   { title: "Integratori", path: "/products?category=1", category: "1" },
   { title: "Abbigliamento", path: "/products?category=2", category: "2" },
   { title: "Accessori", path: "/products?category=3", category: "3" },
@@ -33,11 +35,14 @@ export default function Header({ nameApp }) {
   const [search, setSearch] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth > 980);
   const navigate = useNavigate();
   const location = useLocation();
   const { totalItems } = useCart();
   const { favourites } = useFavourites();
   const favouritesCount = useMemo(() => favourites.length, [favourites]);
+  const dropdownTimeout = useRef(null);
+
 
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get("category");
@@ -51,6 +56,15 @@ export default function Header({ nameApp }) {
     setIsMenuOpen(false);
   }
 
+  useEffect(() => {
+    function handleResize() {
+      setIsDesktop(window.innerWidth > 980);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
     <header className="ot-header">
       <div className="app-container">
@@ -63,7 +77,7 @@ export default function Header({ nameApp }) {
             </div>
           </Link>
 
-            <form className="ot-header-search" onSubmit={handleSubmit}>
+          <form className="ot-header-search" onSubmit={handleSubmit}>
             <i className="bi bi-search"></i>
             <input
               className="input-ui"
@@ -101,28 +115,50 @@ export default function Header({ nameApp }) {
               <i className="bi bi-cart3"></i>
               {totalItems > 0 && <span className="ot-header-icon-badge">{totalItems}</span>}
             </button>
-            {/* account icon removed per request */}
           </div>
         </div>
 
         <div className={`ot-header-nav-wrap ${isMenuOpen ? "open" : ""}`}>
-          {/* Main Navigation */}
-          <nav className="ot-header-main-nav">
+
+          {/* <nav className="ot-header-main-nav">
             {MAIN_LINKS.map((link) => {
               if (link.path === "/products") {
                 return (
-                  <div key={link.path} className="products-main-link" onMouseLeave={() => setProductsDropdownOpen(false)}>
+                  <div
+                    key={link.path}
+                    className="products-main-link"
+                    onMouseEnter={() => {
+                      clearTimeout(dropdownTimeout.current);
+                      setProductsDropdownOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                      dropdownTimeout.current = setTimeout(() => {
+                        setProductsDropdownOpen(false);
+                      }, 200); // slight delay for tolerance
+                    }}
+                  >
                     <button
                       type="button"
                       className={`products-toggle ${productsDropdownOpen ? "open" : ""} ${location.pathname === "/products" && !category && !onSale ? "active" : ""}`}
-                      onClick={() => setProductsDropdownOpen((v) => !v)}
+                      onClick={() => setProductsDropdownOpen(true)}
                     >
                       {link.title}
                     </button>
-                    {productsDropdownOpen && (
+
+                    {isDesktop && productsDropdownOpen && (
                       <div className="products-dropdown" onClick={() => setIsMenuOpen(false)}>
                         {CATEGORY_LINKS.map((c) => (
-                          <NavLink key={c.title} to={c.path} className={({ isActive }) => (isActive ? "active" : "")} onClick={() => { setProductsDropdownOpen(false); }}>
+                          <NavLink
+                            key={c.title}
+                            to={c.path}
+                            className={({ isActive }) => {
+                              if (c.category) return category === c.category ? "active" : "";
+                              if (c.onSale) return onSale === c.onSale ? "active" : "";
+                              if (c.path === "/products") return !category && !onSale ? "active" : "";
+                              return "";
+                            }}
+                            onClick={() => setIsMenuOpen(false)}
+                          >
                             {c.title}
                           </NavLink>
                         ))}
@@ -143,32 +179,89 @@ export default function Header({ nameApp }) {
                 </NavLink>
               );
             })}
+          </nav> */}
+
+          <nav className="ot-header-main-nav">
+            {MAIN_LINKS.map((link) => {
+              if (link.path === "/products") {
+                return isDesktop ? (
+                  // Desktop: dropdown
+                  <div
+                    key={link.path}
+                    className="products-main-link"
+                    onMouseEnter={() => {
+                      clearTimeout(dropdownTimeout.current);
+                      setProductsDropdownOpen(true);
+                    }}
+                    onMouseLeave={() => {
+                      dropdownTimeout.current = setTimeout(() => {
+                        setProductsDropdownOpen(false);
+                      }, 200);
+                    }}
+                  >
+                    <button
+                      type="button"
+                      className={`products-toggle ${productsDropdownOpen ? "open" : ""
+                        } ${location.pathname === "/products" && !category && !onSale ? "active" : ""}`}
+                      onClick={() => setProductsDropdownOpen(true)}
+                    >
+                      {link.title}
+                    </button>
+
+                    {productsDropdownOpen && (
+                      <div className="products-dropdown" onClick={() => setIsMenuOpen(false)}>
+                        {CATEGORY_LINKS.map((c) => (
+                          <NavLink
+                            key={c.title}
+                            to={c.path}
+                            className={({ isActive }) => {
+                              if (c.category) return category === c.category ? "active" : "";
+                              if (c.onSale) return onSale === c.onSale ? "active" : "";
+                              if (c.path === "/products") return !category && !onSale ? "active" : "";
+                              return "";
+                            }}
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {c.title}
+                          </NavLink>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  // Mobile: flatten all categories under "I nostri prodotti"
+                  CATEGORY_LINKS.map((c) => (
+                    <NavLink
+                      key={c.title}
+                      to={c.path}
+                      className={({ isActive }) => {
+                        if (c.category) return category === c.category ? "active" : "";
+                        if (c.onSale) return onSale === c.onSale ? "active" : "";
+                        if (c.path === "/products") return !category && !onSale ? "active" : "";
+                        return "";
+                      }}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {c.title}
+                    </NavLink>
+                  ))
+                );
+              }
+
+              // Other main links
+              return (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) => (location.pathname === link.path ? "active" : "")}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.title}
+                </NavLink>
+              );
+            })}
           </nav>
 
-          {/* Category Navigation */}
-          <nav className="ot-header-category-nav">
-            {CATEGORY_LINKS.map((link) => (
-              <NavLink
-                key={link.title}
-                to={link.path}
-                className={({ isActive }) => {
-                  if (link.path === "/products") {
-                    return location.pathname === "/products" && !category && !onSale ? "active" : "";
-                  }
-                  if (link.category) {
-                    return location.pathname === "/products" && category === link.category ? "active" : "";
-                  }
-                  if (link.onSale) {
-                    return location.pathname === "/products" && onSale === link.onSale ? "active" : "";
-                  }
-                  return "";
-                }}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.title}
-              </NavLink>
-            ))}
-          </nav>
         </div>
       </div>
     </header>
