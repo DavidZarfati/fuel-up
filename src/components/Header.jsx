@@ -11,6 +11,7 @@ const MAIN_LINKS = [
   { title: "Chi siamo", path: "/about-us" },
   { title: "I nostri prodotti", path: "/products" },
   { title: "Preferiti", path: "/products/favourites" },
+  { title: "Carrello", path: "/shopping-cart", icon: "bi bi-cart3" },
 ];
 
 const CATEGORY_LINKS = [
@@ -257,6 +258,7 @@ export default function Header({ nameApp }) {
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.title}
+                  {link.icon && <i className={link.icon} style={{ marginLeft: '6px' }}></i>}
                 </NavLink>
               );
             })}
