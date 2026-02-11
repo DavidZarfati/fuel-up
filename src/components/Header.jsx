@@ -5,6 +5,7 @@ import { useFavourites } from "../context/FavouritesContext";
 import { useRef } from "react";
 import "./Header.css";
 import logo from "../assets/images/logo.png";
+import ShippingBanner from "./ShippingBanner";
 
 
 const MAIN_LINKS = [
@@ -266,6 +267,9 @@ export default function Header({ nameApp }) {
 
         </div>
       </div>
+      
+      {/* Shipping Banner */}
+      <ShippingBanner />
     </header>
   );
 }

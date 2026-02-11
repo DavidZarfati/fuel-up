@@ -17,13 +17,16 @@ export default function CartPage() {
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
   const freeShippingActive = totalPrice >= FREE_SHIPPING_TARGET;
   const missingAmount = Math.max(0, FREE_SHIPPING_TARGET - totalPrice);
+  const progressPercentage = Math.min((totalPrice / FREE_SHIPPING_TARGET) * 100, 100);
 
-  // ri-mostra il banner ad ogni cambio di stato della soglia (sale/scende da 100)
+  // Banner disappears after 5 seconds or when reaching 100EUR
   useEffect(() => {
-    setBannerVisible(false);
-    const timer = setTimeout(() => setBannerVisible(true), 30);
+    setBannerVisible(true);
+    const timer = setTimeout(() => {
+      setBannerVisible(false);
+    }, 5000);
     return () => clearTimeout(timer);
-  }, [freeShippingActive]);
+  }, [freeShippingActive, totalPrice]);
 
   return (
     <section className="page-section">
@@ -56,28 +59,38 @@ export default function CartPage() {
           />
         ) : (
           <>
-            <div className="cart-top-row">
-              {bannerVisible && (
-                <div
-                  key={freeShippingActive ? "shipping-on" : "shipping-off"}
-                  className={`shipping-banner neon-banner shipping-banner-animate ${freeShippingActive ? "shipping-banner-success" : "shipping-banner-info"}`}
-                  role="status"
-                  aria-live="polite"
-                >
-                  <div className="shipping-banner-icon">
-                    <i className={`bi ${freeShippingActive ? "bi-check-circle-fill" : "bi-info-circle-fill"}`}></i>
+            {/* Premium Shipping Banner - Fades out after 5 seconds */}
+            {bannerVisible && (
+              <div className="shipping-banner-premium">
+                <div className="shipping-banner-premium-content">
+                  <div className="shipping-banner-premium-text">
+                    <h3 className="shipping-banner-premium-title">
+                      {freeShippingActive
+                        ? "🎉 Spedizione Gratuita Sbloccata!"
+                        : "Spedizione Gratuita a EUR 100"}
+                    </h3>
+                    <p className="shipping-banner-premium-subtitle">
+                      {freeShippingActive
+                        ? "Congratulazioni! Il tuo ordine avrà la spedizione gratuita."
+                        : `Aggiungi ancora EUR ${missingAmount.toFixed(2)} per sbloccare la spedizione gratuita`}
+                    </p>
                   </div>
-                  <p>
-                    {freeShippingActive
-                      ? "Hai raggiunto EUR 100: spedizione gratuita attiva."
-                      : `Spedizione gratuita disattivata. Ti mancano EUR ${missingAmount.toFixed(2)}.`}
-                  </p>
-                  <button type="button" className="shipping-banner-close" aria-label="Chiudi avviso" onClick={() => setBannerVisible(false)}>
-                    <i className="bi bi-x-lg"></i>
-                  </button>
+                  <div className="shipping-banner-premium-progress">
+                    <div className="progress-container">
+                      <div className="progress-bar-bg">
+                        <div
+                          className="progress-bar-fill"
+                          style={{
+                            width: `${progressPercentage}%`,
+                          }}
+                        ></div>
+                      </div>
+                      <span className="progress-text">{Math.round(progressPercentage)}%</span>
+                    </div>
+                  </div>
                 </div>
-              )}
-            </div>
+              </div>
+            )}
 
             <div className="cart-layout">
               <div className="surface-card cart-items-list">

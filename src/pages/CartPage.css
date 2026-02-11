@@ -26,95 +26,105 @@
   font-size: 22px;
 }
 
-.cart-top-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-2);
-  margin-bottom: var(--space-2);
-  align-items: center;
-  justify-items: center;
-}
-
-.shipping-banner {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 14px 16px;
+/* Premium Shipping Banner - Minimal Clean Design */
+.shipping-banner-premium {
+  margin-bottom: var(--space-3);
+  padding: 24px;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.8), rgba(22, 35, 55, 0.9));
+  border: 1px solid rgba(34, 211, 238, 0.15);
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: var(--shadow-glow);
-  overflow: hidden;
+  box-shadow: 0 8px 32px -12px rgba(34, 211, 238, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  animation: bannerSlideIn 0.4s ease-out, bannerFadeOut 0.5s ease-in 4.5s forwards;
 }
 
-.neon-banner {
-  border-color: rgba(34, 211, 238, 0.3);
-  transition: box-shadow 0.2s ease, transform 0.2s ease;
+@keyframes bannerSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.neon-banner:hover {
-  box-shadow:
-    0 0 10px rgba(34, 211, 238, 0.5),
-    0 0 20px rgba(34, 211, 238, 0.4);
-  transform: translateY(-1px);
+@keyframes bannerFadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-8px);
+    pointer-events: none;
+  }
 }
 
-.shipping-banner p {
-  font-weight: 700;
-  color: #f4f7ff;
+.shipping-banner-premium-content {
+  max-width: 600px;
+  margin: 0 auto;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.shipping-banner-premium-text {
   text-align: center;
 }
 
-.shipping-banner-success {
-  background: linear-gradient(120deg, rgba(34, 197, 94, 0.22), rgba(74, 222, 128, 0.25));
-  border-color: rgba(34, 197, 94, 0.35);
-  color: #e1ffe8;
+.shipping-banner-premium-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #f1f9fe;
+  margin: 0 0 6px 0;
+  letter-spacing: -0.3px;
 }
 
-.shipping-banner-info {
-  background: linear-gradient(120deg, rgba(59, 130, 246, 0.2), rgba(34, 211, 238, 0.24));
-  border-color: rgba(59, 130, 246, 0.35);
-  color: #e6f4ff;
+.shipping-banner-premium-subtitle {
+  font-size: 14px;
+  color: rgba(229, 231, 235, 0.75);
+  margin: 0;
+  line-height: 1.5;
 }
 
-.shipping-banner-icon {
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  display: inline-flex;
+.shipping-banner-premium-progress {
+  display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.14);
-  color: inherit;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  gap: 12px;
 }
 
-.shipping-banner-close {
-  width: 32px;
-  height: 32px;
-  border-radius: 10px;
-  display: inline-flex;
+.progress-container {
+  flex: 1;
+  max-width: 280px;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  color: inherit;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(0, 0, 0, 0.14);
-  cursor: pointer;
-  transition: transform 0.2s ease;
+  gap: 10px;
 }
 
-.shipping-banner-close:hover {
-  transform: translateY(-1px);
+.progress-bar-bg {
+  flex: 1;
+  height: 6px;
+  background: rgba(34, 211, 238, 0.12);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(34, 211, 238, 0.1);
 }
 
-.shipping-banner-animate {
-  animation: shipping-slide-in 360ms ease forwards;
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, rgba(34, 211, 238, 0.6), rgba(34, 211, 238, 0.9));
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.4);
 }
 
-@keyframes shipping-slide-in {
-  0% { transform: translateX(40px); opacity: 0; }
-  60% { transform: translateX(-6px); opacity: 1; }
-  100% { transform: translateX(0); opacity: 1; }
+.progress-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(229, 231, 235, 0.8);
+  min-width: 32px;
+  text-align: right;
+  letter-spacing: 0.5px;
 }
 
 .cart-clear-cta {
@@ -299,12 +309,19 @@
     justify-content: space-between;
   }
 
-  .shipping-banner {
-    grid-template-columns: 1fr auto;
-    row-gap: 10px;
+  .shipping-banner-premium {
+    padding: 16px;
   }
 
-  .shipping-banner-icon {
-    display: none;
+  .shipping-banner-premium-title {
+    font-size: 16px;
+  }
+
+  .shipping-banner-premium-subtitle {
+    font-size: 13px;
+  }
+
+  .progress-container {
+    max-width: 200px;
   }
 }

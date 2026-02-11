@@ -77,6 +77,11 @@ export default function ProductsPage() {
   }, [urlState]);
 
   useEffect(() => {
+    // reset pagination when changing category to avoid empty pages
+    setPage(1);
+  }, [category]);
+
+  useEffect(() => {
     const params = new URLSearchParams(searchParams);
 
     if (page > 1) params.set("page", String(page));
@@ -86,7 +91,8 @@ export default function ProductsPage() {
     else params.delete("q");
     params.set("order_by", orderBy);
     params.set("order_dir", orderDir);
-    params.set("limit", String(limit));
+    const limitValue = category === "" ? limit : 100; // fetch more items when filtering by category
+    params.set("limit", String(limitValue));
     if (category !== "") params.set("category", String(category));
     else params.delete("category");
     if (onSaleOnly) params.set("on_sale", "1");
@@ -105,7 +111,8 @@ export default function ProductsPage() {
       try {
         const params = new URLSearchParams();
         params.set("page", String(page));
-        params.set("limit", String(limit));
+        const limitValue = category === "" ? limit : 100; // ensure all category items are in the page payload
+        params.set("limit", String(limitValue));
         if (q) params.set("q", q);
         if (orderBy) params.set("order_by", orderBy);
         if (orderDir) params.set("order_dir", orderDir);
