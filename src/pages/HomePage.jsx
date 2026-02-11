@@ -7,6 +7,7 @@ import ViewToggle from "../components/ViewToggle";
 import ProductCard from "../components/ProductCard";
 import ProductRow from "../components/ProductRow";
 import EmptyState from "../components/EmptyState";
+import { useCart } from "../context/CartContext";
 import "./HomePage.css";
 
 const CATEGORIES = [
@@ -49,6 +50,9 @@ export default function HomePage() {
   const [error, setError] = useState("");
   const [view, setView] = useState("grid");
   const [category, setCategory] = useState("");
+  const { totalPrice } = useCart();
+  const FREE_SHIPPING_TARGET = 100;
+  const freeShippingActive = totalPrice >= FREE_SHIPPING_TARGET;
 
   useEffect(() => {
     const categoryFromUrl = searchParams.get("category");
@@ -113,13 +117,15 @@ export default function HomePage() {
           secondaryText="Offerte attive"
         />
 
-        <div className="free-shipping-banner surface-card">
-          <i className="bi bi-truck"></i>
-          <div>
-            <strong>Spedizione gratuita</strong>
-            <div>per ordini superiori a EUR 100</div>
+        {freeShippingActive && (
+          <div className="free-shipping-banner surface-card">
+            <i className="bi bi-truck"></i>
+            <div>
+              <strong>Spedizione gratuita</strong>
+              <div>per ordini superiori a EUR {FREE_SHIPPING_TARGET}</div>
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="surface-card home-features">
           {FEATURES.map((feature) => (
