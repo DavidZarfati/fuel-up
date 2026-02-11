@@ -133,14 +133,15 @@ button {
 }
 
 .btn-ui-danger {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.9), rgba(185, 28, 28, 0.92));
-  border-color: rgba(239, 68, 68, 0.6);
-  color: #ffe4e6;
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  border-color: rgba(185, 28, 28, 0.85);
+  color: #ffffff;
+  box-shadow: 0 12px 28px -18px rgba(185, 28, 28, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .btn-ui-danger:hover {
-  filter: brightness(1.08);
-  box-shadow: 0 10px 22px -18px rgba(239, 68, 68, 0.8);
+  filter: brightness(1.06);
+  box-shadow: 0 14px 36px -12px rgba(239, 68, 68, 0.65), 0 0 20px rgba(239, 68, 68, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .input-ui,
@@ -372,4 +373,38 @@ button {
   box-shadow: 0 0 10px rgba(59, 130, 246, 0.65), 0 0 18px rgba(34, 211, 238, 0.6);
   filter: brightness(1.05);
   transform: translateY(-1px);
+}
+
+/* Neon style for danger buttons (red glow) */
+/* Make danger neon match the shipping banner transparency and feel */
+.btn-ui-danger.neon-btn,
+.cart-clear-cta {
+  background: linear-gradient(135deg, #ef4444, #b91c1c);
+  border-color: rgba(185, 28, 28, 0.85);
+  color: #ffffff;
+  box-shadow: 0 12px 28px -18px rgba(185, 28, 28, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  text-shadow: 0 0 6px rgba(255, 150, 150, 0.25);
+}
+
+.btn-ui-danger.neon-btn:hover,
+.cart-clear-cta:hover {
+  box-shadow: 0 14px 36px -12px rgba(239, 68, 68, 0.65), 0 0 20px rgba(239, 68, 68, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
+
+@keyframes neonPulseDanger {
+  0% {
+    box-shadow: 0 8px 20px rgba(185, 28, 28, 0.12), 0 0 8px rgba(239, 68, 68, 0.06);
+  }
+  50% {
+    box-shadow: 0 14px 34px rgba(239, 68, 68, 0.24), 0 0 22px rgba(239, 68, 68, 0.16);
+  }
+  100% {
+    box-shadow: 0 8px 20px rgba(185, 28, 28, 0.12), 0 0 8px rgba(239, 68, 68, 0.06);
+  }
+}
+
+.btn-ui-danger.neon-btn.animate-glow {
+  animation: neonPulseDanger 2.6s ease-in-out infinite;
 }

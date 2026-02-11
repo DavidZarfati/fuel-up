@@ -123,7 +123,7 @@ export default function CartPage() {
                           +
                         </button>
                       </div>
-                      <button type="button" className="btn-ui btn-ui-danger" onClick={() => removeFromCart(item.id)}>
+                      <button type="button" className="btn-ui btn-ui-danger neon-btn" onClick={() => removeFromCart(item.id)}>
                         Rimuovi
                       </button>
                     </div>
