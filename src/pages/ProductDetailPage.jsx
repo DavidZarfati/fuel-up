@@ -163,7 +163,7 @@ export default function ProductDetailPage() {
             </div>
 
             <button type="button" className="btn-ui btn-ui-primary detail-cart-btn" onClick={handleAddToCart}>
-              Aggiungi al carrello
+              Aggiungi al carrello <i className="bi bi-cart3"></i>
             </button>
           </div>
         </article>
@@ -182,4 +182,3 @@ export default function ProductDetailPage() {
     </section>
   );
 }
-

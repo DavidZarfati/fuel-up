@@ -130,7 +130,7 @@ export default function ProductCard({ product }) {
           <div className="card-meta-fade" aria-hidden="true"></div>
           {!isInCart ? (
             <button type="button" className="btn-ui btn-ui-primary product-add-btn neon-btn" onClick={addItem}>
-              Aggiungi
+              Aggiungi al carrello <i className="bi bi-cart3"></i>
             </button>
           ) : (
             <div className="product-cart-controls">

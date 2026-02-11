@@ -5,7 +5,7 @@ const VIEW_OPTIONS = [
 
 export default function ViewToggle({ value, onChange }) {
   return (
-    <div className="chip-row">
+    <div className="chip-row" style={{ gap: "20px", display: "flex" }}>
       {VIEW_OPTIONS.map((option) => (
         <button
           key={option.id}

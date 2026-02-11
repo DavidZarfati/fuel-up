@@ -145,13 +145,40 @@ export default function ProductsPage() {
   }, [totalPages, page]);
 
   const visibleProducts = useMemo(() => {
-    return products.filter((product) => {
+    // Filtro
+    let filtered = products.filter((product) => {
       const productCategory = getProductCategory(product);
       const matchesCategory = category === "" || productCategory === Number(category);
       const matchesSale = !onSaleOnly || hasDiscount(product);
       return matchesCategory && matchesSale;
     });
-  }, [products, category, onSaleOnly]);
+
+    // Ordinamento client-side
+    if (orderBy) {
+      filtered = [...filtered].sort((a, b) => {
+        let aValue, bValue;
+        if (orderBy === "price") {
+          // Se c'è discount_price valido, usa quello, altrimenti price
+          aValue = (a.discount_price && Number(a.discount_price) > 0) ? Number(a.discount_price) : Number(a.price);
+          bValue = (b.discount_price && Number(b.discount_price) > 0) ? Number(b.discount_price) : Number(b.price);
+        } else {
+          aValue = a[orderBy];
+          bValue = b[orderBy];
+          if (orderBy === "discount_price") {
+            aValue = Number(aValue);
+            bValue = Number(bValue);
+          } else if (typeof aValue === "string" && typeof bValue === "string") {
+            aValue = aValue.toLowerCase();
+            bValue = bValue.toLowerCase();
+          }
+        }
+        if (aValue < bValue) return orderDir === "asc" ? -1 : 1;
+        if (aValue > bValue) return orderDir === "asc" ? 1 : -1;
+        return 0;
+      });
+    }
+    return filtered;
+  }, [products, category, onSaleOnly, orderBy, orderDir]);
 
   return (
     <section className="page-section">

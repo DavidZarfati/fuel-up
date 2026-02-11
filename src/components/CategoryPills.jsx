@@ -1,6 +1,6 @@
 export default function CategoryPills({ categories, selectedValue, onChange, className = "" }) {
   return (
-    <div className={`chip-row ${className}`.trim()}>
+    <div className={`chip-row ${className}`.trim()} style={{ gap: "20px", display: "flex" }}>
       {categories.map((item) => (
         <button
           key={item.value ?? item.label}

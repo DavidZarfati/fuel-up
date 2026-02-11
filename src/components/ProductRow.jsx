@@ -126,7 +126,7 @@ export default function ProductRow({ product }) {
 
           {!isInCart ? (
             <button type="button" className="btn-ui btn-ui-primary neon-btn" onClick={addItem}>
-              Aggiungi
+              Aggiungi al carrello <i className="bi bi-cart3"></i>
             </button>
           ) : (
             <>
