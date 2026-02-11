@@ -123,6 +123,7 @@
 .ot-header-icon-btn:hover {
   border-color: var(--mp-accent);
   box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.28), 0 10px 18px -18px rgba(34, 211, 238, 0.5);
+transform: scale(1.2); 
 }
 
 .ot-header-icon-badge {
@@ -160,6 +161,7 @@
   color: var(--mp-text);
   border-color: var(--mp-accent);
   box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.28), 0 12px 26px -18px rgba(59, 130, 246, 0.9);
+  transform: scale(1.2); 
 }
 
 .ot-header-main-nav a,
