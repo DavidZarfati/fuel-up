@@ -203,7 +203,7 @@ export default function Header({ nameApp }) {
                     <button
                       type="button"
                       className={`products-toggle ${productsDropdownOpen ? "open" : ""
-                        } ${location.pathname === "/products" && !category && !onSale ? "active" : ""}`}
+                        } ${location.pathname === "/products" ? "active" : ""}`}
                       onClick={() => setProductsDropdownOpen(true)}
                     >
                       {link.title}
