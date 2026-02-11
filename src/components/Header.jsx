@@ -58,8 +58,8 @@ export default function Header({ nameApp }) {
           <Link to="/" className="ot-header-brand" onClick={() => setIsMenuOpen(false)}>
             <img src={logo} alt={nameApp} />
             <div>
-              <strong>{nameApp}</strong>
-              <span>Alimenta la tua performance</span>
+              {/* <strong>{nameApp}</strong>
+              <span>Alimenta la tua performance</span> */}
             </div>
           </Link>
 
