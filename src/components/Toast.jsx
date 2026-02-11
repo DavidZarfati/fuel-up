@@ -5,7 +5,7 @@ export default function Toast({ toast, visible, onClose, type = "cart" }) {
   if (!toast || !visible) return null;
 
   const isFavourite = type === "fav";
-  const title = isFavourite ? "Wishlist" : "Carrello";
+  const title = isFavourite ? "Preferiti" : "Carrello";
   const fallbackMessage = isFavourite
     ? `Hai aggiornato i preferiti: ${toast.name}`
     : `Hai aggiornato il carrello: ${toast.name}`;

@@ -14,7 +14,7 @@ export default function EmptyState({
       <h3>{title}</h3>
       <p>{description}</p>
       {ctaLabel && (
-        <Link to={ctaTo} className="btn-ui btn-ui-primary">
+        <Link to={ctaTo} className="btn-ui btn-ui-primary neon-btn">
           {ctaLabel}
         </Link>
       )}

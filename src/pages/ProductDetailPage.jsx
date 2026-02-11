@@ -23,6 +23,7 @@ export default function ProductDetailPage() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [quantity, setQuantity] = useState(1);
 
   const { isFavourite, toggleFavourite } = useFavourites();
   const { addToCart } = useCart();
@@ -63,12 +64,18 @@ export default function ProductDetailPage() {
 
   function handleAddToCart() {
     if (!item) return;
-    addToCart(item);
+    // add with quantity if supported by CartContext
+    try {
+      addToCart(item, quantity);
+    } catch (e) {
+      // fallback: call multiple times
+      for (let i = 0; i < quantity; i++) addToCart(item);
+    }
     fireCartToast({
       name: item.name,
       time: "adesso",
       image: `${backendBaseUrl}${item.image}`,
-      message: "Hai aggiunto al carrello:",
+      message: `Hai aggiunto al carrello (${quantity}):`,
     });
   }
 
@@ -145,6 +152,14 @@ export default function ProductDetailPage() {
               ) : (
                 <span className="price-now">{formatPrice(item.price)}</span>
               )}
+            </div>
+
+            <div className="product-quantity-row">
+              <div className="product-stepper">
+                <button type="button" onClick={() => setQuantity((q) => Math.max(1, q - 1))}>-</button>
+                <span>{quantity}</span>
+                <button type="button" onClick={() => setQuantity((q) => q + 1)}>+</button>
+              </div>
             </div>
 
             <button type="button" className="btn-ui btn-ui-primary detail-cart-btn" onClick={handleAddToCart}>

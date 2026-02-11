@@ -9,15 +9,15 @@ export default function Footer() {
         <div className="ot-footer-brand">
           <img src={logo} alt="FuelUp logo" />
           <h3>FuelUp</h3>
-          <p>Premium Fitness Nutrition</p>
+          <p>Nutrizione fitness premium</p>
           <small>Via esempio 1234, Italia</small>
         </div>
 
         <div className="ot-footer-column">
-          <h4>Shop</h4>
+          <h4>Negozio</h4>
           <Link to="/products">Prodotti</Link>
           <Link to="/products?on_sale=1">Offerte</Link>
-          <Link to="/products/favourites">Wishlist</Link>
+          <Link to="/products/favourites">Preferiti</Link>
         </div>
 
         <div className="ot-footer-column">
@@ -25,7 +25,7 @@ export default function Footer() {
           <Link to="/products?category=1">Integratori</Link>
           <Link to="/products?category=2">Abbigliamento</Link>
           <Link to="/products?category=3">Accessori</Link>
-          <Link to="/products?category=4">Snacks</Link>
+          <Link to="/products?category=4">Cibo &amp; Snacks</Link>
         </div>
 
         <div className="ot-footer-column">

@@ -13,11 +13,11 @@ export default function HeroSection({
     <section className="hero-section surface-card">
       <div className="hero-overlay"></div>
       <div className="hero-content">
-        <p className="hero-kicker">FuelUp Pro Collection</p>
+        <p className="hero-kicker">FuelUp Collezione Premium</p>
         <h1 className="title-xl">{title}</h1>
         <p className="hero-subtitle">{subtitle}</p>
-        <div className="hero-actions">
-          <Link className="btn-ui btn-ui-primary" to={primaryTo}>
+          <div className="hero-actions">
+          <Link className="btn-ui btn-ui-primary neon-btn" to={primaryTo}>
             {primaryText}
           </Link>
           <Link className="btn-ui btn-ui-outline" to={secondaryTo}>
