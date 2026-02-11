@@ -30,6 +30,17 @@ function hasDiscount(product) {
   return Number.isFinite(discount) && Number.isFinite(price) && discount > 0 && discount < price;
 }
 
+function getProductCategory(product) {
+  return Number(
+    product?.macro_categories_id ??
+    product?.category_id ??
+    product?.category ??
+    product?.categories_id ??
+    product?.macro_category_id ??
+    product?.macro_category
+  );
+}
+
 export default function HomePage() {
   const backendBaseUrl = import.meta.env.VITE_BACKEND_URL;
   const [searchParams, setSearchParams] = useSearchParams();
@@ -69,7 +80,7 @@ export default function HomePage() {
 
   const filteredProducts = useMemo(() => {
     if (category === "") return products;
-    return products.filter((product) => Number(product.macro_categories_id) === Number(category));
+    return products.filter((product) => getProductCategory(product) === Number(category));
   }, [products, category]);
 
   const bestSellers = useMemo(() => filteredProducts.slice(0, 12), [filteredProducts]);
@@ -101,6 +112,14 @@ export default function HomePage() {
           primaryText="Esplora prodotti"
           secondaryText="Offerte attive"
         />
+
+        <div className="free-shipping-banner surface-card">
+          <i className="bi bi-truck"></i>
+          <div>
+            <strong>Spedizione gratuita</strong>
+            <div>per ordini superiori a EUR 100</div>
+          </div>
+        </div>
 
         <div className="surface-card home-features">
           {FEATURES.map((feature) => (

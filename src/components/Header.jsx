@@ -16,6 +16,7 @@ const CATEGORY_LINKS = [
   { title: "Integratori", path: "/products?category=1", category: "1" },
   { title: "Abbigliamento", path: "/products?category=2", category: "2" },
   { title: "Accessori", path: "/products?category=3", category: "3" },
+  { title: "Cibo & Snacks", path: "/products?category=4", category: "4" },
   { title: "Offerte", path: "/products?on_sale=1", onSale: "1" },
 ];
 
@@ -31,6 +32,7 @@ function IconAction({ icon, badge, label, onClick }) {
 export default function Header({ nameApp }) {
   const [search, setSearch] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [productsDropdownOpen, setProductsDropdownOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { totalItems } = useCart();
@@ -57,11 +59,11 @@ export default function Header({ nameApp }) {
             <img src={logo} alt={nameApp} />
             <div>
               <strong>{nameApp}</strong>
-              <span>Fuel Your Performance</span>
+              <span>Alimenta la tua performance</span>
             </div>
           </Link>
 
-          <form className="ot-header-search" onSubmit={handleSubmit}>
+            <form className="ot-header-search" onSubmit={handleSubmit}>
             <i className="bi bi-search"></i>
             <input
               className="input-ui"
@@ -69,9 +71,9 @@ export default function Header({ nameApp }) {
               placeholder="Cerca prodotti, brand, categorie..."
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              aria-label="Search products"
+              aria-label="Cerca prodotti"
             />
-            <button type="submit" className="btn-ui btn-ui-primary">
+            <button type="submit" className="btn-ui btn-ui-primary neon-btn">
               Cerca
             </button>
           </form>
@@ -89,55 +91,58 @@ export default function Header({ nameApp }) {
             <IconAction
               icon="bi bi-heart"
               badge={favouritesCount}
-              label="Wishlist"
+              label="Preferiti"
               onClick={() => {
                 navigate("/products/favourites");
                 setIsMenuOpen(false);
               }}
             />
-            <IconAction
-              icon="bi bi-bag"
-              badge={totalItems}
-              label="Cart"
-              onClick={() => {
-                navigate("/shopping-cart");
-                setIsMenuOpen(false);
-              }}
-            />
-            <IconAction
-              icon="bi bi-person"
-              badge={0}
-              label="User"
-              onClick={() => {
-                navigate("/about-us");
-                setIsMenuOpen(false);
-              }}
-            />
+            <button type="button" className="ot-header-icon-btn" aria-label="Carrello" onClick={() => { navigate('/shopping-cart'); setIsMenuOpen(false); }}>
+              <i className="bi bi-cart3"></i>
+              {totalItems > 0 && <span className="ot-header-icon-badge">{totalItems}</span>}
+            </button>
+            {/* account icon removed per request */}
           </div>
         </div>
 
         <div className={`ot-header-nav-wrap ${isMenuOpen ? "open" : ""}`}>
           {/* Main Navigation */}
           <nav className="ot-header-main-nav">
-            {MAIN_LINKS.map((link) => (
-              <NavLink
-                key={link.path}
-                to={link.path}
-                className={({ isActive }) => {
-                  // Custom logic for products vs favourites
-                  if (link.path === "/products") {
-                    return location.pathname === "/products" && !category && !onSale ? "active" : "";
-                  }
-                  if (link.path === "/products/favourites") {
-                    return location.pathname === "/products/favourites" ? "active" : "";
-                  }
-                  return location.pathname === link.path ? "active" : "";
-                }}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.title}
-              </NavLink>
-            ))}
+            {MAIN_LINKS.map((link) => {
+              if (link.path === "/products") {
+                return (
+                  <div key={link.path} className="products-main-link" onMouseLeave={() => setProductsDropdownOpen(false)}>
+                    <button
+                      type="button"
+                      className={`products-toggle ${productsDropdownOpen ? "open" : ""} ${location.pathname === "/products" && !category && !onSale ? "active" : ""}`}
+                      onClick={() => setProductsDropdownOpen((v) => !v)}
+                    >
+                      {link.title}
+                    </button>
+                    {productsDropdownOpen && (
+                      <div className="products-dropdown" onClick={() => setIsMenuOpen(false)}>
+                        {CATEGORY_LINKS.map((c) => (
+                          <NavLink key={c.title} to={c.path} className={({ isActive }) => (isActive ? "active" : "")} onClick={() => { setProductsDropdownOpen(false); }}>
+                            {c.title}
+                          </NavLink>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <NavLink
+                  key={link.path}
+                  to={link.path}
+                  className={({ isActive }) => (location.pathname === link.path ? "active" : "")}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.title}
+                </NavLink>
+              );
+            })}
           </nav>
 
           {/* Category Navigation */}

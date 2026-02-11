@@ -16,7 +16,7 @@ export default function FavouritePage() {
       <div className="app-container">
         <div className="surface-card favourites-header">
           <div>
-            <h1 className="title-lg">Wishlist</h1>
+            <h1 className="title-lg">Preferiti</h1>
             <p className="text-muted">
               {favourites.length > 0
                 ? `${favourites.length} ${favourites.length === 1 ? "prodotto salvato" : "prodotti salvati"}`
@@ -26,7 +26,7 @@ export default function FavouritePage() {
           {favourites.length > 0 && (
             <button type="button" className="btn-ui btn-ui-danger" onClick={clearFavourites}>
               <i className="bi bi-trash"></i>
-              Svuota wishlist
+              Svuota preferiti
             </button>
           )}
         </div>
@@ -34,7 +34,7 @@ export default function FavouritePage() {
         {favourites.length === 0 && (
           <EmptyState
             icon="bi bi-heart"
-            title="Wishlist vuota"
+            title="Preferiti vuoti"
             description="Salva i tuoi prodotti preferiti e ritrovali subito qui."
             ctaLabel="Vai ai prodotti"
             ctaTo="/products"

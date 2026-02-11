@@ -91,7 +91,7 @@ export default function ProductCard({ product }) {
 
   return (
     <>
-      <article className="surface-card product-card">
+      <article className="surface-card product-card neon-card">
         <button
           type="button"
           className={`product-heart ${isFavourite(product.id) ? "active" : ""}`}
@@ -100,6 +100,14 @@ export default function ProductCard({ product }) {
         >
           <i className={isFavourite(product.id) ? "bi bi-heart-fill" : "bi bi-heart"}></i>
         </button>
+        <Link
+          to={`/products/${product.slug}`}
+          className="product-eye neon-button"
+          aria-label="Visualizza dettagli prodotto"
+          title="Dettagli prodotto"
+        >
+          <i className="bi bi-eye"></i>
+        </Link>
 
         <Link to={`/products/${product.slug}`} className="product-image-wrap">
           <img src={`${backendBaseUrl}${product.image}`} alt={product.name} className="product-image" />
@@ -119,9 +127,9 @@ export default function ProductCard({ product }) {
               <span className="price-now">{formatPrice(product.price)}</span>
             )}
           </div>
-
+          <div className="card-meta-fade" aria-hidden="true"></div>
           {!isInCart ? (
-            <button type="button" className="btn-ui btn-ui-primary product-add-btn" onClick={addItem}>
+            <button type="button" className="btn-ui btn-ui-primary product-add-btn neon-btn" onClick={addItem}>
               Aggiungi
             </button>
           ) : (
@@ -135,7 +143,7 @@ export default function ProductCard({ product }) {
                   +
                 </button>
               </div>
-              <button type="button" className="btn-ui btn-ui-outline" onClick={() => navigate("/shopping-cart")}>
+              <button type="button" className="btn-ui btn-ui-outline neon-btn" onClick={() => navigate("/shopping-cart")}>
                 Vai al carrello
               </button>
             </div>
