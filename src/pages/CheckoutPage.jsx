@@ -60,20 +60,20 @@ export default function CheckoutPage() {
     setSubmitting(true);
 
     const errorList = [];
-    if (!formData.name) errorList.push({ field: "name", message: "Il nome e assente" });
-    if (!formData.surname) errorList.push({ field: "surname", message: "Il cognome e assente" });
-    if (!formData.email) errorList.push({ field: "email", message: "L'email e assente" });
-    else if (!isValidEmail(formData.email)) errorList.push({ field: "email", message: "Email non valida" });
-    if (!formData.phone) errorList.push({ field: "phone_number", message: "Telefono assente" });
-    else if (!isValidPhone(formData.phone)) errorList.push({ field: "phone_number", message: "Telefono non valido" });
-    if (!formData.fiscal_code) errorList.push({ field: "fiscal_code", message: "Codice fiscale assente" });
-    else if (!isValidFiscalCode(formData.fiscal_code)) errorList.push({ field: "fiscal_code", message: "Codice fiscale non valido" });
-    if (!formData.nation) errorList.push({ field: "nation", message: "La nazione e assente" });
-    if (!formData.city) errorList.push({ field: "city", message: "La citta e assente" });
-    if (!formData.postal_code) errorList.push({ field: "postal_code", message: "Il CAP e assente" });
-    else if (!isValidCAP(formData.postal_code)) errorList.push({ field: "postal_code", message: "CAP non valido" });
+    if (!formData.name) errorList.push({ field: "name", message: "Il nome è assente" });
+    if (!formData.surname) errorList.push({ field: "surname", message: "Il cognome è assente" });
+    if (!formData.email) errorList.push({ field: "email", message: "L'email è assente" });
+    else if (!isValidEmail(formData.email)) errorList.push({ field: "email", message: "L'email non è valida" });
+    if (!formData.phone) errorList.push({ field: "phone_number", message: "Il numero di telefono è assente" });
+    else if (!isValidPhone(formData.phone)) errorList.push({ field: "phone_number", message: "Il numero di telefono non è valido" });
+    if (!formData.fiscal_code) errorList.push({ field: "fiscal_code", message: "Il codice fiscale è assente" });
+    else if (!isValidFiscalCode(formData.fiscal_code)) errorList.push({ field: "fiscal_code", message: "Il codice fiscale non è valido" });
+    if (!formData.nation) errorList.push({ field: "nation", message: "La nazione è assente" });
+    if (!formData.city) errorList.push({ field: "city", message: "La citta è assente" });
+    if (!formData.postal_code) errorList.push({ field: "postal_code", message: "Il CAP è assente" });
+    else if (!isValidCAP(formData.postal_code)) errorList.push({ field: "postal_code", message: "Il CAP non è valido" });
     if (!formData.address) errorList.push({ field: "address", message: "L'indirizzo e assente" });
-    if (!formData.street_number) errorList.push({ field: "street_number", message: "Numero civico assente" });
+    if (!formData.street_number) errorList.push({ field: "street_number", message: "Il numero civico è assente" });
 
     if (errorList.length > 0) {
       setErrorMessage(errorList);
