@@ -6,13 +6,14 @@
   z-index: 1200;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: var(--space-2);
   padding: var(--space-2);
   border-radius: var(--radius-md);
   border: 2px solid;
   animation: slideIn 0.35s ease-out both;
   transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   overflow: hidden;
 }
@@ -47,11 +48,12 @@
 .shipping-banner.warning {
   background: linear-gradient(
     135deg,
-    rgba(251, 146, 60, 0.12),
-    rgba(249, 115, 22, 0.08)
+    rgba(251, 146, 60, 0.14),
+    rgba(249, 115, 22, 0.12)
   );
-  border-color: rgba(251, 146, 60, 0.4);
-  box-shadow: 0 0 20px rgba(251, 146, 60, 0.15), 
+  border-color: rgba(251, 146, 60, 0.5);
+  box-shadow: 0 0 18px rgba(251, 146, 60, 0.22),
+              0 0 32px rgba(251, 146, 60, 0.12),
               inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -59,12 +61,33 @@
 .shipping-banner.success {
   background: linear-gradient(
     135deg,
-    rgba(34, 197, 94, 0.12),
-    rgba(34, 197, 94, 0.08)
+    rgba(34, 197, 94, 0.14),
+    rgba(16, 185, 129, 0.12)
   );
-  border-color: rgba(34, 197, 94, 0.4);
-  box-shadow: 0 0 25px rgba(34, 197, 94, 0.2),
-              inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(74, 222, 128, 0.5);
+  box-shadow:
+    0 0 16px rgba(52, 211, 153, 0.35),
+    0 0 32px rgba(34, 197, 94, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.shipping-banner.success .shipping-banner-subtitle {
+  color: rgba(163, 230, 180, 0.82);
+}
+
+.shipping-banner.success .progress-bar {
+  border-color: rgba(74, 222, 128, 0.3);
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.shipping-banner.success .progress-text {
+  color: #34d399;
+  text-shadow: 0 0 6px rgba(34, 197, 94, 0.32);
+}
+
+.shipping-banner.success .shipping-banner-close {
+  border-color: rgba(74, 222, 128, 0.35);
+  color: #34d399;
 }
 
 .shipping-banner-content {
@@ -101,6 +124,7 @@
 .shipping-banner-text {
   flex: 1;
   min-width: 0;
+  text-align: center;
 }
 
 .shipping-banner-title {
@@ -125,12 +149,18 @@
   line-height: 1.3;
 }
 
+.shipping-banner.success .shipping-banner-title {
+  color: #34d399;
+  text-shadow: 0 0 10px rgba(52, 211, 153, 0.45);
+}
+
 .shipping-banner-progress {
   display: flex;
   align-items: center;
   gap: 8px;
   flex-shrink: 0;
-  min-width: fit-content;
+  min-width: -webkit-fill-available;
+  min-width: 0;
 }
 
 .progress-bar {
@@ -201,6 +231,7 @@
 
 .shipping-banner.under-icons .shipping-banner-text {
   font-size: 11px;
+  text-align: left;
 }
 
 .shipping-banner.under-icons .shipping-banner-title {

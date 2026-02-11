@@ -57,14 +57,18 @@
   gap: 12px;
   padding: var(--space-2);
   margin-top: var(--space-3);
-  background: linear-gradient(90deg, rgba(34,211,238,0.06), rgba(59,130,246,0.03));
-  border: 1px solid rgba(34,211,238,0.08);
-  color: #ffffff;
+  background: linear-gradient(130deg, rgba(52, 211, 153, 0.32), rgba(16, 185, 129, 0.24));
+  border: 1px solid rgba(74, 222, 128, 0.6);
+  color: #ecfff7;
   font-weight: 700;
   border-radius: var(--radius-md);
   animation: fadeInUp 300ms ease both;
+  box-shadow:
+    0 0 18px rgba(52, 211, 153, 0.35),
+    0 0 40px rgba(34, 197, 94, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
-.free-shipping-banner i { font-size: 20px; color: var(--mp-accent); }
+.free-shipping-banner i { font-size: 20px; color: #34d399; text-shadow: 0 0 12px rgba(52, 211, 153, 0.52); }
 
 @media (max-width: 980px) {
   .home-features {

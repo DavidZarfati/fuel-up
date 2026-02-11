@@ -4,6 +4,7 @@
   z-index: 1100;
   background: rgba(11, 15, 20, 0.92);
   border-bottom: 1px solid var(--mp-border);
+  -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
 }
 

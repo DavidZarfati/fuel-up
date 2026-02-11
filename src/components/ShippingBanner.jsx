@@ -15,7 +15,7 @@ export default function ShippingBanner() {
   );
 
   const isFreeShipping = totalPrice >= FREE_SHIPPING_THRESHOLD;
-  const shouldShow = remainingAmount > 0 || isFreeShipping;
+  const shouldShow = isFreeShipping;
 
   // Show/hide animation logic
   useEffect(() => {
@@ -27,14 +27,7 @@ export default function ShippingBanner() {
     setIsClosing(false);
     setIsVisible(true);
 
-    // Auto-collapse under icons after 5 seconds (only if not free shipping)
-    if (!isFreeShipping) {
-      const timer = setTimeout(() => {
-        setHideUnderIcons(true);
-      }, 5000);
-
-      return () => clearTimeout(timer);
-    }
+    // When free shipping, keep visible; collapse logic unused here
   }, [shouldShow, isFreeShipping]);
 
   // Reset collapse on major amount change
@@ -46,6 +39,13 @@ export default function ShippingBanner() {
       setIsClosing(false);
     }
   }, [isFreeShipping]);
+
+  // Auto-hide after showing free shipping for a short time
+  useEffect(() => {
+    if (!isFreeShipping || !isVisible || isClosing) return;
+    const timer = setTimeout(() => handleClose(), 5200);
+    return () => clearTimeout(timer);
+  }, [isFreeShipping, isVisible, isClosing]);
 
   const handleClose = () => {
     setIsClosing(true);
