@@ -2,6 +2,14 @@
   margin-bottom: var(--space-3);
   padding: var(--space-2);
 }
+.title1{
+  padding-bottom: 10px;
+  
+}
+.title2{
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
 
 .checkout-layout {
   display: grid;
@@ -23,7 +31,7 @@
   display: block;
   margin-bottom: 6px;
   font-size: var(--font-size-sm);
-  color: var(--mp-muted);
+  
 }
 
 .checkout-submit {
@@ -78,6 +86,7 @@
   text-transform: uppercase;
 }
 
+
 @media (max-width: 1020px) {
   .checkout-layout {
     grid-template-columns: 1fr;
@@ -93,3 +102,79 @@
     grid-template-columns: 1fr;
   }
 }
+/* =========================
+   UI INPUT: testo bianco + full width (senza cambiare il tema)
+   ========================= */
+.checkout-field-grid > div {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Se la tua classe input-ui è definita altrove, qui facciamo solo override "soft" */
+.checkout-form .input-ui {
+  width: 100%;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+.checkout-form .input-ui::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* (opzionale ma utile) rende leggibile anche il testo selezionato */
+.checkout-form .input-ui::selection {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+
+/* =========================
+   Separazione sezioni (Dati cliente / Dati spedizione)
+   - usa i colori già presenti nelle tue variabili
+   ========================= */
+.checkout-sections {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.checkout-section {
+  border: 1px solid var(--mp-border);
+  border-radius: 14px;
+  padding: var(--space-2);
+  margin: 0;
+}
+
+.checkout-section-title {
+  padding: 0 10px;
+  font-weight: 700;
+  color: var(--mp-muted);
+}
+
+/* Dentro le sezioni riusiamo la tua griglia senza cambiare layout */
+.checkout-section .checkout-field-grid {
+  margin-top: var(--space-1);
+}
+/* =========================
+   Indirizzo + Numero civico stile ecommerce
+   ========================= */
+
+.address-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* 70% - 30% circa */
+  gap: var(--space-2);
+  width: 100%;
+}
+
+/* Assicura che occupino tutto lo spazio disponibile */
+.address-main,
+.address-number {
+  width: 100%;
+  min-width: 0;
+}
+
+/* Mobile: torna in colonna */
+@media (max-width: 720px) {
+  .address-row {
+    grid-template-columns: 1fr;
+  }
+}
+

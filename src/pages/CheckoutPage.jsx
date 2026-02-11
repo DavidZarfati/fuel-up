@@ -161,8 +161,10 @@ export default function CheckoutPage() {
         <div className="checkout-layout">
           <form className="surface-card checkout-form" onSubmit={handleSubmit}>
             {getError("global")}
+            <h2 className="title1">Dati Personali</h2>
 
-            <div className="checkout-field-grid">
+            <div className="checkout-field-grid surface-card checkout-form">
+              
               <div>
                 <label htmlFor="name">Nome</label>
                 <input className="input-ui" id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Mario" />
@@ -188,36 +190,42 @@ export default function CheckoutPage() {
                 <input className="input-ui uppercase" id="fiscal_code" name="fiscal_code" value={formData.fiscal_code} onChange={handleChange} placeholder="RSSMRA00T01H501P" />
                 {getError("fiscal_code")}
               </div>
-              <div>
-                <label htmlFor="nation">Nazione</label>
-                <input className="input-ui" id="nation" name="nation" value={formData.nation} onChange={handleChange} placeholder="Italia" />
-                {getError("nation")}
-              </div>
-              <div>
-                <label htmlFor="city">Citta</label>
-                <input className="input-ui" id="city" name="city" value={formData.city} onChange={handleChange} placeholder="Roma" />
-                {getError("city")}
-              </div>
-              <div>
-                <label htmlFor="postal_code">CAP</label>
-                <input className="input-ui" id="postal_code" name="postal_code" value={formData.postal_code} onChange={handleChange} placeholder="00100" />
-                {getError("postal_code")}
-              </div>
-              <div>
-                <label htmlFor="address">Indirizzo</label>
-                <input className="input-ui" id="address" name="address" value={formData.address} onChange={handleChange} placeholder="Via Roma" />
-                {getError("address")}
-              </div>
-              <div>
-                <label htmlFor="street_number">Numero civico</label>
-                <input className="input-ui" id="street_number" name="street_number" value={formData.street_number} onChange={handleChange} placeholder="21" />
-                {getError("street_number")}
+            </div>
+            <h2 className="title2">Dati di Spedizione </h2>
+            <div className="surface-card checkout-form ">
+              <div className="checkout-field-grid">
+                <div>
+                  <label htmlFor="nation">Nazione</label>
+                  <input className="input-ui" id="nation" name="nation" value={formData.nation} onChange={handleChange} placeholder="Italia" />
+                  {getError("nation")}
+                </div>
+                <div>
+                  <label htmlFor="city">Citta</label>
+                  <input className="input-ui" id="city" name="city" value={formData.city} onChange={handleChange} placeholder="Roma" />
+                  {getError("city")}
+                </div>
+                <div>
+                  <label htmlFor="postal_code">CAP</label>
+                  <input className="input-ui" id="postal_code" name="postal_code" value={formData.postal_code} onChange={handleChange} placeholder="00100" />
+                  {getError("postal_code")}
+                </div>
+                <div>
+                  <label htmlFor="address">Indirizzo</label>
+                  <input className="input-ui" id="address" name="address" value={formData.address} onChange={handleChange} placeholder="Via Roma" />
+                  {getError("address")}
+                </div>
+                <div>
+                  <label htmlFor="street_number" >Numero civico</label>
+                  <input className="input-ui" id="street_number" name="street_number" value={formData.street_number} onChange={handleChange} placeholder="21" />
+                  {getError("street_number")}
+                </div>
               </div>
             </div>
 
-        <button type="submit" className="btn-ui btn-ui-primary checkout-submit neon-btn" disabled={submitting}>
-          {submitting ? "Invio in corso..." : "Conferma ordine"}
-        </button>
+
+            <button type="submit" className="btn-ui btn-ui-primary checkout-submit neon-btn" disabled={submitting}>
+              {submitting ? "Invio in corso..." : "Conferma ordine"}
+            </button>
           </form>
 
           <aside className="surface-card checkout-summary">
