@@ -7,6 +7,7 @@ export default function ShippingBanner() {
   const { totalPrice } = useCart();
   const [isVisible, setIsVisible] = useState(false);
   const [hideUnderIcons, setHideUnderIcons] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
 
   const remainingAmount = useMemo(
     () => Math.max(0, FREE_SHIPPING_THRESHOLD - totalPrice),
@@ -23,6 +24,7 @@ export default function ShippingBanner() {
       return;
     }
 
+    setIsClosing(false);
     setIsVisible(true);
 
     // Auto-collapse under icons after 5 seconds (only if not free shipping)
@@ -38,7 +40,20 @@ export default function ShippingBanner() {
   // Reset collapse on major amount change
   useEffect(() => {
     setHideUnderIcons(false);
+    if (isFreeShipping) {
+      // force surface the banner when threshold is reached
+      setIsVisible(true);
+      setIsClosing(false);
+    }
   }, [isFreeShipping]);
+
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsVisible(false);
+      setIsClosing(false);
+    }, 260);
+  };
 
   if (!shouldShow || !isVisible) return null;
 
@@ -46,7 +61,7 @@ export default function ShippingBanner() {
     <div
       className={`shipping-banner neon-banner ${
         hideUnderIcons ? "under-icons" : "expanded"
-      } ${isFreeShipping ? "success" : "warning"}`}
+      } ${isFreeShipping ? "success" : "warning"} ${isClosing ? "closing" : ""}`}
     >
       <div className="shipping-banner-content">
         {isFreeShipping ? (
@@ -94,7 +109,7 @@ export default function ShippingBanner() {
         type="button"
         className="shipping-banner-close"
         aria-label="Chiudi banner"
-        onClick={() => setIsVisible(false)}
+        onClick={handleClose}
       >
         <i className="bi bi-x-lg"></i>
       </button>

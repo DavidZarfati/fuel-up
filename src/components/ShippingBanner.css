@@ -1,5 +1,9 @@
 .shipping-banner {
-  position: relative;
+  position: fixed;
+  right: 16px;
+  top: 96px;
+  width: min(420px, calc(100vw - 32px));
+  z-index: 1200;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -7,8 +11,7 @@
   padding: var(--space-2);
   border-radius: var(--radius-md);
   border: 2px solid;
-  margin-bottom: var(--space-2);
-  animation: slideIn 0.3s ease-out;
+  animation: slideIn 0.35s ease-out both;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
   overflow: hidden;
@@ -17,12 +20,27 @@
 @keyframes slideIn {
   from {
     opacity: 0;
-    transform: translateY(-12px);
+    transform: translateX(120%);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(0);
   }
+}
+
+@keyframes slideOut {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-120%);
+  }
+}
+
+.shipping-banner.closing {
+  animation: slideOut 0.28s ease-in forwards;
 }
 
 /* Warning state (not free shipping yet) */
@@ -169,14 +187,12 @@
 
 /* Under icons state - compact */
 .shipping-banner.under-icons {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
   width: 280px;
   max-width: calc(100vw - 40px);
   margin: 0;
   padding: var(--space-1) var(--space-2);
-  z-index: 999;
+  right: 20px;
+  top: 108px;
 }
 
 .shipping-banner.under-icons .shipping-banner-progress {
@@ -209,6 +225,11 @@
     flex-direction: column;
     text-align: center;
     gap: var(--space-1);
+    left: 10px;
+    right: 10px;
+    bottom: 12px;
+    top: auto;
+    width: calc(100vw - 20px);
   }
 
   .shipping-banner-content {
@@ -226,13 +247,13 @@
   }
 
   .shipping-banner.under-icons {
-    position: fixed;
-    bottom: 20px;
     left: 50%;
     right: auto;
     transform: translateX(-50%);
     width: calc(100vw - 40px);
     max-width: 400px;
+    top: auto;
+    bottom: 16px;
   }
 }
 
