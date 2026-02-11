@@ -302,8 +302,31 @@
 
 @media (max-width: 980px) {
   .ot-header-main-row {
+    display: grid;
     grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 10px;
     min-height: 76px;
+  }
+
+  .ot-header-brand {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  .ot-header-actions {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    justify-self: end;
+    display: flex;
+    gap: 10px;
+  }
+
+  .ot-header-search {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+    width: 100%;
   }
 
   .ot-header-menu-toggle {
