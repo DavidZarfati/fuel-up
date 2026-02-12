@@ -40,11 +40,28 @@ function getProductCategory(product) {
   return Number.isFinite(n) ? n : null;
 }
 
+function getPaginationItems(current, total) {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+
+  const items = [];
+  const left = Math.max(2, current - 1);
+  const right = Math.min(total - 1, current + 1);
+
+  items.push(1);
+  if (left > 2) items.push("...");
+
+  for (let p = left; p <= right; p++) items.push(p);
+
+  if (right < total - 1) items.push("...");
+
+  items.push(total);
+  return items;
+}
+
 export default function SearchPage() {
   const { backendUrl } = useGlobal();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  // --- URL -> state (safe parsing) ---
   const urlState = useMemo(() => {
     const q = searchParams.get("q") || "";
 
@@ -65,7 +82,6 @@ export default function SearchPage() {
 
   const pageSize = 12;
 
-  // --- local state ---
   const [products, setProducts] = useState([]);
   const [serverTotalPages, setServerTotalPages] = useState(1);
 
@@ -82,12 +98,13 @@ export default function SearchPage() {
   const [category, setCategory] = useState(urlState.categoryParam ? Number(urlState.categoryParam) : "");
   const [onSaleOnly, setOnSaleOnly] = useState(urlState.onSaleOnly);
 
+  const [filtersOpen, setFiltersOpen] = useState(false);
   const didMountRef = useRef(false);
 
-  // "Tutti" (solo per la ricerca): nessun filtro extra attivo
+  // Search: "isAll" = nessun filtro extra attivo
   const isAll = category === "" && !onSaleOnly;
 
-  // Sync state quando incolli una URL
+  // Sync state con URL (se incolli URL o navighi)
   useEffect(() => {
     if (page !== urlState.safePage) setPage(urlState.safePage);
     if (view !== urlState.safeView) setView(urlState.safeView);
@@ -103,7 +120,7 @@ export default function SearchPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [urlState]);
 
-  // Reset pagina SOLO quando l’utente cambia filtri (non al primo render da URL)
+  // Reset pagina SOLO quando l’utente cambia filtri/ordinamento/view (non al primo render)
   useEffect(() => {
     if (!didMountRef.current) {
       didMountRef.current = true;
@@ -116,8 +133,8 @@ export default function SearchPage() {
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
 
-    // q sempre presente
-    params.set("q", q);
+    if (q) params.set("q", q);
+    else params.delete("q");
 
     if (page > 1) params.set("page", String(page));
     else params.delete("page");
@@ -140,9 +157,23 @@ export default function SearchPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, page, view, orderBy, orderDir, category, onSaleOnly]);
 
-  // Fetch:
-  // - se NON ci sono filtri extra (isAll): paginazione SERVER (page vero, limit=12)
-  // - se ci sono filtri (category/onSale): carico set grande dalla page 1 e poi filtro+pagina CLIENT
+  function resetFiltersKeepQuery() {
+    setCategory("");
+    setOnSaleOnly(false);
+    setOrderBy("created_at");
+    setOrderDir("desc");
+    setView("grid");
+    setPage(1);
+
+    const params = new URLSearchParams();
+    params.set("q", q);
+    setSearchParams(params, { replace: true });
+
+    setFiltersOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Fetch: server-side quando isAll, client-side quando ci sono filtri extra
   useEffect(() => {
     let ignore = false;
 
@@ -150,6 +181,7 @@ export default function SearchPage() {
       if (!q.trim()) {
         if (!ignore) {
           setProducts([]);
+          setServerTotalPages(1);
           setLoading(false);
           setError("Inserisci un termine di ricerca.");
         }
@@ -165,17 +197,14 @@ export default function SearchPage() {
         const resp = await axios.get(`${backendUrl}/api/products/search`, {
           params: {
             q,
-            // Quando filtriamo lato client ci serve un set grande:
             limit: shouldClientFilter ? 500 : pageSize,
             page: shouldClientFilter ? 1 : page,
-
-            // Passiamo comunque l’ordinamento al server (se lo supporta)
             order_by: orderBy,
             order_dir: orderDir,
 
-            // Se il backend supporta questi param, bene. Altrimenti filtriamo comunque client.
-            ...(onSaleOnly ? { on_sale: "1" } : {}),
-            ...(category !== "" ? { category } : {}),
+            // ✅ IMPORTANTISSIMO:
+            // ❌ NON passare category/on_sale al backend search
+            // li applichi lato client (filteredProducts)
           },
         });
 
@@ -185,13 +214,13 @@ export default function SearchPage() {
 
         const list = Array.isArray(data?.risultati)
           ? data.risultati.map((product) => ({
-              ...product,
-              id: product.id ?? product.product_id ?? product.slug,
-            }))
+            ...product,
+            id: product.id ?? product.product_id ?? product.slug,
+          }))
           : [];
 
         setProducts(list);
-        setServerTotalPages(data?.paginazione?.totale_pagine || 1);
+        setServerTotalPages(Number(data?.paginazione?.totale_pagine) || 1);
 
         if (list.length === 0 && page === 1) {
           setError(`Nessun prodotto trovato per "${q}".`);
@@ -200,6 +229,7 @@ export default function SearchPage() {
         if (!ignore) {
           setError("Errore nel caricamento dei risultati di ricerca.");
           setProducts([]);
+          setServerTotalPages(1);
         }
       } finally {
         if (!ignore) setLoading(false);
@@ -212,7 +242,7 @@ export default function SearchPage() {
     };
   }, [backendUrl, q, page, orderBy, orderDir, category, onSaleOnly, isAll]);
 
-  // Filtra + ordina lato client (quando filtri extra attivi)
+  // Filtri/ordinamento client (solo quando filtri extra attivi)
   const filteredProducts = useMemo(() => {
     let filtered = products;
 
@@ -254,12 +284,10 @@ export default function SearchPage() {
     return filtered;
   }, [products, isAll, category, onSaleOnly, orderBy, orderDir]);
 
-  // Paginazione:
-  // - no filtri extra -> serverTotalPages e products già paginati
-  // - filtri extra -> pagino lato client
-  const clientTotalPages = useMemo(() => {
-    return Math.max(1, Math.ceil(filteredProducts.length / pageSize));
-  }, [filteredProducts.length]);
+  // Paginazione (server vs client)
+  const clientTotalPages = useMemo(() => Math.max(1, Math.ceil(filteredProducts.length / pageSize)), [
+    filteredProducts.length,
+  ]);
 
   const pagedProducts = useMemo(() => {
     const start = (page - 1) * pageSize;
@@ -269,26 +297,46 @@ export default function SearchPage() {
   const totalPagesToShow = isAll ? serverTotalPages : clientTotalPages;
   const productsToRender = isAll ? products : pagedProducts;
 
-  // Clamp pagina dopo load
+  // Clamp pagina
   useEffect(() => {
     if (loading) return;
     if (page > totalPagesToShow) setPage(totalPagesToShow);
   }, [totalPagesToShow, page, loading]);
 
-  const showNoResults = !loading && !error && !isAll && filteredProducts.length === 0;
+  const showNoResults = !loading && !error && q.trim() && !isAll && filteredProducts.length === 0;
 
   return (
-    <section className="page-section">
+    <section className="page-section search-page">
       <div className="app-container">
-        <div className="surface-card search-header">
-          <h1 className="title-lg">Risultati ricerca</h1>
-          {q && <p className="text-muted">Ricerca attiva: "{q}"</p>}
+        <div className="surface-card search-page-header">
+          <div className="search-page-header-left">
+            <h1 className="title-lg">Risultati ricerca</h1>
+            {q && <p className="text-muted">Ricerca attiva: "{q}"</p>}
+          </div>
+
+          <button
+            type="button"
+            className="btn-ui btn-ui-outline products-filter-toggle search-filter-toggle"
+            onClick={() => setFiltersOpen((v) => !v)}
+            disabled={!q.trim()}
+          >
+            {filtersOpen ? "Chiudi filtri" : "Filtri"}
+          </button>
         </div>
 
-        {/* FILTRI (come ProductsPage) */}
-        {!!q && (
-          <div className="products-page-layout">
-            <aside className="surface-card products-filters-panel">
+        {!q.trim() && !loading && (
+          <EmptyState
+            icon="bi bi-search"
+            title="Nessun risultato"
+            description="Inserisci un termine di ricerca."
+            ctaLabel="Visualizza prodotti"
+            ctaTo="/products"
+          />
+        )}
+
+        {!!q.trim() && (
+          <div className="products-page-layout search-page-layout">
+            <aside className={`surface-card products-filters-panel ${filtersOpen ? "open" : ""}`}>
               <div className="toolbar-group">
                 <span className="toolbar-label">Categorie</span>
                 <CategoryPills categories={CATEGORY_FILTERS} selectedValue={category} onChange={setCategory} />
@@ -310,22 +358,35 @@ export default function SearchPage() {
                   <option value="price">Prezzo</option>
                   <option value="brand">Brand</option>
                 </select>
+
                 <select className="select-ui" value={orderDir} onChange={(e) => setOrderDir(e.target.value)}>
                   <option value="desc">Decrescente</option>
                   <option value="asc">Crescente</option>
                 </select>
               </div>
+              <div className="toolbar-group">
+                <button
+                  type="button"
+                  className="btn-ui btn-ui-outline search-reset-btn"
+                  onClick={resetFiltersKeepQuery}
+                  disabled={category === "" && !onSaleOnly && orderBy === "created_at" && orderDir === "desc" && view === "grid" && page === 1}
+                >
+                  Reset filtri
+                </button>
+              </div>
             </aside>
 
-            <div className="products-main">
-              <div className="surface-card toolbar products-main-toolbar">
+            <div className="products-main search-main">
+              <div className="surface-card toolbar products-main-toolbar search-main-toolbar">
                 <div className="toolbar-group">
                   <span className="toolbar-label">Visualizza</span>
                   <ViewToggle value={view} onChange={(nextView) => setView(nextView)} />
                 </div>
 
                 <div className="products-count text-muted">
-                  {isAll ? `${products.length} prodotti in questa pagina` : `${filteredProducts.length} prodotti visualizzati`}
+                  {isAll
+                    ? `${products.length} prodotti in questa pagina`
+                    : `${filteredProducts.length} prodotti visualizzati`}
                 </div>
               </div>
 
@@ -351,7 +412,7 @@ export default function SearchPage() {
                   title="Nessun prodotto trovato"
                   description="Modifica i filtri per vedere più risultati."
                   ctaLabel="Reset filtri"
-                  ctaTo={`/search?q=${encodeURIComponent(q)}`}
+                  onCtaClick={resetFiltersKeepQuery}
                 />
               )}
 
@@ -372,24 +433,56 @@ export default function SearchPage() {
                   )}
 
                   {totalPagesToShow > 1 && (
-                    <div className="surface-card pagination">
+                    <div className="surface-card pagination search-pagination">
                       <button
                         type="button"
                         className="btn-ui btn-ui-outline"
-                        onClick={() => setPage((c) => Math.max(c - 1, 1))}
+                        onClick={() => {
+                          setPage((c) => Math.max(c - 1, 1));
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
                         disabled={page === 1}
                       >
                         Indietro
                       </button>
 
-                      <span>
-                        Pagina <strong>{page}</strong> di <strong>{totalPagesToShow}</strong>
-                      </span>
+                      <div className="pagination-numbers" role="navigation" aria-label="Paginazione">
+                        {getPaginationItems(page, totalPagesToShow).map((item, idx) => {
+                          if (item === "...") {
+                            return (
+                              <span key={`dots-${idx}`} className="pagination-dots" aria-hidden="true">
+                                ...
+                              </span>
+                            );
+                          }
+
+                          const p = item;
+                          const isActive = p === page;
+
+                          return (
+                            <button
+                              key={p}
+                              type="button"
+                              className={`btn-ui ${isActive ? "btn-ui-solid" : "btn-ui-outline"} btn-ui-page`}
+                              onClick={() => {
+                                setPage(p);
+                                window.scrollTo({ top: 0, behavior: "smooth" });
+                              }}
+                              aria-current={isActive ? "page" : undefined}
+                            >
+                              {p}
+                            </button>
+                          );
+                        })}
+                      </div>
 
                       <button
                         type="button"
                         className="btn-ui btn-ui-outline"
-                        onClick={() => setPage((c) => Math.min(c + 1, totalPagesToShow))}
+                        onClick={() => {
+                          setPage((c) => Math.min(c + 1, totalPagesToShow));
+                          window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
                         disabled={page === totalPagesToShow}
                       >
                         Avanti
@@ -401,18 +494,8 @@ export default function SearchPage() {
             </div>
           </div>
         )}
-
-        {/* Se non c'è q, mostro empty state (come prima) */}
-        {!q.trim() && !loading && (
-          <EmptyState
-            icon="bi bi-search"
-            title="Nessun risultato"
-            description="Inserisci un termine di ricerca."
-            ctaLabel="Visualizza prodotti consigliati"
-            ctaTo="/search?q=protein"
-          />
-        )}
       </div>
     </section>
   );
 }
+
