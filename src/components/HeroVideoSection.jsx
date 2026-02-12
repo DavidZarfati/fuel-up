@@ -5,7 +5,7 @@ export default function HeroVideoSection() {
     <section className="hero-video-section surface-card" aria-label="Hero video">
       <div className="hero-video-copy">
         <p className="hero-video-brand">FuelUp</p>
-        <p className="hero-video-tagline">Alimenta la tua performance</p>
+        <p className="hero-video-tagline">Alimenta la tua forza</p>
       </div>
       <video
         className="hero-video-media"
