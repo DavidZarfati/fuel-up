@@ -28,6 +28,74 @@
   gap: var(--space-1);
 }
 
+.thankyou-summary {
+  margin-top: var(--space-2);
+  text-align: left;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.thankyou-summary-list {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.thankyou-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-1);
+  padding: var(--space-1) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.thankyou-summary-info {
+  display: grid;
+  gap: 4px;
+}
+
+.thankyou-item-name {
+  font-weight: 600;
+}
+
+.thankyou-item-meta {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.thankyou-summary-pricing {
+  text-align: right;
+  display: grid;
+  gap: 4px;
+  min-width: 180px;
+}
+
+.thankyou-unit-price {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+.thankyou-totals {
+  display: grid;
+  gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: var(--space-2);
+}
+
+.thankyou-total-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-1);
+}
+
+.thankyou-grand-total {
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding-top: var(--space-1);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
 @media (max-width: 620px) {
   .thankyou-card {
     padding: var(--space-4) var(--space-2);
@@ -35,5 +103,15 @@
 
   .thankyou-actions {
     display: grid;
+  }
+
+  .thankyou-summary-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .thankyou-summary-pricing {
+    min-width: auto;
+    text-align: left;
   }
 }
