@@ -180,7 +180,7 @@ export default function HomePage() {
 
             <section className="home-product-section">
               <div className="home-section-head">
-                <h2 className="title-lg">On Sale</h2>
+                <h2 className="title-lg">In offerta</h2>
                 <p className="text-muted">Le migliori offerte del momento.</p>
               </div>
 
