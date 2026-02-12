@@ -11,7 +11,7 @@ import { useCart } from "../context/CartContext";
 import "./HomePage.css";
 
 const CATEGORIES = [
-  { label: "Piu venduti", value: "" },
+  { label: "Le nostre proposte", value: "" },
   { label: "Integratori", value: 1 },
   { label: "Abbigliamento", value: 2 },
   { label: "Accessori", value: 3 },
