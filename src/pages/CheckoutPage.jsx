@@ -10,8 +10,16 @@ function formatPrice(value) {
   return `EUR ${amount.toFixed(2)}`;
 }
 
+function getUnitPrice(item) {
+  const discount = Number(item.discount_price);
+  const price = Number(item.price);
+  const hasDiscount = Number.isFinite(discount) && Number.isFinite(price) && discount > 0 && discount < price;
+  if (hasDiscount) return discount;
+  return Number.isFinite(price) ? price : 0;
+}
+
 export default function CheckoutPage() {
-  const { cart, totalPrice, expeditionCost, clearCart } = useCart();
+  const { cart, totalPrice, totalWeight, expeditionCost, clearCart } = useCart();
   const [errorMessage, setErrorMessage] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
@@ -125,8 +133,28 @@ export default function CheckoutPage() {
         fiscal_code: "",
       });
 
+      const orderSummary = {
+        items: cart.map((item) => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity ?? 1,
+          unitPrice: getUnitPrice(item),
+          weightKg: item.weight_kg ?? 0,
+        })),
+        totals: {
+          itemsTotal: totalPrice,
+          shipping: expeditionCost,
+          grandTotal: totalPrice + expeditionCost,
+          totalWeight,
+        },
+      };
+
+      try {
+        sessionStorage.setItem("lastOrderSummary", JSON.stringify(orderSummary));
+      } catch { }
+
       clearCart();
-      navigate("/thank-you");
+      navigate("/thank-you", { state: { orderSummary } });
     } catch (error) {
       setErrorMessage([{ field: "global", message: error.message || "Network error" }]);
     } finally {
@@ -167,27 +195,27 @@ export default function CheckoutPage() {
               
               <div>
                 <label htmlFor="name">Nome</label>
-                <input className="input-ui" id="name" name="name" value={formData.name} onChange={handleChange} placeholder="Mario" />
+                <input className="input-ui" id="name" name="name" value={formData.name} onChange={handleChange} />
                 {getError("name")}
               </div>
               <div>
                 <label htmlFor="surname">Cognome</label>
-                <input className="input-ui" id="surname" name="surname" value={formData.surname} onChange={handleChange} placeholder="Rossi" />
+                <input className="input-ui" id="surname" name="surname" value={formData.surname} onChange={handleChange} />
                 {getError("surname")}
               </div>
               <div>
                 <label htmlFor="email">Email</label>
-                <input className="input-ui" id="email" name="email" value={formData.email} onChange={handleChange} placeholder="nome@email.com" />
+                <input className="input-ui" id="email" name="email" value={formData.email} onChange={handleChange} />
                 {getError("email")}
               </div>
               <div>
                 <label htmlFor="phone">Telefono</label>
-                <input className="input-ui" id="phone" name="phone" value={formData.phone} onChange={handleChange} placeholder="+393331112223" />
+                <input className="input-ui" id="phone" name="phone" value={formData.phone} onChange={handleChange} />
                 {getError("phone_number")}
               </div>
               <div>
                 <label htmlFor="fiscal_code">Codice fiscale</label>
-                <input className="input-ui uppercase" id="fiscal_code" name="fiscal_code" value={formData.fiscal_code} onChange={handleChange} placeholder="RSSMRA00T01H501P" />
+                <input className="input-ui uppercase" id="fiscal_code" name="fiscal_code" value={formData.fiscal_code} onChange={handleChange} />
                 {getError("fiscal_code")}
               </div>
             </div>
@@ -196,27 +224,27 @@ export default function CheckoutPage() {
               <div className="checkout-field-grid">
                 <div>
                   <label htmlFor="nation">Nazione</label>
-                  <input className="input-ui" id="nation" name="nation" value={formData.nation} onChange={handleChange} placeholder="Italia" />
+                  <input className="input-ui" id="nation" name="nation" value={formData.nation} onChange={handleChange} />
                   {getError("nation")}
                 </div>
                 <div>
                   <label htmlFor="city">Citta</label>
-                  <input className="input-ui" id="city" name="city" value={formData.city} onChange={handleChange} placeholder="Roma" />
+                  <input className="input-ui" id="city" name="city" value={formData.city} onChange={handleChange} />
                   {getError("city")}
                 </div>
                 <div>
                   <label htmlFor="postal_code">CAP</label>
-                  <input className="input-ui" id="postal_code" name="postal_code" value={formData.postal_code} onChange={handleChange} placeholder="00100" />
+                  <input className="input-ui" id="postal_code" name="postal_code" value={formData.postal_code} onChange={handleChange} />
                   {getError("postal_code")}
                 </div>
                 <div>
                   <label htmlFor="address">Indirizzo</label>
-                  <input className="input-ui" id="address" name="address" value={formData.address} onChange={handleChange} placeholder="Via Roma" />
+                  <input className="input-ui" id="address" name="address" value={formData.address} onChange={handleChange} />
                   {getError("address")}
                 </div>
                 <div>
                   <label htmlFor="street_number" >Numero civico</label>
-                  <input className="input-ui" id="street_number" name="street_number" value={formData.street_number} onChange={handleChange} placeholder="21" />
+                  <input className="input-ui" id="street_number" name="street_number" value={formData.street_number} onChange={handleChange} />
                   {getError("street_number")}
                 </div>
               </div>

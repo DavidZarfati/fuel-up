@@ -1,18 +1,16 @@
 import { Link, NavLink, useNavigate, useLocation } from "react-router-dom";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { useCart } from "../context/CartContext";
 import { useFavourites } from "../context/FavouritesContext";
-import { useRef } from "react";
 import "./Header.css";
 import logo from "../assets/images/logo.png";
 import ShippingBanner from "./ShippingBanner";
 
 
 const MAIN_LINKS = [
+  { title: "Home", path: "/" },
   { title: "Chi siamo", path: "/about-us" },
   { title: "Nostri prodotti", path: "/products" },
-  { title: "Preferiti", path: "/products/favourites" },
-  { title: "Carrello", path: "/shopping-cart", icon: "bi bi-cart3" },
 ];
 
 const CATEGORY_LINKS = [
@@ -84,7 +82,6 @@ export default function Header({ nameApp }) {
             <input
               className="input-ui"
               type="search"
-              placeholder="Cerca prodotti, brand, categorie..."
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               aria-label="Cerca prodotti"
@@ -113,10 +110,15 @@ export default function Header({ nameApp }) {
                 setIsMenuOpen(false);
               }}
             />
-            <button type="button" className="ot-header-icon-btn" aria-label="Carrello" onClick={() => { navigate('/shopping-cart'); setIsMenuOpen(false); }}>
-              <i className="bi bi-cart3"></i>
-              {totalItems > 0 && <span className="ot-header-icon-badge">{totalItems}</span>}
-            </button>
+            <IconAction
+              icon="bi bi-cart3"
+              badge={totalItems}
+              label="Carrello"
+              onClick={() => {
+                navigate("/shopping-cart");
+                setIsMenuOpen(false);
+              }}
+            />
           </div>
         </div>
 
