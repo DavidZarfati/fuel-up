@@ -233,7 +233,7 @@ export default function CheckoutPage() {
             {cart.map((item) => (
               <div key={item.id} className="checkout-summary-item">
                 <span>{item.name} x{item.quantity}</span>
-                <strong>{formatPrice(item.discount_price * item.quantity)}</strong>
+                <strong>{formatPrice((item.discount_price ? item.discount_price : item.price) * item.quantity)}</strong>
               </div>
             ))}
 
