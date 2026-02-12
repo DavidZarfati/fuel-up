@@ -1,0 +1,51 @@
+.hero-video-section {
+  margin-top: var(--space-3);
+  position: relative;
+  overflow: hidden;
+  padding: 0;
+  border-radius: var(--radius-lg);
+}
+
+.hero-video-copy {
+  position: absolute;
+  top: clamp(20px, 4vw, 56px);
+  left: clamp(18px, 4.5vw, 72px);
+  z-index: 2;
+  pointer-events: none;
+  text-shadow: 0 4px 18px rgba(2, 6, 23, 0.8);
+}
+
+.hero-video-brand {
+  margin: 0;
+  font-size: clamp(36px, 5.5vw, 84px);
+  line-height: 0.95;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: #f8fbff;
+}
+
+.hero-video-tagline {
+  margin: clamp(8px, 1.2vw, 14px) 0 0;
+  font-size: clamp(14px, 1.8vw, 26px);
+  line-height: 1.2;
+  font-weight: 600;
+  color: #c3d3e7;
+}
+
+.hero-video-media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  object-fit: cover;
+}
+
+@media (max-width: 980px) {
+  .hero-video-copy {
+    top: clamp(14px, 4vw, 34px);
+    left: clamp(14px, 5vw, 28px);
+  }
+
+  .hero-video-media {
+    aspect-ratio: 16 / 9;
+  }
+}

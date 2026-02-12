@@ -1,4 +1,5 @@
 import "./AboutUsPage.css";
+import AboutUsSection from "../components/AboutUsSection";
 
 const VALUES = [
   {
@@ -35,6 +36,13 @@ export default function AboutUsPage() {
             appassionati fitness e professionisti del benessere.
           </p>
         </header>
+
+        <AboutUsSection
+          title={<>FuelUp: la scienza<br /> della performance a un<br /> click da te.</>}
+          subtitle="Scopri integratori, apparel e accessori premium con esperienza personalizzata FuelUp e acquisto rapido."
+          primaryText="Esplora prodotti"
+          secondaryText="Offerte attive"
+        />
 
         <section className="surface-card about-content">
           <h2 className="title-md">La nostra filosofia</h2>

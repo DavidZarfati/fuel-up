@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import "./HeroSection.css";
+import "./AboutUsSection.css";
 
-export default function HeroSection({
+export default function AboutUsSection({
   title,
   subtitle,
   primaryText = "Esplora prodotti",

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import HeroSection from "../components/HeroSection";
+import HeroVideoSection from "../components/HeroVideoSection";
 import CategoryPills from "../components/CategoryPills";
 import ViewToggle from "../components/ViewToggle";
 import ProductCard from "../components/ProductCard";
@@ -110,12 +110,7 @@ export default function HomePage() {
   return (
     <section className="page-section">
       <div className="app-container">
-        <HeroSection
-          title={<>FuelUp: la scienza<br /> della performance a un<br /> click da te.</>}
-          subtitle="Scopri integratori, apparel e accessori premium con esperienza personalizzata FuelUp e acquisto rapido."
-          primaryText="Esplora prodotti"
-          secondaryText="Offerte attive"
-        />
+        <HeroVideoSection />
 
         {freeShippingActive && (
           <div className="free-shipping-banner surface-card">
